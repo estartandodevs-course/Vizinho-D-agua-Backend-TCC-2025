@@ -3,6 +3,8 @@ using VizinhoDAgua.Domain.Repository;
 using VizinhoDAgua.API.Infrastructure;
 using VizinhoDAgua.ServiceDefaults;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +13,20 @@ builder.AddServiceDefaults();
 // Add Lambda hosting
 builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
 
-// Add Repository
-builder.Services.AddSingleton<IOrderRepository, InMemoryOrderRepository>();
+// Add DbContext
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (string.IsNullOrWhiteSpace(connectionString))
+{
+    throw new InvalidOperationException("ConnectionStrings:DefaultConnection is not configured.");
+}
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    options.UseMySql(connectionString, MySqlServerVersion.AutoDetect(connectionString));
+});
+
+// Add Repository (EF)
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 // Add Controllers
 builder.Services.AddControllers();
@@ -53,6 +67,19 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
 var app = builder.Build();
+// Apply pending migrations at startup
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    if (db.Database.GetPendingMigrations().Any())
+    {
+        db.Database.Migrate();
+    }
+    else
+    {
+        db.Database.EnsureCreated();
+    }
+}
 
 // Configure the HTTP request pipeline
 app.UseExceptionHandler();
