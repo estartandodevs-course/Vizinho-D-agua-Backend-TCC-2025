@@ -49,13 +49,30 @@ public class HealthCheckController : ControllerBase
                 });
             }
 
-            // Execute a simple query to verify connectivity
-            await _dbContext.Database.ExecuteSqlRawAsync("SELECT 1", cancellationToken);
+                        // Execute a simple query to verify connectivity and get connection info
+            await _dbContext.Database.ExecuteSqlRawAsync("SELECT 1", cancellationToken);                                                                        
+            
+            // Get connection info while connection is open
+            var connection = _dbContext.Database.GetDbConnection();
+            var connectionString = _dbContext.Database.GetConnectionString();
+            string databaseName = connection.Database ?? "unknown";
+            string? serverVersion = null;
+            
+            try
+            {
+                // Ensure connection is open to get server version
+                if (connection.State != System.Data.ConnectionState.Open)
+                {
+                    await connection.OpenAsync(cancellationToken);
+                }
+                serverVersion = connection.ServerVersion;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Could not retrieve server version");
+            }
 
             _logger.LogInformation("Database connection successful");
-            
-            var connectionString = _dbContext.Database.GetConnectionString();
-            var databaseName = _dbContext.Database.GetDbConnection().Database;
             
             return Ok(new
             {
@@ -63,7 +80,7 @@ public class HealthCheckController : ControllerBase
                 database = "connected",
                 timestamp = DateTime.UtcNow,
                 databaseName = databaseName,
-                serverVersion = _dbContext.Database.GetDbConnection().ServerVersion,
+                serverVersion = serverVersion ?? "unknown",                                                                            
                 message = "Database connection is working correctly"
             });
         }

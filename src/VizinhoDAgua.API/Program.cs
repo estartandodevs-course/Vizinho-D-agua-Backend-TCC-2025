@@ -20,7 +20,16 @@ if (string.IsNullOrEmpty(connectionString))
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseMySql(connectionString, MySqlServerVersion.AutoDetect(connectionString));
+    // Use a specific MySQL version or get it from configuration
+    // AutoDetect can fail during startup in serverless environments
+    var serverVersion = new MySqlServerVersion(new Version(8, 0, 21)); // Adjust to your MySQL version
+    options.UseMySql(connectionString, serverVersion, options =>
+    {
+        options.EnableRetryOnFailure(
+            maxRetryCount: 3,
+            maxRetryDelay: TimeSpan.FromSeconds(30),
+            errorNumbersToAdd: null);
+    });
 });
 
 // Add Controllers
@@ -66,13 +75,28 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    if (db.Database.GetPendingMigrations().Any())
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+    
+    try
     {
-        db.Database.Migrate();
+        if (db.Database.GetPendingMigrations().Any())
+        {
+            logger.LogInformation("Applying pending migrations...");
+            db.Database.Migrate();
+            logger.LogInformation("Migrations applied successfully.");
+        }
+        else
+        {
+            logger.LogInformation("No pending migrations. Ensuring database is created...");
+            db.Database.EnsureCreated();
+        }
     }
-    else
+    catch (Exception ex)
     {
-        db.Database.EnsureCreated();
+        logger.LogError(ex, "Error applying migrations or ensuring database is created. " +
+                           "The application will continue but database operations may fail.");
+        // Don't throw - allow the app to start even if migrations fail
+        // This is important for Lambda cold starts
     }
 }
 
