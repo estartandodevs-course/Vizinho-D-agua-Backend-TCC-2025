@@ -1,5 +1,4 @@
 using Amazon.Lambda.AspNetCoreServer.Hosting;
-using VizinhoDAgua.Domain.Repository;
 using VizinhoDAgua.API.Infrastructure;
 using VizinhoDAgua.ServiceDefaults;
 using Microsoft.AspNetCore.Diagnostics;
@@ -13,19 +12,16 @@ builder.AddServiceDefaults();
 // Add Lambda hosting
 builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
 
-var connectionString = builder.Configuration.GetConnectionString("Default");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (string.IsNullOrEmpty(connectionString))
 {
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-});
+    throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+}
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseMySql(connectionString, MySqlServerVersion.AutoDetect(connectionString));
 });
-
-// Add Repository (EF)
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
 // Add Controllers
 builder.Services.AddControllers();

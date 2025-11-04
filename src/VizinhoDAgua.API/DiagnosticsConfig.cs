@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 
-namespace Orders.Api;
+namespace VizinhoDAgua.API;
 
 public static class DiagnosticsConfig
 {
-    public static readonly ActivitySource ActivitySource = new("Orders.Api");
+    public static readonly ActivitySource ActivitySource = new("VizinhoDAgua.API");
 }
