@@ -1,9 +1,7 @@
-using Amazon.Lambda.AspNetCoreServer.Hosting;
-using VizinhoDAgua.API.Infrastructure;
-using VizinhoDAgua.ServiceDefaults;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql;
+using VizinhoDAgua.infrastructure.Database;
+using VizinhoDAgua.ServiceDefaults;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +16,7 @@ if (string.IsNullOrEmpty(connectionString))
     throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 }
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContext<AppDbContext>(options =>
 {
     // Use a specific MySQL version or get it from configuration
     // AutoDetect can fail during startup in serverless environments
@@ -45,7 +43,7 @@ builder.Services.AddSwaggerGen(c =>
         Title = "Vizinho d'Água API",
         Description = "AWS Lambda ASP.NET Core API Vizinho d'Água",
     });
-    
+
     // Include XML comments
     var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -74,9 +72,9 @@ var app = builder.Build();
 // Apply pending migrations at startup
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-    
+
     try
     {
         if (db.Database.GetPendingMigrations().Any())
