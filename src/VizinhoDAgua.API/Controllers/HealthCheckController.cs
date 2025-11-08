@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using VizinhoDAgua.infrastructure.Database;
+using VizinhoDAgua.Infrastructure.Database;
 
 namespace VizinhoDAgua.API.Controllers;
 

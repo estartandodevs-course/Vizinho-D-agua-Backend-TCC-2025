@@ -33,9 +33,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\VizinhoDAgua.infrastructure\VizinhoDAgua.Infrastructure.csproj" />
     <ProjectReference Include="..\..\VizinhoDAgua.ServiceDefaults\VizinhoDAgua.ServiceDefaults.csproj" />
     <ProjectReference Include="..\VizinhoDAgua.Application\VizinhoDAgua.Application.csproj" />
+    <ProjectReference Include="..\VizinhoDAgua.Infrastructure\VizinhoDAgua.Infrastructure.csproj" />
+    <ProjectReference Include="..\VizinhoDAgua.Domain\VizinhoDAgua.Domain.csproj" />
   </ItemGroup>
 
 </Project>

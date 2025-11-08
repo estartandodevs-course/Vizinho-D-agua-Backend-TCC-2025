@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
-using VizinhoDAgua.infrastructure.Database;
+using VizinhoDAgua.Infrastructure.Database;
 using VizinhoDAgua.ServiceDefaults;
 
 var builder = WebApplication.CreateBuilder(args);
