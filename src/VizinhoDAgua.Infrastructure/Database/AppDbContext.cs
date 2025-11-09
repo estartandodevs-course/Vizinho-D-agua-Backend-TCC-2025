@@ -3,10 +3,8 @@ using VizinhoDAgua.Domain.Entities;
 
 namespace VizinhoDAgua.Infrastructure.Database
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {}
-
         public DbSet<User> Users { get; set; }
         public DbSet<Community> Communities { get; set; }
         public DbSet<CommunityPost> CommunityPosts { get; set; }
