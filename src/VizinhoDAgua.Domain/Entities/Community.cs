@@ -8,15 +8,23 @@ namespace VizinhoDAgua.Domain.Entities
 
         // Many-to-Many
         public List<User> Followers { get; private set; } = [];
-        
+
         // One-to-Many: posts da comunidade
         public List<CommunityPost> Posts { get; private set; } = [];
 
+        public Community() {}
         public Community(string title, string description, string? coverImage)
         {
             Title = title;
             Description = description;
             CoverImage = coverImage;
+        }
+
+        public void Update(string? title, string? description, string? coverImage)
+        {
+            Title = title ?? Title;
+            Description = description ?? Description;
+            CoverImage = coverImage ?? CoverImage;
         }
     }
 }
