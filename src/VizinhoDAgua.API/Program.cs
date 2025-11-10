@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using VizinhoDAgua.Infrastructure;
 using VizinhoDAgua.Infrastructure.Database;
 using VizinhoDAgua.ServiceDefaults;
 
@@ -32,6 +33,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Add Controllers
 builder.Services.AddControllers();
+
+// Add Infrastructure Module
+builder.Services.AddInfrastructureModule();
 
 // Add Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
