@@ -1,18 +1,22 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace VizinhoDAgua.Domain.Entities
 {
     public class Community : Entity
     {
-        [Required]
-        public string Title { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public string? CoverImage { get; set; }
+        public string Title { get; private set; }
+        public string Description { get; private set; }
+        public string? CoverImage { get; private set; }
 
         // Many-to-Many
-        public List<User> Followers { get; set; } = new List<User>();
+        public List<User> Followers { get; private set; } = [];
         
         // One-to-Many: posts da comunidade
-        public List<CommunityPost> Posts { get; set; } = new List<CommunityPost>();
+        public List<CommunityPost> Posts { get; private set; } = [];
+
+        public Community(string title, string description, string? coverImage)
+        {
+            Title = title;
+            Description = description;
+            CoverImage = coverImage;
+        }
     }
 }
