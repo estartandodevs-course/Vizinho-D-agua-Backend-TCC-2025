@@ -11,10 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UseCases\Community\Delete\" />
+    <Folder Include="UseCases\Community\Command\Delete\" />
     <Folder Include="UseCases\Community\GetAll\" />
     <Folder Include="UseCases\Community\GetById\" />
-    <Folder Include="UseCases\Community\Update\" />
+    <Folder Include="UseCases\Community\Command\Update\" />
   </ItemGroup>
 
   <ItemGroup>

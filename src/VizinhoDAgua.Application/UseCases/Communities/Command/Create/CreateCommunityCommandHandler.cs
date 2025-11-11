@@ -1,0 +1,41 @@
+﻿using MediatR;
+using System.Net;
+using VizinhoDAgua.Application.Mediator;
+using VizinhoDAgua.Domain.Entities;
+using VizinhoDAgua.Domain.Repositories;
+
+namespace VizinhoDAgua.Application.UseCases.Communities.Command.Create
+{
+    public class CreateCommunityCommandHandler
+     (
+         ICommunityRepository communityRepository
+     ) : IRequestHandler <CreateCommunityCommand, CommandResponse<CreateCommunityCommandResponse>>
+    {
+        private readonly ICommunityRepository _communityRepository = communityRepository;
+
+        public async Task<CommandResponse<CreateCommunityCommandResponse>> Handle(CreateCommunityCommand request, CancellationToken cancellationToken)
+        {
+            if (!request.Validate())
+                return CommandResponse<CreateCommunityCommandResponse>.ErrorValidation(request.validationResult);
+
+            try
+            {
+                var community = new Community(
+                    title: request.Title,
+                    description: request.Description,
+                    coverImage: request.CoverImage
+                );
+
+                await _communityRepository.AddAsync(community);
+
+                var response = new CreateCommunityCommandResponse(community.Id);
+
+                return CommandResponse<CreateCommunityCommandResponse>.Success(response, statusCode: HttpStatusCode.Created);
+            }
+            catch(Exception ex)
+            {
+                return CommandResponse<CreateCommunityCommandResponse>.CriticalError(message: $"Ocorreu um erro ao criar a comunidade: {ex.Message}");
+            }
+        }
+    }
+}

@@ -2,10 +2,11 @@
 using FluentValidation.Results;
 using MediatR;
 using System.Net;
+using VizinhoDAgua.Application.Mediator;
 
-namespace VizinhoDAgua.Application.UseCases.Community.Create
+namespace VizinhoDAgua.Application.UseCases.Communities.Command.Create
 {
-    public class CreateCommunityCommand(string title, string description, string? coverImage) : IRequest<CreateCommunityCommandResponse>
+    public class CreateCommunityCommand(string title, string description, string? coverImage) : IRequest<CommandResponse<CreateCommunityCommandResponse>>
     {
         public string Title { get; private set; } = title;
         public string Description { get; private set; } = description;
