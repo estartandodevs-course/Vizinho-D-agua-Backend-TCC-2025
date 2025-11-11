@@ -10,4 +10,16 @@
     <ProjectReference Include="..\VizinhoDAgua.Domain\VizinhoDAgua.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UseCases\Community\Delete\" />
+    <Folder Include="UseCases\Community\GetAll\" />
+    <Folder Include="UseCases\Community\GetById\" />
+    <Folder Include="UseCases\Community\Update\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.1.0" />
+    <PackageReference Include="MediatR" Version="13.1.0" />
+  </ItemGroup>
+
 </Project>
