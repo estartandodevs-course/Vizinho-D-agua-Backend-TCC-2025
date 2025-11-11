@@ -2,8 +2,8 @@ namespace VizinhoDAgua.Domain.Entities
 {
     public class Community : Entity
     {
-        public string Title { get; private set; }
-        public string Description { get; private set; }
+        public string Title { get; private set; } = string.Empty;
+        public string Description { get; private set; } = string.Empty;
         public string? CoverImage { get; private set; }
 
         // Many-to-Many

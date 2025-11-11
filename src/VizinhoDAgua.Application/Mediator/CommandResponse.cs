@@ -30,7 +30,7 @@ namespace VizinhoDAgua.Application.Mediator
         public static CommandResponse<T> AddError(string message, HttpStatusCode statusCode = HttpStatusCode.BadRequest)
             => new(statusCode, message);
 
-        public static CommandResponse<T> ErrorValidation(string message, string statusCode)
+        public static CommandResponse<T> ValidationError(string message, string statusCode)
         {
             if (int.TryParse(statusCode, out var statusCodeInt) &&
                 Enum.IsDefined(typeof(HttpStatusCode), statusCodeInt))
@@ -41,7 +41,7 @@ namespace VizinhoDAgua.Application.Mediator
             return new(HttpStatusCode.InternalServerError, "Código de status inválido fornecido na resposta de erro de validação.");
         }
 
-        public static CommandResponse<T> ErrorValidation(ValidationResult validationResult)
+        public static CommandResponse<T> ValidationError(ValidationResult validationResult)
         {
             var errors = validationResult.Errors
                 .Select(f => new { message = f.ErrorMessage, statusCode = f.ErrorCode })
