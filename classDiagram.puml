@@ -1,0 +1,88 @@
+﻿@startuml
+title Class Diagram - VizinhosDAgua
+
+/' ===========================
+   Definição das Entidades
+   =========================== '/
+
+class User {
+  +id: int
+  +name: string
+  +email: string
+  +isAdmin: bool
+  +password: string
+  +profileImage: string
+  +communities: List<Community>
+}
+
+class Report {
+  +id: int
+  +reporter: User
+  +description: string
+  +status: string
+  +reportType: string
+  +location: Location
+  +attachments: List<string>?
+}
+
+class Location {
+  +city: string
+  +road: string?
+  +postalCode: string?
+  +neighborhood: string?
+  +state: string
+  +coords: string?
+}
+
+class Community {
+  +id: int
+  +title: string
+  +description: string
+  +coverImage: string
+}
+
+class CommunityPost {
+  +id: int
+  +author: User
+  +communityId: Community
+  +content: string
+  +images: List<string>
+}
+
+class EducationContent {
+  +id: int
+  +title: string
+  +image: string
+  +author: User
+  +contentType: string
+}
+
+/' ===========================
+   Relações entre Entidades
+   =========================== '/
+
+' Um usuário pode participar de várias comunidades
+' Uma comunidade pode ter vários usuários
+User "*" --> "*" Community : participa
+
+' Um usuário pode fazer várias denúncias
+' Uma denúncia pertence a um único usuário
+User "1" --> "*" Report : reports
+
+' Um usuário pode criar vários posts em comunidades
+' Um post pertence a um único autor
+User "1" --> "*" CommunityPost : posts
+
+' Um usuário pode criar vários conteúdos educacionais
+' Um conteúdo pertence a um único autor
+User "1" --> "*" EducationContent : contents
+
+' Uma denúncia está associada a uma localização
+' Uma localização pode estar presente em várias denúncias
+Report "*" --> "1" Location : location
+
+' Uma comunidade pode conter vários posts
+' Cada post pertence a uma comunidade
+Community "1" --> "*" CommunityPost : posts
+
+@enduml
