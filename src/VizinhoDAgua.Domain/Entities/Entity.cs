@@ -7,10 +7,16 @@ namespace VizinhoDAgua.Domain.Entities
     {
         [Key]
         public Guid Id { get; set; }
-
+        
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        // configurar no banco via migrations (evitar nulo)
         public DateTime? UpdatedAt { get; set; }
+        
+        protected Entity()
+        {
+            Id = Guid.NewGuid();
+        }
     }   
 }
