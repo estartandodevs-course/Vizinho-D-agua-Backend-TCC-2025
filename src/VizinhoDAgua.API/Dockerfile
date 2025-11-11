@@ -8,6 +8,7 @@ WORKDIR /src
 COPY ["src/VizinhoDAgua.API/VizinhoDAgua.API.csproj", "src/VizinhoDAgua.API/"]
 COPY ["src/VizinhoDAgua.Application/VizinhoDAgua.Application.csproj", "src/VizinhoDAgua.Application/"]
 COPY ["src/VizinhoDAgua.Domain/VizinhoDAgua.Domain.csproj", "src/VizinhoDAgua.Domain/"]
+COPY ["src/VizinhoDAgua.Infrastructure/VizinhoDAgua.Infrastructure.csproj", "src/VizinhoDAgua.Infrastructure/"]
 COPY ["VizinhoDAgua.ServiceDefaults/VizinhoDAgua.ServiceDefaults.csproj", "VizinhoDAgua.ServiceDefaults/"]
 
 RUN dotnet restore "src/VizinhoDAgua.API/VizinhoDAgua.API.csproj"
