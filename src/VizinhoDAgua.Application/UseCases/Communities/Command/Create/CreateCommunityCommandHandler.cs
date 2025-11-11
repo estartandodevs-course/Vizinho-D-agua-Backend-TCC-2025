@@ -16,7 +16,7 @@ namespace VizinhoDAgua.Application.UseCases.Communities.Command.Create
         public async Task<CommandResponse<CreateCommunityCommandResponse>> Handle(CreateCommunityCommand request, CancellationToken cancellationToken)
         {
             if (!request.Validate())
-                return CommandResponse<CreateCommunityCommandResponse>.ErrorValidation(request.validationResult);
+                return CommandResponse<CreateCommunityCommandResponse>.ValidationError(request.validationResult);
 
             try
             {

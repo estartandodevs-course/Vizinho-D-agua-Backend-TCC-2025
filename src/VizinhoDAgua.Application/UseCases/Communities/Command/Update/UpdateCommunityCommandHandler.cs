@@ -15,7 +15,7 @@ namespace VizinhoDAgua.Application.UseCases.Communities.Command.Update
         public async Task<CommandResponse<Unit>> Handle(UpdateCommunityCommand request, CancellationToken cancellationToken)
         {
             if (!request.Validate())
-                return CommandResponse<Unit>.ErrorValidation(request.validationResult);
+                return CommandResponse<Unit>.ValidationError(request.validationResult);
 
             var community = await _communityRepository.GetByIdAsync(request.Id);
             if (community == null)
