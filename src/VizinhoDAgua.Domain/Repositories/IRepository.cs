@@ -6,7 +6,7 @@ namespace VizinhoDAgua.Domain.Repositories
     {
         Task AddAsync(TEntity entity);
         Task<List<TEntity>> GetAllAsync();
-        Task<TEntity> GetByIdAsync(Guid id);
+        Task<TEntity?> GetByIdAsync(Guid id);
         Task UpdateAsync(TEntity entity);
         Task DeleteAsync(Guid id);
         Task<int> SaveChanges();
