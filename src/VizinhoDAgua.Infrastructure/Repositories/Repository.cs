@@ -18,14 +18,14 @@ namespace VizinhoDAgua.Infrastructure.Repositories
 
         public virtual async Task<List<TEntity>> GetAllAsync()
         {
-            var dado = await _dbSet.ToListAsync();
-            return dado;
+            var data = await _dbSet.ToListAsync();
+            return data;
         }
 
-        public virtual async Task<TEntity> GetByIdAsync(Guid id)
+        public virtual async Task<TEntity?> GetByIdAsync(Guid id)
         {
-            var dado = await _dbSet.FindAsync(id);
-            return dado;
+            var data = await _dbSet.FindAsync(id);
+            return data;
         }
 
         public virtual async Task UpdateAsync(TEntity entity)
@@ -42,8 +42,8 @@ namespace VizinhoDAgua.Infrastructure.Repositories
 
         public async Task<int> SaveChanges()
         {
-            var dado = await _context.SaveChangesAsync();
-            return dado;
+            var data = await _context.SaveChangesAsync();
+            return data;
         }
 
         public void Dispose()
