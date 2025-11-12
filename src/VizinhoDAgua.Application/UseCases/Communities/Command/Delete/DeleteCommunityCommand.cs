@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
+using System.Net;
 using VizinhoDAgua.Application.Mediator;
 
 namespace VizinhoDAgua.Application.UseCases.Communities.Command.Delete
@@ -8,7 +9,7 @@ namespace VizinhoDAgua.Application.UseCases.Communities.Command.Delete
     public class DeleteCommunityCommand : IRequest<CommandResponse<Unit>>
     {
         public Guid Id { get; private set; }
-        public ValidationResult validationResult { get; private set; }
+        public ValidationResult ValidationResult { get; private set; }
 
         public DeleteCommunityCommand(Guid id)
         {
@@ -21,11 +22,12 @@ namespace VizinhoDAgua.Application.UseCases.Communities.Command.Delete
 
             validations.RuleFor(c => c.Id)
             .NotEmpty()
-            .WithMessage("O ID da comunidade é obrigatório para a atualização.");
+            .WithErrorCode(((int)HttpStatusCode.BadRequest).ToString())
+            .WithMessage("O ID da comunidade é obrigatório para a deleção.");
 
-            validationResult = validations.Validate(this);
+            ValidationResult = validations.Validate(this);
 
-            return validationResult.IsValid;
+            return ValidationResult.IsValid;
         }
     }
 }

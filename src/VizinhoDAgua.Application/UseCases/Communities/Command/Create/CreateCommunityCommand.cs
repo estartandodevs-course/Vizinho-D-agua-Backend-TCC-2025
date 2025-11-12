@@ -12,7 +12,7 @@ namespace VizinhoDAgua.Application.UseCases.Communities.Command.Create
         public string Description { get; private set; }
         public string? CoverImage { get; private set; }
 
-        public ValidationResult validationResult { get; private set; }
+        public ValidationResult ValidationResult { get; private set; }
 
         public CreateCommunityCommand(string title, string description, string? coverImage)
         {
@@ -35,9 +35,9 @@ namespace VizinhoDAgua.Application.UseCases.Communities.Command.Create
                 .WithErrorCode(((int)HttpStatusCode.BadRequest).ToString())
                 .WithMessage("A descrição é obrigatória.");
 
-            validationResult = validations.Validate(this);
+            ValidationResult = validations.Validate(this);
 
-            return validationResult.IsValid;
+            return ValidationResult.IsValid;
         }
     }
 }
