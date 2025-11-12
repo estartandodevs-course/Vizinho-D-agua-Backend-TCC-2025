@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using NetTopologySuite;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using Pomelo.EntityFrameworkCore.MySql.Internal;
 using VizinhoDAgua.Infrastructure.Database;
 using VizinhoDAgua.ServiceDefaults;
 
@@ -23,6 +26,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     var serverVersion = new MySqlServerVersion(new Version(8, 0, 21)); // Adjust to your MySQL version
     options.UseMySql(connectionString, serverVersion, options =>
     {
+        options.UseNetTopologySuite(); // habilita suporte a GEOMETRY, POINT, POLYGON 
         options.EnableRetryOnFailure(
             maxRetryCount: 3,
             maxRetryDelay: TimeSpan.FromSeconds(30),
