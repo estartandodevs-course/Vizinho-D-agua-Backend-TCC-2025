@@ -1,7 +1,12 @@
 ﻿namespace VizinhoDAgua.Application.UseCases.Communities.Command.Create
 {
-    public class CreateCommunityCommandResponse(Guid id)
+    public class CreateCommunityCommandResponse
     {
-        public Guid Id { get; private set; } = id;
+        public Guid Id { get; private set; }
+
+        public CreateCommunityCommandResponse(Guid id)
+        {
+            Id = id;
+        }
     }
 }

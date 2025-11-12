@@ -6,12 +6,14 @@ using VizinhoDAgua.Domain.Repositories;
 
 namespace VizinhoDAgua.Application.UseCases.Communities.Command.Create
 {
-    public class CreateCommunityCommandHandler
-     (
-         ICommunityRepository communityRepository
-     ) : IRequestHandler <CreateCommunityCommand, CommandResponse<CreateCommunityCommandResponse>>
+    public class CreateCommunityCommandHandler : IRequestHandler <CreateCommunityCommand, CommandResponse<CreateCommunityCommandResponse>>
     {
-        private readonly ICommunityRepository _communityRepository = communityRepository;
+        private readonly ICommunityRepository _communityRepository;
+
+        public CreateCommunityCommandHandler(ICommunityRepository communityRepository)
+        {
+            _communityRepository = communityRepository;
+        }
 
         public async Task<CommandResponse<CreateCommunityCommandResponse>> Handle(CreateCommunityCommand request, CancellationToken cancellationToken)
         {

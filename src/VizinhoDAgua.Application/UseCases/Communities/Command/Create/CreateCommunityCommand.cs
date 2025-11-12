@@ -6,13 +6,20 @@ using VizinhoDAgua.Application.Mediator;
 
 namespace VizinhoDAgua.Application.UseCases.Communities.Command.Create
 {
-    public class CreateCommunityCommand(string title, string description, string? coverImage) : IRequest<CommandResponse<CreateCommunityCommandResponse>>
+    public class CreateCommunityCommand : IRequest<CommandResponse<CreateCommunityCommandResponse>>
     {
-        public string Title { get; private set; } = title;
-        public string Description { get; private set; } = description;
-        public string? CoverImage { get; private set; } = coverImage;
+        public string Title { get; private set; }
+        public string Description { get; private set; }
+        public string? CoverImage { get; private set; }
 
         public ValidationResult validationResult { get; private set; }
+
+        public CreateCommunityCommand(string title, string description, string? coverImage)
+        {
+            Title = title;
+            Description = description;
+            CoverImage = coverImage;
+        }
 
         public bool Validate()
         {
