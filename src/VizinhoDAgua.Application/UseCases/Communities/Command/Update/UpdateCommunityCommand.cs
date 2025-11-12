@@ -8,10 +8,10 @@ namespace VizinhoDAgua.Application.UseCases.Communities.Command.Update
 {
     public class UpdateCommunityCommand : IRequest<CommandResponse<Unit>>
     {
-        public Guid Id { get; set; }
-        public string? Title { get; set; }
-        public string? Description { get; set; }
-        public string? CoverImage { get; set; }
+        public Guid Id { get; private set; }
+        public string? Title { get; private set; }
+        public string? Description { get; private set; }
+        public string? CoverImage { get; private set; }
 
         public ValidationResult ValidationResult { get; private set; }
 
