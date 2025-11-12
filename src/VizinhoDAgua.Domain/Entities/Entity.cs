@@ -1,19 +1,17 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace VizinhoDAgua.Domain.Entities
 {
-    public abstract class Entity
+    public interface IAuditable
     {
-        [Key]
-        public Guid Id { get; set; }
-        
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        DateTime CreatedAt { get; set; }
+        DateTime? UpdatedAt { get; set; }
+    }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        // configurar no banco via migrations (evitar nulo)
+    public abstract class Entity : IAuditable
+    {
+        public Guid Id { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }
-        
         protected Entity()
         {
             Id = Guid.NewGuid();
