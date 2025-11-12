@@ -5,12 +5,14 @@ using VizinhoDAgua.Domain.Repositories;
 
 namespace VizinhoDAgua.Application.UseCases.Communities.Command.Update
 {
-    public class UpdateCommunityCommandHandler
-     (
-         ICommunityRepository communityRepository
-     ) : IRequestHandler<UpdateCommunityCommand, CommandResponse<Unit>>
+    public class UpdateCommunityCommandHandler : IRequestHandler<UpdateCommunityCommand, CommandResponse<Unit>>
     {
-        private readonly ICommunityRepository _communityRepository = communityRepository;
+        private readonly ICommunityRepository _communityRepository;
+
+        public UpdateCommunityCommandHandler(ICommunityRepository communityRepository)
+        {
+            _communityRepository = communityRepository;
+        }
 
         public async Task<CommandResponse<Unit>> Handle(UpdateCommunityCommand request, CancellationToken cancellationToken)
         {
