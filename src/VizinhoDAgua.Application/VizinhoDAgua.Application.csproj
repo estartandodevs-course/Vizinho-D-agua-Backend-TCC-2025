@@ -11,12 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UseCases\Communities\Query\GetAll\" />
-    <Folder Include="UseCases\Communities\Query\GetById\" />
-    <Folder Include="UseCases\Communities\Query\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="FluentValidation" Version="12.1.0" />
     <PackageReference Include="MediatR" Version="13.1.0" />
   </ItemGroup>
