@@ -5,10 +5,17 @@ using VizinhoDAgua.Infrastructure.Database;
 
 namespace VizinhoDAgua.Infrastructure.Repositories
 {
-    public abstract class Repository<TEntity>(AppDbContext context) : IRepository<TEntity> where TEntity : Entity, new()
+    public abstract class Repository<TEntity> : IRepository<TEntity>
+        where TEntity : Entity, new()
     {
-        protected readonly AppDbContext _context = context;
-        protected readonly DbSet<TEntity> _dbSet = context.Set<TEntity>();
+        protected readonly AppDbContext _context;
+        protected readonly DbSet<TEntity> _dbSet;
+
+        protected Repository(AppDbContext context)
+        {
+            _context = context;
+            _dbSet = context.Set<TEntity>();
+        }
 
         public virtual async Task AddAsync(TEntity entity)
         {
@@ -18,14 +25,13 @@ namespace VizinhoDAgua.Infrastructure.Repositories
 
         public virtual async Task<List<TEntity>> GetAllAsync()
         {
-            var data = await _dbSet.ToListAsync();
-            return data;
+            return await _dbSet.ToListAsync();
         }
 
         public virtual async Task<TEntity?> GetByIdAsync(Guid id)
         {
-            var data = await _dbSet.FindAsync(id);
-            return data;
+            var entity = await _dbSet.FindAsync(id);
+            return entity;
         }
 
         public virtual async Task UpdateAsync(TEntity entity)
@@ -36,19 +42,21 @@ namespace VizinhoDAgua.Infrastructure.Repositories
 
         public virtual async Task DeleteAsync(Guid id)
         {
-            _dbSet.Remove(new TEntity { Id = id });
+            var entity = await _dbSet.FindAsync(id);
+            if (entity == null) return;
+            
+            _dbSet.Remove(entity);
             await SaveChanges();
         }
 
         public async Task<int> SaveChanges()
         {
-            var data = await _context.SaveChangesAsync();
-            return data;
+            return await _context.SaveChangesAsync();
         }
 
         public void Dispose()
         {
-            _context?.Dispose();
+            _context.Dispose();
         }
     }
 }

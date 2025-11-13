@@ -1,14 +1,22 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
-using NetTopologySuite;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-using Pomelo.EntityFrameworkCore.MySql.Internal;
+using VizinhoDAgua.Application.UseCases.User.Commands;
+using VizinhoDAgua.Domain.Repositories;
 using VizinhoDAgua.Infrastructure.Database;
+using VizinhoDAgua.Infrastructure.Repositories;
 using VizinhoDAgua.ServiceDefaults;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
+
+// Registrar o MediatR
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssemblies(typeof(UpdateUserCommandHandler).Assembly)
+);
+
+// Registrar repositórios
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // Add Lambda hosting
 builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
@@ -26,7 +34,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     var serverVersion = new MySqlServerVersion(new Version(8, 0, 21)); // Adjust to your MySQL version
     options.UseMySql(connectionString, serverVersion, options =>
     {
-        options.UseNetTopologySuite(); // habilita suporte a GEOMETRY, POINT, POLYGON 
         options.EnableRetryOnFailure(
             maxRetryCount: 3,
             maxRetryDelay: TimeSpan.FromSeconds(30),

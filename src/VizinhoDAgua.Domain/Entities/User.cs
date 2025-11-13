@@ -6,7 +6,7 @@ namespace VizinhoDAgua.Domain.Entities
         public string Email { get; private set; } = string.Empty;
         public string Password { get; private set; } = string.Empty;
         public bool IsAdmin { get; private set; }
-        public string? ProfileImage { get; private set; }
+        public string ProfileImage { get; private set; } = string.Empty;
         
         public List<Community> Communities { get; private set; } = [];
         public List<CommunityPost> Posts { get; private set; } = [];
@@ -14,13 +14,20 @@ namespace VizinhoDAgua.Domain.Entities
         
         public User() {  } // EF Core
 
-        public User(string name, string email, string password, string profileImage)
+        public User(string name, string email, string password, string? profileImage)
         {
             Name = name;
             Email = email;
             Password = password;
             IsAdmin = false;
-            ProfileImage = profileImage;
+            ProfileImage = profileImage ?? string.Empty;
+        }
+        
+        public void Update(string name, string? profileImage)
+        {
+            Name = name;
+            ProfileImage = profileImage ?? string.Empty;
+            UpdatedAt = DateTime.UtcNow;
         }
     }
 }
