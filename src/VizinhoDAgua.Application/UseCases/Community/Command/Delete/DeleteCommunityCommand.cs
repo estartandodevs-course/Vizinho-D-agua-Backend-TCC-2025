@@ -4,7 +4,7 @@ using MediatR;
 using System.Net;
 using VizinhoDAgua.Application.Mediator;
 
-namespace VizinhoDAgua.Application.UseCases.Communities.Command.Delete
+namespace VizinhoDAgua.Application.UseCases.Community.Command.Delete
 {
     public class DeleteCommunityCommand : IRequest<CommandResponse<Unit>>
     {

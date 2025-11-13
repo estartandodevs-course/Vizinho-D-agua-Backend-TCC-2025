@@ -3,7 +3,7 @@ using System.Net;
 using VizinhoDAgua.Application.Mediator;
 using VizinhoDAgua.Domain.Repositories;
 
-namespace VizinhoDAgua.Application.UseCases.Communities.Command.Update
+namespace VizinhoDAgua.Application.UseCases.Community.Command.Update
 {
     public class UpdateCommunityCommandHandler : IRequestHandler<UpdateCommunityCommand, CommandResponse<Unit>>
     {

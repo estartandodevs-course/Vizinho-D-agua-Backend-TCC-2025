@@ -4,7 +4,7 @@ using MediatR;
 using System.Net;
 using VizinhoDAgua.Application.Mediator;
 
-namespace VizinhoDAgua.Application.UseCases.Communities.Command.Create
+namespace VizinhoDAgua.Application.UseCases.Community.Command.Create
 {
     public class CreateCommunityCommand : IRequest<CommandResponse<CreateCommunityCommandResponse>>
     {

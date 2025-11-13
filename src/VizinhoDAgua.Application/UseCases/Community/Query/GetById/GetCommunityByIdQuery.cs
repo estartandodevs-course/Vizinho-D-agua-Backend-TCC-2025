@@ -3,9 +3,8 @@ using FluentValidation.Results;
 using MediatR;
 using System.Net;
 using VizinhoDAgua.Application.Mediator;
-using VizinhoDAgua.Application.UseCases.Communities.Query.GetAll;
 
-namespace VizinhoDAgua.Application.UseCases.Communities.Query.GetById
+namespace VizinhoDAgua.Application.UseCases.Community.Query.GetById
 {
     public class GetCommunityByIdQuery : IRequest<CommandResponse<GetCommunityByIdQueryResponse>>
     {

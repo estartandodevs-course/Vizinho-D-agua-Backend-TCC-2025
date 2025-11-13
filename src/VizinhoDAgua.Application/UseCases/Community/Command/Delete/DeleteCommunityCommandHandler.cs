@@ -3,7 +3,7 @@ using System.Net;
 using VizinhoDAgua.Application.Mediator;
 using VizinhoDAgua.Domain.Repositories;
 
-namespace VizinhoDAgua.Application.UseCases.Communities.Command.Delete
+namespace VizinhoDAgua.Application.UseCases.Community.Command.Delete
 {
     public class DeleteCommunityCommandHandler : IRequestHandler<DeleteCommunityCommand, CommandResponse<Unit>>
     {

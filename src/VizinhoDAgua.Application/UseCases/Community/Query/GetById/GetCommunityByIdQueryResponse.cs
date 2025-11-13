@@ -1,6 +1,4 @@
-﻿using VizinhoDAgua.Domain.Entities;
-
-namespace VizinhoDAgua.Application.UseCases.Communities.Query.GetById
+﻿namespace VizinhoDAgua.Application.UseCases.Community.Query.GetById
 {
     public class GetCommunityByIdQueryResponse
     {
@@ -9,7 +7,7 @@ namespace VizinhoDAgua.Application.UseCases.Communities.Query.GetById
         public string Description { get; private set; } = string.Empty;
         public string? CoverImage { get; private set; }
 
-        public GetCommunityByIdQueryResponse(Community community)
+        public GetCommunityByIdQueryResponse(Domain.Entities.Community community)
         {
             Id = community.Id;
             Title = community.Title;

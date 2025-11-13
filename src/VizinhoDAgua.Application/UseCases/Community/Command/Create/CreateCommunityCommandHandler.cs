@@ -1,12 +1,11 @@
 ﻿using MediatR;
 using System.Net;
 using VizinhoDAgua.Application.Mediator;
-using VizinhoDAgua.Domain.Entities;
 using VizinhoDAgua.Domain.Repositories;
 
-namespace VizinhoDAgua.Application.UseCases.Communities.Command.Create
+namespace VizinhoDAgua.Application.UseCases.Community.Command.Create
 {
-    public class CreateCommunityCommandHandler : IRequestHandler <CreateCommunityCommand, CommandResponse<CreateCommunityCommandResponse>>
+    public class CreateCommunityCommandHandler : IRequestHandler<CreateCommunityCommand, CommandResponse<CreateCommunityCommandResponse>>
     {
         private readonly ICommunityRepository _communityRepository;
 
@@ -22,7 +21,7 @@ namespace VizinhoDAgua.Application.UseCases.Communities.Command.Create
 
             try
             {
-                var community = new Community(
+                var community = new Domain.Entities.Community(
                     title: request.Title,
                     description: request.Description,
                     coverImage: request.CoverImage
@@ -34,7 +33,7 @@ namespace VizinhoDAgua.Application.UseCases.Communities.Command.Create
 
                 return CommandResponse<CreateCommunityCommandResponse>.Success(response, statusCode: HttpStatusCode.Created);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return CommandResponse<CreateCommunityCommandResponse>.CriticalError(message: $"Ocorreu um erro ao criar a comunidade: {ex.Message}");
             }

@@ -3,7 +3,7 @@ using System.Net;
 using VizinhoDAgua.Application.Mediator;
 using VizinhoDAgua.Domain.Repositories;
 
-namespace VizinhoDAgua.Application.UseCases.Communities.Query.GetById
+namespace VizinhoDAgua.Application.UseCases.Community.Query.GetById
 {
     public class GetCommunityByIdQueryHandler : IRequestHandler<GetCommunityByIdQuery, CommandResponse<GetCommunityByIdQueryResponse>>
     {
