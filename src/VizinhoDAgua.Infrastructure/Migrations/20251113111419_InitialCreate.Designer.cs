@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NetTopologySuite.Geometries;
 using VizinhoDAgua.Infrastructure.Database;
 
 #nullable disable
@@ -12,7 +13,7 @@ using VizinhoDAgua.Infrastructure.Database;
 namespace VizinhoDAgua.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251108172914_InitialCreate")]
+    [Migration("20251113111419_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -136,6 +137,43 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                     b.ToTable("EducationContents");
                 });
 
+            modelBuilder.Entity("VizinhoDAgua.Domain.Entities.Location", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Geometry>("Geometry")
+                        .HasColumnType("geometry");
+
+                    b.Property<string>("Neighborhood")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PostalCode")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Road")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("StateCode")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Locations");
+                });
+
             modelBuilder.Entity("VizinhoDAgua.Domain.Entities.Report", b =>
                 {
                     b.Property<Guid>("Id")
@@ -143,24 +181,27 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                         .HasColumnType("char(36)");
 
                     b.PrimitiveCollection<string>("Attachments")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime(6)")
+                        .HasDefaultValue(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(500)
+                        .HasColumnType("text");
 
-                    b.Property<string>("PostalCode")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("LocationId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("ReportType")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid>("ReporterId")
+                    b.Property<Guid?>("ReporterId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Status")
@@ -171,6 +212,9 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LocationId")
+                        .IsUnique();
 
                     b.HasIndex("ReporterId");
 
@@ -188,26 +232,32 @@ namespace VizinhoDAgua.Infrastructure.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(60)
+                        .HasColumnType("varchar(60)");
 
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(60)
+                        .HasColumnType("varchar(60)");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("ProfileImage")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
@@ -248,11 +298,18 @@ namespace VizinhoDAgua.Infrastructure.Migrations
 
             modelBuilder.Entity("VizinhoDAgua.Domain.Entities.Report", b =>
                 {
+                    b.HasOne("VizinhoDAgua.Domain.Entities.Location", "Location")
+                        .WithOne()
+                        .HasForeignKey("VizinhoDAgua.Domain.Entities.Report", "LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("VizinhoDAgua.Domain.Entities.User", "Reporter")
                         .WithMany("Reports")
                         .HasForeignKey("ReporterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Location");
 
                     b.Navigation("Reporter");
                 });
