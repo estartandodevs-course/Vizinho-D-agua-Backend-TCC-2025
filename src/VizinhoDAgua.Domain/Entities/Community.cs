@@ -12,7 +12,8 @@ namespace VizinhoDAgua.Domain.Entities
         // One-to-Many: posts da comunidade
         public List<CommunityPost> Posts { get; private set; } = [];
 
-        public Community() {}
+        public Community() { }  // EF Core
+
         public Community(string title, string description, string? coverImage)
         {
             Title = title;

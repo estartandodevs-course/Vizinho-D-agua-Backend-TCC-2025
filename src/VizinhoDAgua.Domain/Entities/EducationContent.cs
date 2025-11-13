@@ -1,13 +1,21 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace VizinhoDAgua.Domain.Entities
 {
     public class EducationContent : Entity
     {
-        [Required]
-        public string Title { get; set; } = string.Empty;
-        public string Image { get; set; } = string.Empty;
-        public string Author { get; set; } = string.Empty;
-        public string ContentType { get; set; } = string.Empty;
+
+        public string Title { get; private set; } = string.Empty;
+        public string Image { get; private set; } = string.Empty;
+        public string Author { get; private set; } = string.Empty;
+        public string ContentType { get; private set; }
+
+        public EducationContent() { } // EF Core
+
+        public EducationContent(string? title, string? image, string? author, string? contentType)
+        {
+            Title = title;
+            Image = image;
+            Author = author;
+            ContentType = contentType;
+        }
     }
 }

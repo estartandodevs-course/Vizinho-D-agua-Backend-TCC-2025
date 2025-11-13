@@ -1,19 +1,25 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace VizinhoDAgua.Domain.Entities
 {
     public class CommunityPost : Entity
     {
-        [Required]
-        public Guid AuthorId { get; set; }
-        public User Author { get; set; } = null!;
+        public string Content { get; private set; } = string.Empty;
+        public List<string> Images { get; private set; } = [];
 
-        [Required]
-        public Guid CommunityId { get; set; }
-        public Community Community { get; set; } = null!;
+        public Guid AuthorId { get; private set; }
+        public User? Author { get; private set; }
 
-        [Required]
-        public string Content { get; set; } = string.Empty;
-        public List<string> Images { get; set; } = [];
+        public Guid CommunityId { get; private set; }
+        public Community? Community { get; private set; }
+
+        public CommunityPost() { } // EF Core
+
+        public CommunityPost(Guid authorId, Guid communityId, string content, List<string>? images)
+        {
+            AuthorId = authorId;
+            CommunityId = communityId;
+            Content = content;
+            Images = images ?? [];
+        }
+
     }
 }
