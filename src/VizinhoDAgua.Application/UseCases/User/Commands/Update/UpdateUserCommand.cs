@@ -9,14 +9,16 @@ namespace VizinhoDAgua.Application.UseCases.User.Commands.Update
     {
         public Guid Id { get; private set; }
         public string Name { get; private set; }
+        public string Email { get; private set; }
         public string? ProfileImage { get; private set; }
 
         public ValidationResult ValidationResult { get; private set; } = null!;
         
-        public UpdateUserCommand(Guid id, string name, string? profileImage)
+        public UpdateUserCommand(Guid id, string name, string email, string? profileImage)
         {
             Id = id;
             Name = name;
+            Email = email;
             ProfileImage = profileImage;
         }
 

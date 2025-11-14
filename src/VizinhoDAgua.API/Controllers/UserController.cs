@@ -53,7 +53,7 @@ namespace VizinhoDAgua.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUserRequest request)
         {
-            var command = new UpdateUserCommand(id, request.Name, request.ProfileImage);
+            var command = new UpdateUserCommand(id, request.Name, request.Email, request.ProfileImage);
             var response = await _mediator.Send(command); // manda o comando pro handler
             return StatusCode((int)response.StatusCode, response); // retorna o user atualizado
         }
