@@ -1,6 +1,5 @@
-namespace VizinhoDAgua.Application.UseCases.User.Commands
+namespace VizinhoDAgua.Application.UseCases.User.Commands.Create
 {
-    // DTO de resposta
     public class CreateUserCommandResponse
     {
         public Guid Id { get; private set; }
