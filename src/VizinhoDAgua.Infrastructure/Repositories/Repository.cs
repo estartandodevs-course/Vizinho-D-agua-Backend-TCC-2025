@@ -23,7 +23,7 @@ namespace VizinhoDAgua.Infrastructure.Repositories
             await SaveChanges();
         }
 
-        public virtual async Task<List<TEntity>> GetAllAsync()
+        public virtual async Task<IList<TEntity>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();
         }
