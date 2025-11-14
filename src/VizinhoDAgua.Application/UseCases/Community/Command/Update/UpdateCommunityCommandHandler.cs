@@ -23,6 +23,8 @@ namespace VizinhoDAgua.Application.UseCases.Community.Command.Update
             if (community == null)
                 return CommandResponse<Unit>.AddError(message: "Comunidade não encontrada.", statusCode: HttpStatusCode.NotFound);
 
+            community.Update(request.Title, request.Description, request.CoverImage);
+
             await _communityRepository.UpdateAsync(community);
 
             return CommandResponse<Unit>.Success(Unit.Value, HttpStatusCode.OK);
