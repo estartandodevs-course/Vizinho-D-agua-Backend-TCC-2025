@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using VizinhoDAgua.API.Controllers.Dtos.User;
 using VizinhoDAgua.Application.UseCases.User.Commands.Create;
 using VizinhoDAgua.Application.UseCases.User.Commands.Update;
 using VizinhoDAgua.Application.UseCases.User.Commands.Delete;
@@ -21,7 +22,7 @@ namespace VizinhoDAgua.API.Controllers
 
         // cria um novo usuário
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateUserCommand request)
+        public async Task<IActionResult> Create([FromBody] CreateUserRequest request)
         {
             var command = new CreateUserCommand(
                 request.Name, request.Email, request.Password, false, request.ProfileImage);
@@ -50,7 +51,7 @@ namespace VizinhoDAgua.API.Controllers
 
         // atualiza um usuário
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUserCommand request)
+        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUserRequest request)
         {
             var command = new UpdateUserCommand(id, request.Name, request.ProfileImage);
             var response = await _mediator.Send(command); // manda o comando pro handler
