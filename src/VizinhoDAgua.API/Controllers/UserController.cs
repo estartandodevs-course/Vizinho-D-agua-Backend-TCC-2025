@@ -1,7 +1,10 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using VizinhoDAgua.Application.UseCases.User.Commands;
-using VizinhoDAgua.Application.UseCases.User.Queries;
+using VizinhoDAgua.Application.UseCases.User.Commands.Create;
+using VizinhoDAgua.Application.UseCases.User.Commands.Update;
+using VizinhoDAgua.Application.UseCases.User.Commands.Delete;
+using VizinhoDAgua.Application.UseCases.User.Queries.GetAll;
+using VizinhoDAgua.Application.UseCases.User.Queries.GetById;
 
 namespace VizinhoDAgua.API.Controllers
 {
@@ -18,13 +21,13 @@ namespace VizinhoDAgua.API.Controllers
 
         // cria um novo usuário
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateUserCommand command)
+        public async Task<IActionResult> Create([FromBody] CreateUserCommand request)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var command = new CreateUserCommand(
+                request.Name, request.Email, request.Password, false, request.ProfileImage);
 
-            var result = await _mediator.Send(command); // manda o comando pro handler
-            // retorna 201 (Created) e o objeto criado
-            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+            var response = await _mediator.Send(command); // manda o comando pro handler
+            return StatusCode((int)response.StatusCode, response); // retorna 201 (Created) e a resposta
         }
 
         // busca usuário pelo ID
@@ -32,12 +35,8 @@ namespace VizinhoDAgua.API.Controllers
         public async Task<IActionResult> GetById(Guid id)
         {
             var query = new GetUserByIdQuery(id); // cria a query passando o id
-            var user = await _mediator.Send(query); // manda pro handler
-
-            if (user == null)
-                return NotFound("Usuário não encontrado.");
-
-            return Ok(user); // retorna 200 + user
+            var response = await _mediator.Send(query); // manda pro handler
+            return StatusCode((int)response.StatusCode, response); // retorna 200 + user
         }
 
         // busca todos os usuários
@@ -45,18 +44,17 @@ namespace VizinhoDAgua.API.Controllers
         public async Task<IActionResult> GetAll()
         {
             var query = new GetAllUsersQuery(); // cria a query de listar tudo
-            var users = await _mediator.Send(query); // manda pro handler
-            return Ok(users); // retorna a lista de users
+            var response = await _mediator.Send(query); // manda pro handler
+            return StatusCode((int)response.StatusCode, response); // retorna a lista de users
         }
 
         // atualiza um usuário
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUserCommand command)
+        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUserCommand request)
         {
-            command.SetId(id); // injeta o id da URL no comando
-
-            var result = await _mediator.Send(command); // manda o comando pro handler
-            return Ok(result); // retorna o user atualizado
+            var command = new UpdateUserCommand(id, request.Name, request.ProfileImage);
+            var response = await _mediator.Send(command); // manda o comando pro handler
+            return StatusCode((int)response.StatusCode, response); // retorna o user atualizado
         }
 
         // deleta um usuário
@@ -64,10 +62,8 @@ namespace VizinhoDAgua.API.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var command = new DeleteUserCommand(id); // cria o comando passando o id
-            var result = await _mediator.Send(command); // manda pro handler
-
-            if (!result) return NotFound("Usuário não encontrado.");
-            return NoContent(); // 204 - deletou com sucesso, sem corpo na resposta
+            var response = await _mediator.Send(command); // manda pro handler
+            return StatusCode((int)response.StatusCode, response); // 204 - deletou com sucesso, sem corpo na resposta
         }
     }
 }
