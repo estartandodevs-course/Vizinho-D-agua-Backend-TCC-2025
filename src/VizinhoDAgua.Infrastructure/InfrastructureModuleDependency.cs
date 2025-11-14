@@ -9,6 +9,7 @@ namespace VizinhoDAgua.Infrastructure
         public static void AddInfrastructureModule(this IServiceCollection services)
         {
             services.AddScoped<ICommunityRepository, CommunityRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
         }
     }
 }

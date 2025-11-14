@@ -1,10 +1,8 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
-using VizinhoDAgua.Application.UseCases.User.Commands;
-using VizinhoDAgua.Domain.Repositories;
+using VizinhoDAgua.Application.UseCases.User.Commands.Update;
 using VizinhoDAgua.Infrastructure;
 using VizinhoDAgua.Infrastructure.Database;
-using VizinhoDAgua.Infrastructure.Repositories;
 using VizinhoDAgua.ServiceDefaults;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,9 +13,6 @@ builder.AddServiceDefaults();
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssemblies(typeof(UpdateUserCommandHandler).Assembly)
 );
-
-// Registrar repositórios
-builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 // Add Lambda hosting
 builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
