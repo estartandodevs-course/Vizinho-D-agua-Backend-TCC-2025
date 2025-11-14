@@ -28,7 +28,7 @@ namespace VizinhoDAgua.Domain.Entities
         public Guid LocationId { get; private set; }
         public Location? Location { get; private set; }
 
-        public Guid ReporterId { get; private set; } 
+        public Guid? ReporterId { get; private set; } 
         public User? Reporter { get; private set; }
 
         public Report() { } // EF Core

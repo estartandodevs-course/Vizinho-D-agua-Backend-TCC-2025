@@ -12,7 +12,7 @@ namespace VizinhoDAgua.Infrastructure.Mappers
 
             builder.HasOne(r => r.Reporter)
                 .WithMany(u => u.Reports)
-                .HasForeignKey(r => r.Id)
+                .HasForeignKey(r => r.ReporterId)
                 .OnDelete(DeleteBehavior.SetNull);
 
             builder.HasOne(r => r.Location)
