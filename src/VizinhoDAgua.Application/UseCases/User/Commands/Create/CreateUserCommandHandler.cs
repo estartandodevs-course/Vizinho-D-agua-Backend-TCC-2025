@@ -1,6 +1,7 @@
 using MediatR;
 using System.Net;
 using VizinhoDAgua.Application.Mediator;
+using VizinhoDAgua.Domain.Entities;
 using VizinhoDAgua.Domain.Repositories;
 
 namespace VizinhoDAgua.Application.UseCases.User.Commands.Create
@@ -25,7 +26,7 @@ namespace VizinhoDAgua.Application.UseCases.User.Commands.Create
             try
             {
                 // cria um novo usuário
-                var user = new Domain.Entities.User(
+                var user = new UserEntity(
                     name: request.Name,
                     email: request.Email,
                     password: request.Password,

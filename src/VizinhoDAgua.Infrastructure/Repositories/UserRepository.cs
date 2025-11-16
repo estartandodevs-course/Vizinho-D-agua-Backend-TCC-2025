@@ -5,11 +5,11 @@ using VizinhoDAgua.Infrastructure.Database;
 
 namespace VizinhoDAgua.Infrastructure.Repositories
 {
-    public class UserRepository : Repository<User>, IUserRepository
+    public class UserRepository : Repository<UserEntity>, IUserRepository
     {
         public UserRepository(AppDbContext context) : base(context) { }
 
-        public async Task<User?> GetByEmailAsync(string email)
+        public async Task<UserEntity?> GetByEmailAsync(string email)
         {
             return await _dbSet
                 .AsNoTracking()

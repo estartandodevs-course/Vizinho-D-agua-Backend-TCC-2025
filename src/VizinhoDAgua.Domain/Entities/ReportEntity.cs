@@ -1,5 +1,3 @@
-using NetTopologySuite.Geometries;
-
 namespace VizinhoDAgua.Domain.Entities
 {
     public enum ReportType
@@ -17,7 +15,7 @@ namespace VizinhoDAgua.Domain.Entities
         Discarded
     }
 
-    public class Report : Entity
+    public class ReportEntity : Entity
     {
         
         public string Description { get; private set; } = string.Empty;
@@ -26,14 +24,14 @@ namespace VizinhoDAgua.Domain.Entities
         public List<string> Attachments { get; private set; } = [];
 
         public Guid LocationId { get; private set; }
-        public Location? Location { get; private set; }
+        public LocationEntity? Location { get; private set; }
 
         public Guid? ReporterId { get; private set; } 
-        public User? Reporter { get; private set; }
+        public UserEntity? Reporter { get; private set; }
 
-        public Report() { } // EF Core
+        public ReportEntity() { } // EF Core
 
-        public Report(Guid reporterId, string description, string? status, string? reportType,
+        public ReportEntity(Guid reporterId, string description, string? status, string? reportType,
             Guid locationId, List<string>? attachments = null)
         {
             ReporterId = reporterId;

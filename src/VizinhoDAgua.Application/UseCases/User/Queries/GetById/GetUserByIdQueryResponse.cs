@@ -1,3 +1,5 @@
+using VizinhoDAgua.Domain.Entities;
+
 namespace VizinhoDAgua.Application.UseCases.User.Queries.GetById
 {
     public class GetUserByIdQueryResponse
@@ -8,7 +10,7 @@ namespace VizinhoDAgua.Application.UseCases.User.Queries.GetById
         public bool IsAdmin { get; private set; }
         public string? ProfileImage { get; private set; }
 
-        public GetUserByIdQueryResponse(Domain.Entities.User user)
+        public GetUserByIdQueryResponse(UserEntity user)
         {
             Id = user.Id;
             Name = user.Name;

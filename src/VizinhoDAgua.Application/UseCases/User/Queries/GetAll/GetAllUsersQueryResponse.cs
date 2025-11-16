@@ -1,10 +1,12 @@
+using VizinhoDAgua.Domain.Entities;
+
 namespace VizinhoDAgua.Application.UseCases.User.Queries.GetAll
 {
     public class GetAllUsersQueryResponse
     {
-        public IList<Domain.Entities.User> Users { get; set; }
+        public IList<UserEntity> Users { get; set; }
         
-        public GetAllUsersQueryResponse(IList<Domain.Entities.User> users)
+        public GetAllUsersQueryResponse(IList<UserEntity> users)
         {
             Users = users;
         }

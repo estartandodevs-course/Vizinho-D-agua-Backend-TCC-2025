@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using System.Net;
 using VizinhoDAgua.Application.Mediator;
+using VizinhoDAgua.Domain.Entities;
 using VizinhoDAgua.Domain.Repositories;
 
 namespace VizinhoDAgua.Application.UseCases.Community.Command.Create
@@ -21,7 +22,7 @@ namespace VizinhoDAgua.Application.UseCases.Community.Command.Create
 
             try
             {
-                var community = new Domain.Entities.Community(
+                var community = new CommunityEntity(
                     title: request.Title,
                     description: request.Description,
                     coverImage: request.CoverImage

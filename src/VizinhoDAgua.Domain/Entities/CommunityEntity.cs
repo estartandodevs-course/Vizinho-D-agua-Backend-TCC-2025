@@ -1,20 +1,20 @@
 namespace VizinhoDAgua.Domain.Entities
 {
-    public class Community : Entity
+    public class CommunityEntity : Entity
     {
         public string Title { get; private set; } = string.Empty;
         public string Description { get; private set; } = string.Empty;
         public string? CoverImage { get; private set; }
 
         // Many-to-Many
-        public List<User> Followers { get; private set; } = [];
+        public List<UserEntity> Followers { get; private set; } = [];
 
         // One-to-Many: posts da comunidade
-        public List<CommunityPost> Posts { get; private set; } = [];
+        public List<CommunityPostEntity> Posts { get; private set; } = [];
 
-        public Community() { }  // EF Core
+        public CommunityEntity() { }  // EF Core
 
-        public Community(string title, string description, string? coverImage)
+        public CommunityEntity(string title, string description, string? coverImage)
         {
             Title = title;
             Description = description;

@@ -1,6 +1,6 @@
 namespace VizinhoDAgua.Domain.Entities
 {
-    public class EducationContent : Entity
+    public class EducationContentEntity : Entity
     {
 
         public string Title { get; private set; } = string.Empty;
@@ -8,9 +8,9 @@ namespace VizinhoDAgua.Domain.Entities
         public string Author { get; private set; } = string.Empty;
         public string ContentType { get; private set; }
 
-        public EducationContent() { } // EF Core
+        public EducationContentEntity() { } // EF Core
 
-        public EducationContent(string? title, string? image, string? author, string? contentType)
+        public EducationContentEntity(string? title, string? image, string? author, string? contentType)
         {
             Title = title;
             Image = image;

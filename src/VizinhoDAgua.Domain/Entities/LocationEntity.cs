@@ -2,7 +2,7 @@ using NetTopologySuite.Geometries;
 
 namespace VizinhoDAgua.Domain.Entities
 {
-    public class Location : Entity
+    public class LocationEntity : Entity
     {
         public string City { get; private set; } = string.Empty;
         public string StateCode { get; private set; } = string.Empty;
@@ -11,9 +11,9 @@ namespace VizinhoDAgua.Domain.Entities
         public string? Neighborhood { get; private set; }
         public Geometry? Geometry { get; private set; }
         
-        public Location() { } // EF Core
+        public LocationEntity() { } // EF Core
 
-        public Location(string city, string stateCode, string? road, string? postalCode, string? neighborhood, Geometry geometry)
+        public LocationEntity(string city, string stateCode, string? road, string? postalCode, string? neighborhood, Geometry geometry)
         {
             City = city;
             Road = road;

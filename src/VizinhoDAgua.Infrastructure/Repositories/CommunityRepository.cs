@@ -4,7 +4,7 @@ using VizinhoDAgua.Infrastructure.Database;
 
 namespace VizinhoDAgua.Infrastructure.Repositories
 {
-    public class CommunityRepository(AppDbContext context) : Repository<Community>(context), ICommunityRepository
+    public class CommunityRepository(AppDbContext context) : Repository<CommunityEntity>(context), ICommunityRepository
     {
     }
 }

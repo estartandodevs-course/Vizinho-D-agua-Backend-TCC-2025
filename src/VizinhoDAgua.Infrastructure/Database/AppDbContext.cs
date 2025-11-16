@@ -14,12 +14,12 @@ namespace VizinhoDAgua.Infrastructure.Database
             ChangeTracker.AutoDetectChangesEnabled = false;
         }
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<Community> Communities { get; set; }
-        public DbSet<CommunityPost> CommunityPosts { get; set; }
-        public DbSet<Report> Reports { get; set; }
-        public DbSet<EducationContent> EducationContents { get; set; }
-        public DbSet<Location> Locations { get; set; }
+        public DbSet<UserEntity> Users { get; set; }
+        public DbSet<CommunityEntity> Communities { get; set; }
+        public DbSet<CommunityPostEntity> CommunityPosts { get; set; }
+        public DbSet<ReportEntity> Reports { get; set; }
+        public DbSet<EducationContentEntity> EducationContents { get; set; }
+        public DbSet<LocationEntity> Locations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,6 +1,6 @@
 namespace VizinhoDAgua.Domain.Entities
 {
-    public class User : Entity
+    public class UserEntity : Entity
     { 
         public string Name { get; private set; } = string.Empty;
         public string Email { get; private set; } = string.Empty;
@@ -8,13 +8,13 @@ namespace VizinhoDAgua.Domain.Entities
         public bool IsAdmin { get; private set; }
         public string ProfileImage { get; private set; } = string.Empty;
         
-        public List<Community> Communities { get; private set; } = [];
-        public List<CommunityPost> Posts { get; private set; } = [];
-        public List<Report> Reports { get; private set; } = [];
+        public List<CommunityEntity> Communities { get; private set; } = [];
+        public List<CommunityPostEntity> Posts { get; private set; } = [];
+        public List<ReportEntity> Reports { get; private set; } = [];
         
-        public User() {  } // EF Core
+        public UserEntity() {  } // EF Core
 
-        public User(string name, string email, string password, string? profileImage)
+        public UserEntity(string name, string email, string password, string? profileImage)
         {
             Name = name;
             Email = email;

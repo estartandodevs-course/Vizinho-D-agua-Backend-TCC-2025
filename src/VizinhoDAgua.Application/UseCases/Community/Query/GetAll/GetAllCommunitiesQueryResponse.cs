@@ -1,10 +1,12 @@
-﻿namespace VizinhoDAgua.Application.UseCases.Community.Query.GetAll
+﻿using VizinhoDAgua.Domain.Entities;
+
+namespace VizinhoDAgua.Application.UseCases.Community.Query.GetAll
 {
     public class GetAllCommunitiesQueryResponse
     {
-        public IList<Domain.Entities.Community> Communities { get; set; }
+        public IList<CommunityEntity> Communities { get; set; }
 
-        public GetAllCommunitiesQueryResponse(IList<Domain.Entities.Community> communities)
+        public GetAllCommunitiesQueryResponse(IList<CommunityEntity> communities)
         {
             Communities = communities;
         }

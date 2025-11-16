@@ -2,7 +2,7 @@
 
 namespace VizinhoDAgua.Domain.Repositories
 {
-    public interface ICommunityRepository : IRepository<Community>
+    public interface ICommunityRepository : IRepository<CommunityEntity>
     {
     }
 }
