@@ -24,7 +24,7 @@ namespace VizinhoDAgua.Application.UseCases.User.Commands.Update
             if (user == null)
                 return CommandResponse<Unit>.AddError(message: "Usuário não encontrado", HttpStatusCode.NotFound);
 
-            user.Update(request.Name, request.ProfileImage);
+            user.Update(request.Name, request.Email, request.ProfileImage);
             
             await _repository.UpdateAsync(user);
             return CommandResponse<Unit>.Success(Unit.Value, HttpStatusCode.OK);

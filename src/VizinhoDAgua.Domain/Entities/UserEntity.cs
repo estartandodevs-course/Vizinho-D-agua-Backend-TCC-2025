@@ -23,12 +23,11 @@ namespace VizinhoDAgua.Domain.Entities
             ProfileImage = profileImage ?? string.Empty;
         }
         
-        public void Update(string name, string email, string? profileImage)
+        public void Update(string? name, string? email, string? profileImage)
         {
-            Name = name;
-            Email = email;
-            ProfileImage = profileImage ?? string.Empty;
-            UpdatedAt = DateTime.UtcNow;
+            Name = name ?? Name;
+            Email = email ?? Email;
+            ProfileImage = profileImage ?? ProfileImage;
         }
     }
 }
