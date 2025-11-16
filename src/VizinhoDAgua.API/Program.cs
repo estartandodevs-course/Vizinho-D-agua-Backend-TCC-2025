@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using VizinhoDAgua.Application.Profiles;
 using VizinhoDAgua.Application.UseCases.User.Commands.Update;
 using VizinhoDAgua.Infrastructure;
 using VizinhoDAgua.Infrastructure.Database;
@@ -13,6 +14,9 @@ builder.AddServiceDefaults();
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssemblies(typeof(UpdateUserCommandHandler).Assembly)
 );
+
+// Register AutoMapper
+builder.Services.AddAutoMapper(typeof(AutoMapping));
 
 // Add Lambda hosting
 builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);

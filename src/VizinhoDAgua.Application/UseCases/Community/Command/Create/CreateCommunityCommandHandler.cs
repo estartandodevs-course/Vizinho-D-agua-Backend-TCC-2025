@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using System.Net;
 using VizinhoDAgua.Application.Mediator;
 using VizinhoDAgua.Domain.Entities;
@@ -9,10 +10,12 @@ namespace VizinhoDAgua.Application.UseCases.Community.Command.Create
     public class CreateCommunityCommandHandler : IRequestHandler<CreateCommunityCommand, CommandResponse<CreateCommunityCommandResponse>>
     {
         private readonly ICommunityRepository _communityRepository;
+        private readonly IMapper _mapper;
 
-        public CreateCommunityCommandHandler(ICommunityRepository communityRepository)
+        public CreateCommunityCommandHandler(ICommunityRepository communityRepository, IMapper mapper)
         {
             _communityRepository = communityRepository;
+            _mapper = mapper;
         }
 
         public async Task<CommandResponse<CreateCommunityCommandResponse>> Handle(CreateCommunityCommand request, CancellationToken cancellationToken)
@@ -22,11 +25,7 @@ namespace VizinhoDAgua.Application.UseCases.Community.Command.Create
 
             try
             {
-                var community = new CommunityEntity(
-                    title: request.Title,
-                    description: request.Description,
-                    coverImage: request.CoverImage
-                );
+                var community = _mapper.Map<CommunityEntity>(request);
 
                 await _communityRepository.AddAsync(community);
 
