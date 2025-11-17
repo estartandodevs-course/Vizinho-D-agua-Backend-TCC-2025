@@ -20,12 +20,5 @@ namespace VizinhoDAgua.Domain.Entities
             Description = description;
             CoverImage = coverImage;
         }
-
-        public void Update(string? title, string? description, string? coverImage)
-        {
-            Title = title ?? Title;
-            Description = description ?? Description;
-            CoverImage = coverImage ?? CoverImage;
-        }
     }
 }
