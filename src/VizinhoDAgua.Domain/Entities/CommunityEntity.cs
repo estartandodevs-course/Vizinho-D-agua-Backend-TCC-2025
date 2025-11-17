@@ -1,3 +1,5 @@
+using VizinhoDAgua.Domain.Entities.Abstractions;
+
 namespace VizinhoDAgua.Domain.Entities
 {
     public class CommunityEntity : Entity

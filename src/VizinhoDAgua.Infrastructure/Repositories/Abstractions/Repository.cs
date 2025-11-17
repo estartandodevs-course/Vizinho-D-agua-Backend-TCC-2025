@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using VizinhoDAgua.Domain.Entities;
-using VizinhoDAgua.Domain.Repositories;
+using VizinhoDAgua.Domain.Entities.Abstractions;
+using VizinhoDAgua.Domain.Repositories.Abstractions;
 using VizinhoDAgua.Infrastructure.Database;
 
-namespace VizinhoDAgua.Infrastructure.Repositories
+namespace VizinhoDAgua.Infrastructure.Repositories.Abstractions
 {
     public abstract class Repository<TEntity> : IRepository<TEntity>
         where TEntity : Entity, new()

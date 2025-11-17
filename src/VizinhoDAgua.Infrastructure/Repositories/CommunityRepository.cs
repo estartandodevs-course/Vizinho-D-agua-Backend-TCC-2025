@@ -1,6 +1,7 @@
 ﻿using VizinhoDAgua.Domain.Entities;
 using VizinhoDAgua.Domain.Repositories;
 using VizinhoDAgua.Infrastructure.Database;
+using VizinhoDAgua.Infrastructure.Repositories.Abstractions;
 
 namespace VizinhoDAgua.Infrastructure.Repositories
 {

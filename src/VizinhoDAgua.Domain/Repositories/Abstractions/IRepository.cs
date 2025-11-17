@@ -1,6 +1,6 @@
-﻿using VizinhoDAgua.Domain.Entities;
+﻿using VizinhoDAgua.Domain.Entities.Abstractions;
 
-namespace VizinhoDAgua.Domain.Repositories
+namespace VizinhoDAgua.Domain.Repositories.Abstractions
 {
     public interface IRepository<TEntity> : IDisposable where TEntity : Entity
     {

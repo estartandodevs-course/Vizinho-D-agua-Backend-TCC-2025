@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using VizinhoDAgua.Domain.Entities;
+using VizinhoDAgua.Domain.Entities.Abstractions;
 
 namespace VizinhoDAgua.Infrastructure.Database
 {
@@ -33,7 +34,7 @@ namespace VizinhoDAgua.Infrastructure.Database
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             // Retorna apenas as entries que implementam IAuditable (só as entidades que tem CreateAt e UpdatedAt)
-            var entries = ChangeTracker.Entries<IAuditable>();
+            var entries = ChangeTracker.Entries<AuditableEntity>();
 
             foreach (var entry in entries)
             {
