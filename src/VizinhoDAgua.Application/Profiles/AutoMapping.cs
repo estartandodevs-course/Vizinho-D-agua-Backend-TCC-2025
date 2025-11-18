@@ -8,10 +8,17 @@ namespace VizinhoDAgua.Application.Profiles
 {
     public class AutoMapping : Profile
     {
-        public AutoMapping() 
+        public AutoMapping()
         {
             CreateMap<CreateCommunityRequest, CreateCommunityCommand>();
             CreateMap<CreateCommunityCommand, CommunityEntity>();
+            CreateMap<(Guid Id, UpdateCommunityRequest Request), UpdateCommunityCommand>()
+                .ConstructUsing(source => new UpdateCommunityCommand(
+                    source.Id,
+                    source.Request.Title,
+                    source.Request.Description,
+                    source.Request.CoverImage
+                ));
             CreateMap<UpdateCommunityCommand, CommunityEntity>()
                 .ForAllMembers(opts => opts.Condition((_, _, srcMember) => srcMember != null));
         }
