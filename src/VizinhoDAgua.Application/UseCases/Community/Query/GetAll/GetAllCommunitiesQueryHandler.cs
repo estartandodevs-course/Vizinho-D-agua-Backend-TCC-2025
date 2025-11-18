@@ -1,24 +1,14 @@
-﻿using MediatR;
-using System.Net;
-using VizinhoDAgua.Application.Mediator;
-using VizinhoDAgua.Domain.Repositories;
+﻿using VizinhoDAgua.Domain.Repositories;
+using VizinhoDAgua.Application.Mediator.Handlers;
+using VizinhoDAgua.Domain.Entities;
+using AutoMapper;
 
 namespace VizinhoDAgua.Application.UseCases.Community.Query.GetAll
 {
-    public class GetAllCommunitiesQueryHandler : IRequestHandler<GetAllCommunitiesQuery, CommandResponse<GetAllCommunitiesQueryResponse>>
+    public class GetAllCommunitiesQueryHandler : GetAllQueryHandler<CommunityEntity, GetAllCommunitiesQuery, GetAllCommunitiesQueryResponse>
     {
-        private readonly ICommunityRepository _communityRepository;
-
-        public GetAllCommunitiesQueryHandler(ICommunityRepository communityRepository)
+        public GetAllCommunitiesQueryHandler(ICommunityRepository communityRepository, IMapper mapper) : base(communityRepository, mapper)
         {
-            _communityRepository = communityRepository;
-        }
-
-        public async Task<CommandResponse<GetAllCommunitiesQueryResponse>> Handle(GetAllCommunitiesQuery request, CancellationToken cancellationToken)
-        {
-            var communities = await _communityRepository.GetAllAsync();
-
-            return CommandResponse<GetAllCommunitiesQueryResponse>.Success(new GetAllCommunitiesQueryResponse(communities), HttpStatusCode.OK);
         }
     }
 }

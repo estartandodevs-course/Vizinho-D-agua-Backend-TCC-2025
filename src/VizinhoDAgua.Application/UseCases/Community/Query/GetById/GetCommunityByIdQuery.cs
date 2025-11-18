@@ -1,16 +1,15 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
-using MediatR;
 using System.Net;
-using VizinhoDAgua.Application.Mediator;
+using VizinhoDAgua.Application.Mediator.IRequests;
 
 namespace VizinhoDAgua.Application.UseCases.Community.Query.GetById
 {
-    public class GetCommunityByIdQuery : IRequest<CommandResponse<GetCommunityByIdQueryResponse>>
+    public class GetCommunityByIdQuery : IRequestWithValidationAndId<GetCommunityByIdQueryResponse>
     {
         public Guid Id { get; private set; }
 
-        public ValidationResult ValidationResult { get; private set; }
+        public ValidationResult ValidationResult { get; private set; } = new ValidationResult();
 
         public GetCommunityByIdQuery(Guid id)
         {

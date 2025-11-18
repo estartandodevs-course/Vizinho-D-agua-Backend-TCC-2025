@@ -1,11 +1,11 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using VizinhoDAgua.API.Controllers.Dtos.User;
 using VizinhoDAgua.Application.UseCases.User.Commands.Create;
 using VizinhoDAgua.Application.UseCases.User.Commands.Update;
 using VizinhoDAgua.Application.UseCases.User.Commands.Delete;
 using VizinhoDAgua.Application.UseCases.User.Queries.GetAll;
 using VizinhoDAgua.Application.UseCases.User.Queries.GetById;
+using VizinhoDAgua.Application.Dtos;
 
 namespace VizinhoDAgua.API.Controllers
 {

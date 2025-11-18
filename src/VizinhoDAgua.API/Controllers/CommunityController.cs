@@ -1,6 +1,7 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using VizinhoDAgua.API.Controllers.Dtos.Community;
+using VizinhoDAgua.Application.Dtos;
 using VizinhoDAgua.Application.UseCases.Community.Command.Create;
 using VizinhoDAgua.Application.UseCases.Community.Command.Delete;
 using VizinhoDAgua.Application.UseCases.Community.Command.Update;
@@ -14,16 +15,18 @@ namespace VizinhoDAgua.API.Controllers
     public class CommunityController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
 
-        public CommunityController(IMediator mediator)
+        public CommunityController(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
+            _mapper = mapper;
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateCommunity([FromBody] CreateCommunityRequest request)
         {
-            var command = new CreateCommunityCommand(request.Title, request.Description, request.CoverImage);
+            var command = _mapper.Map<CreateCommunityCommand>(request);
 
             var response = await _mediator.Send(command);
 

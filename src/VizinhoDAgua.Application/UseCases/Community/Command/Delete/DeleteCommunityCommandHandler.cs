@@ -1,32 +1,13 @@
-﻿using MediatR;
-using System.Net;
-using VizinhoDAgua.Application.Mediator;
+﻿using VizinhoDAgua.Application.Mediator.Handlers;
+using VizinhoDAgua.Domain.Entities;
 using VizinhoDAgua.Domain.Repositories;
 
 namespace VizinhoDAgua.Application.UseCases.Community.Command.Delete
 {
-    public class DeleteCommunityCommandHandler : IRequestHandler<DeleteCommunityCommand, CommandResponse<Unit>>
+    public class DeleteCommunityCommandHandler : DeleteCommandHandler<CommunityEntity, DeleteCommunityCommand>
     {
-        private readonly ICommunityRepository _communityRepository;
-
-        public DeleteCommunityCommandHandler(ICommunityRepository communityRepository)
+        public DeleteCommunityCommandHandler(ICommunityRepository communityRepository) : base(communityRepository)
         {
-            _communityRepository = communityRepository;
-        }
-
-        public async Task<CommandResponse<Unit>> Handle(DeleteCommunityCommand request, CancellationToken cancellationToken)
-        {
-            if (!request.Validate())
-                return CommandResponse<Unit>.ValidationError(request.ValidationResult);
-
-            var community = await _communityRepository.GetByIdAsync(request.Id);
-            if (community == null)
-                return CommandResponse<Unit>.AddError(message: "Comunidade não encontrada.", statusCode: HttpStatusCode.NotFound);
-
-            await _communityRepository.DeleteAsync(community.Id);
-
-            return CommandResponse<Unit>.Success(Unit.Value, HttpStatusCode.NoContent);
-            
         }
     }
 }

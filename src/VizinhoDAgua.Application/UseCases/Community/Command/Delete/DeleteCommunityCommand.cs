@@ -2,14 +2,14 @@
 using FluentValidation.Results;
 using MediatR;
 using System.Net;
-using VizinhoDAgua.Application.Mediator;
+using VizinhoDAgua.Application.Mediator.IRequests;
 
 namespace VizinhoDAgua.Application.UseCases.Community.Command.Delete
 {
-    public class DeleteCommunityCommand : IRequest<CommandResponse<Unit>>
+    public class DeleteCommunityCommand : IRequestWithValidationAndId<Unit>
     {
         public Guid Id { get; private set; }
-        public ValidationResult ValidationResult { get; private set; }
+        public ValidationResult ValidationResult { get; private set; } = new ValidationResult();
 
         public DeleteCommunityCommand(Guid id)
         {

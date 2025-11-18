@@ -1,29 +1,14 @@
-﻿using MediatR;
-using System.Net;
-using VizinhoDAgua.Application.Mediator;
+﻿using AutoMapper;
+using VizinhoDAgua.Application.Mediator.Handlers;
+using VizinhoDAgua.Domain.Entities;
 using VizinhoDAgua.Domain.Repositories;
 
 namespace VizinhoDAgua.Application.UseCases.Community.Query.GetById
 {
-    public class GetCommunityByIdQueryHandler : IRequestHandler<GetCommunityByIdQuery, CommandResponse<GetCommunityByIdQueryResponse>>
+    public class GetCommunityByIdQueryHandler : GetByIdQueryHandler<CommunityEntity, GetCommunityByIdQuery, GetCommunityByIdQueryResponse>
     {
-        private readonly ICommunityRepository _communityRepository;
-
-        public GetCommunityByIdQueryHandler(ICommunityRepository communityRepository)
+        public GetCommunityByIdQueryHandler(ICommunityRepository communityRepository, IMapper mapper) : base(communityRepository, mapper)
         {
-            _communityRepository = communityRepository;
-        }
-
-        public async Task<CommandResponse<GetCommunityByIdQueryResponse>> Handle(GetCommunityByIdQuery request, CancellationToken cancellationToken)
-        {
-            if (!request.Validate())
-                return CommandResponse<GetCommunityByIdQueryResponse>.ValidationError(request.ValidationResult);
-
-            var community = await _communityRepository.GetByIdAsync(request.Id);
-            if (community == null)
-                return CommandResponse<GetCommunityByIdQueryResponse>.AddError(message: "Comunidade não encontrada.", statusCode: HttpStatusCode.NotFound);
-
-            return CommandResponse<GetCommunityByIdQueryResponse>.Success(new GetCommunityByIdQueryResponse(community), HttpStatusCode.OK);
         }
     }
 }
