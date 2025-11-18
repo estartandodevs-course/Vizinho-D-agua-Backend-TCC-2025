@@ -4,7 +4,7 @@ namespace VizinhoDAgua.Application.UseCases.Community.Query.GetAll
 {
     public class GetAllCommunitiesQueryResponse
     {
-        public IList<CommunityEntity> Communities { get; set; }
+        public IList<CommunityEntity> Communities { get; }
 
         public GetAllCommunitiesQueryResponse(IList<CommunityEntity> communities)
         {
