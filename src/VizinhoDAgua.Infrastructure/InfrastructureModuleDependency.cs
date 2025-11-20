@@ -10,6 +10,7 @@ namespace VizinhoDAgua.Infrastructure
         {
             services.AddScoped<ICommunityRepository, CommunityRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ICommunityPostRepository, CommunityPostRepository>();
         }
     }
 }
