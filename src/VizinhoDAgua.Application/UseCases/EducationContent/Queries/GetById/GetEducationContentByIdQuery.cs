@@ -1,3 +1,4 @@
+using System.Net;
 using FluentValidation;
 using FluentValidation.Results;
 using VizinhoDAgua.Application.Mediator.IRequests;
@@ -20,7 +21,10 @@ namespace VizinhoDAgua.Application.UseCases.EducationContent.Queries.GetById
         {
             var validations = new InlineValidator<GetEducationContentByIdQuery>();
             
-            // TODO: validações de entrada
+            validations.RuleFor(command => command.Id)
+                .NotEmpty() 
+                .WithErrorCode(((int)HttpStatusCode.BadRequest).ToString())
+                .WithMessage("O ID do conteúdo educacional é obrigatório.");
             
             ValidationResult = validations.Validate(this);
             return ValidationResult.IsValid;

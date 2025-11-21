@@ -1,3 +1,4 @@
+using System.Net;
 using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
@@ -20,7 +21,10 @@ namespace VizinhoDAgua.Application.UseCases.EducationContent.Commands.Delete
         {
             var validations = new InlineValidator<DeleteEducationContentCommand>();
             
-            // TODO: validações de entrada para deletar usuários
+            validations.RuleFor(command => command.Id)
+                .NotEmpty()
+                .WithErrorCode(((int)HttpStatusCode.BadRequest).ToString())
+                .WithMessage("O ID do conteúdo educacional é obrigatório para a excluí-lo.");
             
             ValidationResult = validations.Validate(this);
             return ValidationResult.IsValid;
