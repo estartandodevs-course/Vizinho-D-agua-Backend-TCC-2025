@@ -39,10 +39,10 @@ namespace VizinhoDAgua.Domain.Entities
             ReporterId = reporterId;
             Description = description;
 
-            if (!string.IsNullOrWhiteSpace(status) && Enum.TryParse(status, true, out ReportStatus parsedStatus))
+            if (!string.IsNullOrWhiteSpace(status) && System.Enum.TryParse(status, true, out ReportStatus parsedStatus))
                 Status = parsedStatus;
 
-            if (!string.IsNullOrWhiteSpace(reportType) && Enum.TryParse(reportType, true, out ReportType parsedType))
+            if (!string.IsNullOrWhiteSpace(reportType) && System.Enum.TryParse(reportType, true, out ReportType parsedType))
                 ReportType = parsedType;
             else
                 throw new ArgumentException("Invalid Report type");
