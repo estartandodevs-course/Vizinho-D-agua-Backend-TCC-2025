@@ -8,6 +8,8 @@ namespace VizinhoDAgua.Infrastructure.Mappers
     {
         public void Configure(EntityTypeBuilder<UserEntity> builder)
         {
+            builder.ToTable("Users");
+
             builder.HasKey(u => u.Id);
 
             builder.Property(u => u.Name)
