@@ -105,7 +105,41 @@ namespace VizinhoDAgua.Infrastructure.Migrations
 
                     b.HasIndex("CommunityId");
 
-                    b.ToTable("CommunityPostEntity");
+                    b.ToTable("CommunityPosts");
+                });
+
+            modelBuilder.Entity("VizinhoDAgua.Domain.Entities.EducationContentEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Author")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("ContentType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("FilePath")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EducationContents");
                 });
 
             modelBuilder.Entity("VizinhoDAgua.Domain.Entities.ReportEntity", b =>

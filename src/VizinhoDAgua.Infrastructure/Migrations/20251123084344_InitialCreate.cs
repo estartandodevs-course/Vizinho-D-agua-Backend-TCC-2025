@@ -16,6 +16,29 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "EducationContents",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Title = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Image = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Author = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ContentType = table.Column<int>(type: "int", nullable: false),
+                    FilePath = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EducationContents", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -131,7 +154,7 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "CommunityPostEntity",
+                name: "CommunityPosts",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -146,15 +169,15 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CommunityPostEntity", x => x.Id);
+                    table.PrimaryKey("PK_CommunityPosts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CommunityPostEntity_Communities_CommunityId",
+                        name: "FK_CommunityPosts_Communities_CommunityId",
                         column: x => x.CommunityId,
                         principalTable: "Communities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CommunityPostEntity_Users_AuthorId",
+                        name: "FK_CommunityPosts_Users_AuthorId",
                         column: x => x.AuthorId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -173,13 +196,13 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CommunityPostEntity_AuthorId",
-                table: "CommunityPostEntity",
+                name: "IX_CommunityPosts_AuthorId",
+                table: "CommunityPosts",
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CommunityPostEntity_CommunityId",
-                table: "CommunityPostEntity",
+                name: "IX_CommunityPosts_CommunityId",
+                table: "CommunityPosts",
                 column: "CommunityId");
 
             migrationBuilder.CreateIndex(
@@ -211,7 +234,10 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                 name: "CommunityFollowers");
 
             migrationBuilder.DropTable(
-                name: "CommunityPostEntity");
+                name: "CommunityPosts");
+
+            migrationBuilder.DropTable(
+                name: "EducationContents");
 
             migrationBuilder.DropTable(
                 name: "Reports");
