@@ -45,9 +45,8 @@ namespace VizinhoDAgua.Application.Profiles
                 ));
             CreateMap<UpdateEducationContentCommand, EducationContentEntity>()
                 // evita sobrescrever propriedades quando o campo vem null
-                .ForAllMembers(opts 
+                .ForAllMembers(opts
                     => opts.Condition((_, _, srcMember) => srcMember != null));
-                .ForAllMembers(opts => opts.Condition((_, _, srcMember) => srcMember != null));
 
             CreateMap<CreateCommunityPostRequest, CreateCommunityPostCommand>();
             CreateMap<CreateCommunityPostCommand, CommunityPostEntity>();
