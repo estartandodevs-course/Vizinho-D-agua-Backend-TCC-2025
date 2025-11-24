@@ -2,6 +2,8 @@
 using VizinhoDAgua.Application.Dtos;
 using VizinhoDAgua.Application.UseCases.Community.Command.Create;
 using VizinhoDAgua.Application.UseCases.Community.Command.Update;
+using VizinhoDAgua.Application.UseCases.CommunityPost.Command.Create;
+using VizinhoDAgua.Application.UseCases.CommunityPost.Command.Update;
 using VizinhoDAgua.Application.UseCases.EducationContent.Commands.Create;
 using VizinhoDAgua.Application.UseCases.EducationContent.Commands.Update;
 using VizinhoDAgua.Application.UseCases.User.Commands.Create;
@@ -45,7 +47,7 @@ namespace VizinhoDAgua.Application.Profiles
                 ));
             CreateMap<UpdateEducationContentCommand, EducationContentEntity>()
                 // evita sobrescrever propriedades quando o campo vem null
-                .ForAllMembers(opts 
+                .ForAllMembers(opts
                     => opts.Condition((_, _, srcMember) => srcMember != null));
         
             // USER
@@ -67,6 +69,32 @@ namespace VizinhoDAgua.Application.Profiles
                 // evita sobrescrever propriedades quando o campo vem null
                 .ForAllMembers(opts 
                     => opts.Condition((_, _, srcMember) => srcMember != null));
+
+            
+            // COMMUNITY POST CONTENT
+            CreateMap<CreateCommunityPostRequest, CreateCommunityPostCommand>();
+            CreateMap<CreateCommunityPostCommand, CommunityPostEntity>();
+            CreateMap<(Guid Id, UpdateCommunityPostRequest Request), UpdateCommunityPostCommand>()
+                .ConstructUsing(source => new UpdateCommunityPostCommand(
+                    source.Id,
+                    source.Request.Content,
+                    source.Request.Images
+                ));
+            CreateMap<UpdateCommunityPostCommand, CommunityPostEntity>()
+                .ForMember(
+                    dest => dest.Images,
+                    opt 
+                        => opt.Condition(src => src.Images != null && src.Images.Count > 0)
+                )
+                .ForAllMembers(opts =>
+                {
+                    if (opts.DestinationMember.Name == nameof(CommunityPostEntity.Images))
+                    {
+                        return;
+                    }
+                    opts.Condition((_, _, srcMember) => srcMember != null);
+                }
+            );
         }
     }
 }

@@ -11,6 +11,7 @@ namespace VizinhoDAgua.Domain.Entities
         public string ProfileImage { get; private set; } = string.Empty;
         
         public List<CommunityEntity> Communities { get; private set; } = [];
+        public List<CommunityEntity> CommunitiesFollowed { get; private set; } = [];
         public List<CommunityPostEntity> Posts { get; private set; } = [];
         public List<ReportEntity> Reports { get; private set; } = [];
         

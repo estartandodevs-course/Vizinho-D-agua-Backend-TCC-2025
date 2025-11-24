@@ -12,6 +12,7 @@
     <NoWarn>$(NoWarn);1591</NoWarn>
     <!-- Lambda Configuration: Disable ICU to avoid requiring libicu in Lambda runtime -->
     <InvariantGlobalization>true</InvariantGlobalization>
+    <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
