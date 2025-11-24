@@ -1,11 +1,11 @@
+using System.Net;
 using FluentValidation;
 using FluentValidation.Results;
-using MediatR;
-using VizinhoDAgua.Application.Mediator;
+using VizinhoDAgua.Application.Mediator.IRequests;
 
 namespace VizinhoDAgua.Application.UseCases.User.Queries.GetById
 {
-    public class GetUserByIdQuery : IRequest<CommandResponse<GetUserByIdQueryResponse>>
+    public class GetUserByIdQuery : IRequestWithValidationAndId<GetUserByIdQueryResponse>
     {
         public Guid Id { get; private set; }
 
@@ -16,11 +16,14 @@ namespace VizinhoDAgua.Application.UseCases.User.Queries.GetById
             Id = id;
         }
 
-        public bool Validade()
+        public bool Validate()
         {
             var validations = new InlineValidator<GetUserByIdQuery>();
             
-            // TODO: validações de entrada
+            validations.RuleFor(command => command.Id)
+                .NotEmpty() 
+                .WithErrorCode(((int)HttpStatusCode.BadRequest).ToString())
+                .WithMessage("O ID do usuário é obrigatório.");
             
             ValidationResult = validations.Validate(this);
             return ValidationResult.IsValid;
