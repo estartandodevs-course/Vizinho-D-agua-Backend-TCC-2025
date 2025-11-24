@@ -1,5 +1,4 @@
-﻿
-using MediatR;
+﻿using MediatR;
 using System.Net;
 using System.Net.Mail;
 using VizinhoDAgua.Application.Dtos;
@@ -7,6 +6,7 @@ using VizinhoDAgua.Application.Interfaces;
 using VizinhoDAgua.Application.Mediator;
 using VizinhoDAgua.Application.UseCases.User.Commands.Create;
 using VizinhoDAgua.Domain.Entities;
+using VizinhoDAgua.Domain.Entities.Enum;
 using VizinhoDAgua.Domain.Repositories;
 
 namespace VizinhoDAgua.Application.UseCases.Report.Commands.Create

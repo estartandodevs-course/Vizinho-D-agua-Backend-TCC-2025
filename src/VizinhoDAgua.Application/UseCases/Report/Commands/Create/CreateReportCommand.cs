@@ -6,6 +6,7 @@ using System.Net;
 using VizinhoDAgua.Application.Mediator;
 using VizinhoDAgua.Application.UseCases.Community.Command.Create;
 using VizinhoDAgua.Domain.Entities;
+using VizinhoDAgua.Domain.Entities.Enum;
 
 namespace VizinhoDAgua.Application.UseCases.Report.Commands.Create
 {

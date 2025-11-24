@@ -1,26 +1,11 @@
 using NetTopologySuite.Geometries;
 using VizinhoDAgua.Domain.Entities.Abstractions;
+using VizinhoDAgua.Domain.Entities.Enum;
 
 namespace VizinhoDAgua.Domain.Entities
 {
-    public enum ReportType
-    {
-        WaterOutage,
-        LowPressure,
-        LeakDetected
-    }
-
-    public enum ReportStatus
-    {
-        Archived,
-        InProcessing,
-        Processed,
-        Discarded
-    }
-
     public class ReportEntity : Entity
     {
-        
         public string Description { get; private set; } = string.Empty;
         public ReportStatus Status { get; private set; } = ReportStatus.InProcessing;
         public ReportType ReportType { get; private set; }
@@ -29,7 +14,7 @@ namespace VizinhoDAgua.Domain.Entities
         public Guid? ReporterId { get; private set; } 
         public UserEntity? Reporter { get; private set; }
 
-        // EndereÁo
+        // Endere√ßo
         public string? City { get; private set; } = string.Empty;
         public string? StateCode { get; private set; } = string.Empty;
         public string? PostalCode { get; private set; }
@@ -61,25 +46,23 @@ namespace VizinhoDAgua.Domain.Entities
             if (!string.IsNullOrWhiteSpace(reportType) && System.Enum.TryParse(reportType, true, out ReportType parsedType))
                 ReportType = parsedType;
             else
-                throw new ArgumentException("Tipo de den˙ncia n„o È valido");
+                throw new ArgumentException("Tipo de den√∫ncia n√£o √© valido");
 
             if (string.IsNullOrWhiteSpace(postalCode))
-                throw new ArgumentException("CEP n„o È v·lido");
+                throw new ArgumentException("CEP n√£o √© v√°lido");
 
             if (string.IsNullOrWhiteSpace(city))
-                throw new ArgumentException("Cidade n„o È valido");
+                throw new ArgumentException("Cidade n√£o √© valido");
 
             if (string.IsNullOrWhiteSpace(stateCode))
-                throw new ArgumentException("CÛdigo do estado n„o È v·lido");
+                throw new ArgumentException("C√≥digo do estado n√£o √© v√°lido");
 
-            // EndereÁo
+            // Endere√ßo
             City = city;
             StateCode = stateCode;
             PostalCode = postalCode;
             Road = road;
             Neighborhood = neighborhood;
         }
-
-
     }
 }
