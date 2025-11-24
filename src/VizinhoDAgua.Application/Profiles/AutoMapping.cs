@@ -33,7 +33,20 @@ namespace VizinhoDAgua.Application.Profiles
                     source.Request.Images
                 ));
             CreateMap<UpdateCommunityPostCommand, CommunityPostEntity>()
-                .ForAllMembers(opts => opts.Condition((_, _, srcMember) => srcMember != null));
+                .ForMember(
+                    dest => dest.Images,
+                    opt => opt.Condition(src => src.Images != null && src.Images.Count > 0)
+                )
+                .ForAllMembers(opts =>
+                {
+                    if (opts.DestinationMember.Name == nameof(CommunityPostEntity.Images))
+                    {
+                        return;
+                    }
+
+                    opts.Condition((_, _, srcMember) => srcMember != null);
+                }
+            );
         }
     }
 }
