@@ -20,7 +20,6 @@ namespace VizinhoDAgua.Infrastructure.Database
         public DbSet<CommunityPostEntity> CommunityPosts { get; set; }
         public DbSet<ReportEntity> Reports { get; set; }
         public DbSet<EducationContentEntity> EducationContents { get; set; }
-        public DbSet<LocationEntity> Locations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

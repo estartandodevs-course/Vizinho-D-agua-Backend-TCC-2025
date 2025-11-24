@@ -4,6 +4,8 @@ using VizinhoDAgua.Application.UseCases.Community.Command.Create;
 using VizinhoDAgua.Application.UseCases.Community.Command.Update;
 using VizinhoDAgua.Application.UseCases.CommunityPost.Command.Create;
 using VizinhoDAgua.Application.UseCases.CommunityPost.Command.Update;
+using VizinhoDAgua.Application.UseCases.EducationContent.Commands.Create;
+using VizinhoDAgua.Application.UseCases.EducationContent.Commands.Update;
 using VizinhoDAgua.Domain.Entities;
 
 namespace VizinhoDAgua.Application.Profiles
@@ -12,6 +14,7 @@ namespace VizinhoDAgua.Application.Profiles
     {
         public AutoMapping()
         {
+            // COMMUNITY
             CreateMap<CreateCommunityRequest, CreateCommunityCommand>();
             CreateMap<CreateCommunityCommand, CommunityEntity>();
             CreateMap<(Guid Id, UpdateCommunityRequest Request), UpdateCommunityCommand>()
@@ -22,6 +25,28 @@ namespace VizinhoDAgua.Application.Profiles
                     source.Request.CoverImage
                 ));
             CreateMap<UpdateCommunityCommand, CommunityEntity>()
+                .ForAllMembers(opts 
+                    => opts.Condition((_, _, srcMember) => srcMember != null));
+
+
+            // EDUCATIONAL CONTENT
+            // Request ~> Command
+            CreateMap<CreateEducationalContentRequest, CreateEducationContentCommand>();
+            // Command ~> Entity
+            CreateMap<CreateEducationContentCommand, EducationContentEntity>();
+            // Update
+            CreateMap<(Guid Id, UpdateEducationalContentRequest Request), UpdateEducationContentCommand>()
+                .ConstructUsing(source => new UpdateEducationContentCommand(
+                    source.Id,
+                    source.Request.Title,
+                    source.Request.Image,
+                    source.Request.Author,
+                    source.Request.FilePath
+                ));
+            CreateMap<UpdateEducationContentCommand, EducationContentEntity>()
+                // evita sobrescrever propriedades quando o campo vem null
+                .ForAllMembers(opts 
+                    => opts.Condition((_, _, srcMember) => srcMember != null));
                 .ForAllMembers(opts => opts.Condition((_, _, srcMember) => srcMember != null));
 
             CreateMap<CreateCommunityPostRequest, CreateCommunityPostCommand>();

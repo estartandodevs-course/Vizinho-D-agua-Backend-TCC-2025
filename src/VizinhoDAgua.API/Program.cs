@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using VizinhoDAgua.Application.Interfaces;
 using VizinhoDAgua.Application.Profiles;
 using VizinhoDAgua.Application.UseCases.User.Commands.Update;
 using VizinhoDAgua.Infrastructure;
 using VizinhoDAgua.Infrastructure.Database;
+using VizinhoDAgua.Infrastructure.Services;
 using VizinhoDAgua.ServiceDefaults;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,6 +24,7 @@ builder.Services.AddAutoMapper(typeof(AutoMapping));
 builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 if (string.IsNullOrEmpty(connectionString))
 {
     throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -47,6 +50,12 @@ builder.Services.AddControllers();
 
 // Add Infrastructure Module
 builder.Services.AddInfrastructureModule();
+
+// Registra o serviço de consulta de CEP  usando HttpClient.
+builder.Services.AddHttpClient<ICepService, ViaCepService>(client =>
+{
+    client.BaseAddress = new Uri("https://viacep.com.br/ws/");
+});
 
 // Add Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();

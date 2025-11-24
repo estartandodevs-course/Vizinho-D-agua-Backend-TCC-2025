@@ -6,6 +6,8 @@ namespace VizinhoDAgua.Domain.Entities
     {
         public string Title { get; private set; } = string.Empty;
         public string Description { get; private set; } = string.Empty;
+        public Guid? CreatedById { get; private set; }
+        public UserEntity? CreatedBy { get; private set; }
         public string? CoverImage { get; private set; }
 
         // Many-to-Many
@@ -16,11 +18,12 @@ namespace VizinhoDAgua.Domain.Entities
 
         public CommunityEntity() { }  // EF Core
 
-        public CommunityEntity(string title, string description, string? coverImage)
+        public CommunityEntity(string title, string description, Guid? createdById ,string? coverImage)
         {
             Title = title;
             Description = description;
             CoverImage = coverImage;
+            CreatedById = createdById;
         }
     }
 }
