@@ -1,12 +1,12 @@
+using System.Net;
 using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
-using VizinhoDAgua.Application.Mediator;
+using VizinhoDAgua.Application.Mediator.IRequests;
 
 namespace VizinhoDAgua.Application.UseCases.User.Commands.Delete
 {
-    // DTO de entrada para deletar o usuário
-    public class DeleteUserCommand : IRequest<CommandResponse<Unit>> // tipo void
+    public class DeleteUserCommand : IRequestWithValidationAndId<Unit> // tipo void
     {
         public Guid Id { get; private set; }
 
@@ -21,7 +21,10 @@ namespace VizinhoDAgua.Application.UseCases.User.Commands.Delete
         {
             var validations = new InlineValidator<DeleteUserCommand>();
             
-            // TODO: validações de entrada para deletar usuários
+            validations.RuleFor(command => command.Id)
+                .NotEmpty()
+                .WithErrorCode(((int)HttpStatusCode.BadRequest).ToString())
+                .WithMessage("O ID do usuário é obrigatório para a excluí-lo.");
 
             ValidationResult = validations.Validate(this);
             return ValidationResult.IsValid;
