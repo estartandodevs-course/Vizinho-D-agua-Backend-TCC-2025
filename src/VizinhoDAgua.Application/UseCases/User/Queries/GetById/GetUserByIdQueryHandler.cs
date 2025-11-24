@@ -1,33 +1,16 @@
-using MediatR;
-using System.Net;
-using VizinhoDAgua.Application.Mediator;
+using AutoMapper;
+using VizinhoDAgua.Application.Mediator.Handlers;
+using VizinhoDAgua.Domain.Entities;
 using VizinhoDAgua.Domain.Repositories;
 
 namespace VizinhoDAgua.Application.UseCases.User.Queries.GetById
 {
-    public class GetUserByIdQueryHandler : IRequestHandler<
-        GetUserByIdQuery, CommandResponse<GetUserByIdQueryResponse>>
+    public class GetUserByIdQueryHandler 
+        : GetByIdQueryHandler<UserEntity, GetUserByIdQuery, GetUserByIdQueryResponse>
     {
-        private readonly IUserRepository _repository;
-
-        public GetUserByIdQueryHandler(IUserRepository repository)
+        public GetUserByIdQueryHandler(IUserRepository userRepository, IMapper mapper) 
+            : base(userRepository, mapper)
         {
-            _repository = repository;
-        }
-
-        public async Task<CommandResponse<GetUserByIdQueryResponse>> Handle(
-            GetUserByIdQuery request, CancellationToken cancellationToken)
-        {
-            if (!request.Validade())
-                return CommandResponse<GetUserByIdQueryResponse>.ValidationError(request.ValidationResult);
-
-            var user = await _repository.GetByIdAsync(request.Id);
-            if (user == null)
-                return CommandResponse<GetUserByIdQueryResponse>.AddError(message: "Usuário não encontrado.",
-                    statusCode: HttpStatusCode.NotFound);
-
-            return CommandResponse<GetUserByIdQueryResponse>.Success(
-                new GetUserByIdQueryResponse(user), HttpStatusCode.OK);
         }
     }
 }

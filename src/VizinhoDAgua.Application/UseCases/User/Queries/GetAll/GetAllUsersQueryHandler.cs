@@ -1,26 +1,16 @@
-using System.Net;
-using MediatR;
-using VizinhoDAgua.Application.Mediator;
+using AutoMapper;
+using VizinhoDAgua.Application.Mediator.Handlers;
+using VizinhoDAgua.Domain.Entities;
 using VizinhoDAgua.Domain.Repositories;
 
 namespace VizinhoDAgua.Application.UseCases.User.Queries.GetAll
 {
-    public class GetAllUsersQueryHandler : IRequestHandler<GetAllUsersQuery, 
-        CommandResponse<GetAllUsersQueryResponse>>
+    public class GetAllUsersQueryHandler 
+        : GetAllQueryHandler<UserEntity, GetAllUsersQuery, GetAllUsersQueryResponse>
     {
-        private readonly IUserRepository _repository;
-    
-        public GetAllUsersQueryHandler(IUserRepository repository)
+        public GetAllUsersQueryHandler(IUserRepository userRepository, IMapper mapper) 
+            : base(userRepository, mapper)
         {
-            _repository = repository;
-        }
-    
-        public async Task<CommandResponse<GetAllUsersQueryResponse>> Handle(
-            GetAllUsersQuery request, CancellationToken cancellationToken)
-        {
-            var users = await _repository.GetAllAsync();
-            return CommandResponse<GetAllUsersQueryResponse>.Success(
-                new GetAllUsersQueryResponse(users), HttpStatusCode.OK);
         }
     }
 }
