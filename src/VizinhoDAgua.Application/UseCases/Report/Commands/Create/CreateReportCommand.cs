@@ -23,20 +23,11 @@ namespace VizinhoDAgua.Application.UseCases.Report.Commands.Create
 
         public ValidationResult ValidationResult { get; private set; } = null!;
 
-        CreateReportCommand() { }
+        public CreateReportCommand() { }
         
         public CreateReportCommand(
-            string description, 
-            string reportType,
-            string reporterId,
-            string postalCode,
-            string? stateCode,
-            string? city,
-            string? neighborhood,
-            string? road,
-            double? lat,
-            double? lon
-            )
+            string description, string reportType, string reporterId, string postalCode, string? stateCode,
+            string? city, string? neighborhood, string? road, double? lat, double? lon)
         {
             Description = description;
             ReportType = reportType;
