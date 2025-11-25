@@ -64,5 +64,28 @@ namespace VizinhoDAgua.Domain.Entities
             Road = road;
             Neighborhood = neighborhood;
         }
+        
+        public void UpdateAddressFromCep(
+            string? road,
+            string? neighborhood,
+            string? city,
+            string? stateCode,
+            string? postalCode)
+        {
+            if (!string.IsNullOrWhiteSpace(city))
+                City = city;
+
+            if (!string.IsNullOrWhiteSpace(stateCode))
+                StateCode = stateCode;
+
+            if (!string.IsNullOrWhiteSpace(postalCode))
+                PostalCode = postalCode;
+
+            if (!string.IsNullOrWhiteSpace(road))
+                Road = road;
+
+            if (!string.IsNullOrWhiteSpace(neighborhood))
+                Neighborhood = neighborhood;
+        }
     }
 }
