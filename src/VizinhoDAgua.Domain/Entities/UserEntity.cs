@@ -14,6 +14,7 @@ namespace VizinhoDAgua.Domain.Entities
         public List<CommunityEntity> CommunitiesFollowed { get; private set; } = [];
         public List<CommunityPostEntity> Posts { get; private set; } = [];
         public List<ReportEntity> Reports { get; private set; } = [];
+        public List<AlertEntity> Alerts { get; private set; } = [];
         
         public UserEntity() {  } // EF Core
 
