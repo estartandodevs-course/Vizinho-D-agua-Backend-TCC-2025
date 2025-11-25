@@ -1,11 +1,8 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
-using NetTopologySuite.Geometries;
 using System.Net;
 using VizinhoDAgua.Application.Mediator;
-using VizinhoDAgua.Application.UseCases.Community.Command.Create;
-using VizinhoDAgua.Domain.Entities;
 using VizinhoDAgua.Domain.Entities.Enum;
 
 namespace VizinhoDAgua.Application.UseCases.Report.Commands.Create
@@ -28,7 +25,7 @@ namespace VizinhoDAgua.Application.UseCases.Report.Commands.Create
         public ValidationResult ValidationResult { get; private set; } = new ValidationResult();
 
         public CreateReportCommand(
-            string description, 
+            string description,
             string reportType,
             string reporterId,
             string postalCode,

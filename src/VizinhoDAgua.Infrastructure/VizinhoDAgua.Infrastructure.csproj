@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\VizinhoDAgua.Application\VizinhoDAgua.Application.csproj" />
     <ProjectReference Include="..\VizinhoDAgua.Domain\VizinhoDAgua.Domain.csproj" />
   </ItemGroup>
 
@@ -17,14 +16,14 @@
     <PackageReference Include="System.Net.Http.Json" Version="10.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\VizinhoDAgua.Domain\VizinhoDAgua.Domain.csproj" />
+	</ItemGroup>
 
 </Project>

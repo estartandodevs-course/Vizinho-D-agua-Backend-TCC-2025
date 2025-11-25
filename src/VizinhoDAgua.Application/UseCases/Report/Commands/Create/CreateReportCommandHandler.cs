@@ -1,13 +1,11 @@
 ﻿using MediatR;
 using System.Net;
-using System.Net.Mail;
-using VizinhoDAgua.Application.Dtos;
-using VizinhoDAgua.Application.Interfaces;
 using VizinhoDAgua.Application.Mediator;
-using VizinhoDAgua.Application.UseCases.User.Commands.Create;
+using VizinhoDAgua.Domain.Dtos;
 using VizinhoDAgua.Domain.Entities;
 using VizinhoDAgua.Domain.Entities.Enum;
 using VizinhoDAgua.Domain.Repositories;
+using VizinhoDAgua.Infrastructure.Services.Interfaces;
 
 namespace VizinhoDAgua.Application.UseCases.Report.Commands.Create
 {
@@ -18,8 +16,8 @@ namespace VizinhoDAgua.Application.UseCases.Report.Commands.Create
         private readonly ICepService _cepService;
 
         public CreateReportCommandHandler(
-            IReportRepository reportRepository, 
-            IUserRepository userRepository, 
+            IReportRepository reportRepository,
+            IUserRepository userRepository,
             ICepService cepService)
         {
             _userRepository = userRepository;
@@ -38,7 +36,7 @@ namespace VizinhoDAgua.Application.UseCases.Report.Commands.Create
 
             if (await _userRepository.GetByIdAsync(reporterId) == null)
                 return CommandResponse<CreateReportCommandResponse>.AddError("Usuário com este ID não existe");
-                
+
             string postalCode = request.PostalCode;
             string? city = request.City;
             string? stateCode = request.StateCode;
@@ -52,22 +50,22 @@ namespace VizinhoDAgua.Application.UseCases.Report.Commands.Create
 
                 if (addressInfo == null || addressInfo.StateCode == null || addressInfo.City == null)
                     return CommandResponse<CreateReportCommandResponse>.AddError("Informe um CEP válido");
-                    
+
                 city = addressInfo.City;
                 stateCode = addressInfo.StateCode;
                 neighborhood = neighborhood ?? addressInfo.Neighborhood;
                 road = road ?? addressInfo.Road;
             }
-            
+
             try
             {
                 var report = new ReportEntity(
-                    reporterId, 
-                    request.Description, 
-                    postalCode, 
-                    city, 
+                    reporterId,
+                    request.Description,
+                    postalCode,
+                    city,
                     stateCode,
-                    road, 
+                    road,
                     neighborhood, // informações de endereço
                     ReportStatus.InProcessing.ToString(),
                     request.ReportType
@@ -79,9 +77,8 @@ namespace VizinhoDAgua.Application.UseCases.Report.Commands.Create
 
                 return CommandResponse<CreateReportCommandResponse>.Success(
                     response, statusCode: HttpStatusCode.Created);
-
-
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return CommandResponse<CreateReportCommandResponse>.CriticalError(ex.Message);
             }

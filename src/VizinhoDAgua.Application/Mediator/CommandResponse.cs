@@ -7,7 +7,7 @@ namespace VizinhoDAgua.Application.Mediator
     {
         public HttpStatusCode StatusCode { get; private set; }
         public string Message { get; private set; }
-        public T Data { get; private set; }
+        public T Data { get; private set; } = default!;
 
         public CommandResponse(HttpStatusCode statusCode, string message, T data)
         {
@@ -22,7 +22,7 @@ namespace VizinhoDAgua.Application.Mediator
         }
 
         public static CommandResponse<T> Success(T data, HttpStatusCode statusCode = HttpStatusCode.OK)
-            => new(statusCode, null, data);
+            => new(statusCode, string.Empty, data);
 
         public static CommandResponse<T> Success(string message, HttpStatusCode statusCode = HttpStatusCode.OK)
             => new(statusCode, message);
