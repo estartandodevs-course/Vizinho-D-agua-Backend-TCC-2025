@@ -13,8 +13,8 @@ namespace VizinhoDAgua.Application.Mediator.Handlers
         where TCommand : IRequestWithValidation<TCreateCommandResponse>
         where TCreateCommandResponse : class
     {
-        private readonly IRepository<TEntity> _repository;
-        private readonly IMapper _mapper;
+        protected readonly IRepository<TEntity> _repository;
+        protected readonly IMapper _mapper;
 
         public CreateCommandHandler(IRepository<TEntity> repository, IMapper mapper)
         {

@@ -13,8 +13,8 @@ namespace VizinhoDAgua.Application.Mediator.Handlers
         where TQuery : IRequestWithValidationAndId<TGetByIdQueryResponse>
         where TGetByIdQueryResponse : class
     {
-        private readonly IRepository<TEntity> _repository;
-        private readonly IMapper _mapper;
+        protected readonly IRepository<TEntity> _repository;
+        protected readonly IMapper _mapper;
 
         public GetByIdQueryHandler(IRepository<TEntity> repository, IMapper mapper)
         {

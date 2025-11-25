@@ -12,8 +12,8 @@ namespace VizinhoDAgua.Application.Mediator.Handlers
         where TQuery : IRequest<CommandResponse<TGetAllQueryResponse>>
         where TGetAllQueryResponse : class
     {
-        private readonly IRepository<TEntity> _repository;
-        private readonly IMapper _mapper;
+        protected readonly IRepository<TEntity> _repository;
+        protected readonly IMapper _mapper;
 
         public GetAllQueryHandler(IRepository<TEntity> repository, IMapper mapper)
         {

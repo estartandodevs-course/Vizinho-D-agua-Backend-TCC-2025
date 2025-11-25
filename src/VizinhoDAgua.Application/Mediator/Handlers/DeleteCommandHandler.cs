@@ -11,7 +11,7 @@ namespace VizinhoDAgua.Application.Mediator.Handlers
         where TEntity : Entity
         where TCommand : IRequestWithValidationAndId<Unit>
     {
-        private readonly IRepository<TEntity> _repository;
+        protected readonly IRepository<TEntity> _repository;
 
         public DeleteCommandHandler(IRepository<TEntity> repository)
         {

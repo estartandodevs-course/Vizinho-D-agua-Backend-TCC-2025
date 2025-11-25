@@ -12,8 +12,8 @@ namespace VizinhoDAgua.Application.Mediator.Handlers
         where TEntity : Entity
         where TCommand : IRequestWithValidationAndId<Unit>
     {
-        private readonly IRepository<TEntity> _repository;
-        private readonly IMapper _mapper;
+        protected readonly IRepository<TEntity> _repository;
+        protected readonly IMapper _mapper;
 
         public UpdateCommandHandler(IRepository<TEntity> repository, IMapper mapper)
         {
