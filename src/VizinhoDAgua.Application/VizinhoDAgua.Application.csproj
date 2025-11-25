@@ -32,8 +32,4 @@
     <PackageReference Include="MediatR" Version="13.1.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="UseCases\Report\Commands\Update\" />
-  </ItemGroup>
-
 </Project>
