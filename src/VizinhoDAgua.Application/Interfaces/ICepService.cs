@@ -1,4 +1,4 @@
-﻿using VizinhoDAgua.Application.Dtos;
+﻿using VizinhoDAgua.Domain.Dtos;
 
 namespace VizinhoDAgua.Application.Interfaces
 {
