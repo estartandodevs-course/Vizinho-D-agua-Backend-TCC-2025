@@ -12,7 +12,7 @@ namespace VizinhoDAgua.Application.UseCases.CommunityPost.Command.Create
         public string Content { get; private set; }
         public List<string> Images { get; private set; }
 
-        public ValidationResult ValidationResult { get; private set; } = new ValidationResult();
+        public ValidationResult ValidationResult { get; private set; } = null!;
 
         public CreateCommunityPostCommand(Guid authorId, Guid communityId, string content, List<string> images)
         {

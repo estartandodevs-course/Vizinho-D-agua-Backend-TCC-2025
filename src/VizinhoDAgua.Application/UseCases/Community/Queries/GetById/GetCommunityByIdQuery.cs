@@ -9,7 +9,7 @@ namespace VizinhoDAgua.Application.UseCases.Community.Query.GetById
     {
         public Guid Id { get; private set; }
 
-        public ValidationResult ValidationResult { get; private set; } = new ValidationResult();
+        public ValidationResult ValidationResult { get; private set; } = null!;
 
         public GetCommunityByIdQuery(Guid id)
         {

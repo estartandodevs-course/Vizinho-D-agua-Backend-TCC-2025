@@ -13,7 +13,7 @@ namespace VizinhoDAgua.Application.UseCases.Community.Command.Update
         public string? Description { get; private set; }
         public string? CoverImage { get; private set; }
 
-        public ValidationResult ValidationResult { get; private set; } = new ValidationResult();
+        public ValidationResult ValidationResult { get; private set; } = null!;
 
         public UpdateCommunityCommand(Guid id, string? title, string? description, string? coverImage)
         {
