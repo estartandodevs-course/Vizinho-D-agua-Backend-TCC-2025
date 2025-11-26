@@ -1,8 +1,12 @@
-namespace VizinhoDAgua.Domain.Entities.Enum;
-
-public enum ReportType
+namespace VizinhoDAgua.Domain.Entities.Enum
 {
-    WaterOutage,
-    LowPressure,
-    LeakDetected
+    public enum ReportType
+    {
+        WaterOutage,
+        LowPressure,
+        LeakDetected,
+        WaterWaste,
+        WaterWithStrangeColorOrOdor,
+        ProblemsInTheWaterSupplyNetwork
+    }
 }

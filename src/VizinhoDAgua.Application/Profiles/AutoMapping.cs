@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using VizinhoDAgua.Application.Dtos;
+using VizinhoDAgua.Application.UseCases.Alert.Commands.Create;
+using VizinhoDAgua.Application.UseCases.Alert.Commands.UpdateStatus;
 using VizinhoDAgua.Application.UseCases.Community.Command.Create;
 using VizinhoDAgua.Application.UseCases.Community.Command.Update;
 using VizinhoDAgua.Application.UseCases.CommunityPost.Command.Create;
@@ -72,7 +74,7 @@ namespace VizinhoDAgua.Application.Profiles
                 .ForAllMembers(opts => opts.Condition((_, _, srcMember) => srcMember != null));
 
 
-            // COMMUNITY POST CONTENT
+            // COMMUNITY POST
             CreateMap<CreateCommunityPostRequest, CreateCommunityPostCommand>();
             CreateMap<CreateCommunityPostCommand, CommunityPostEntity>();
             CreateMap<(Guid Id, UpdateCommunityPostRequest Request), UpdateCommunityPostCommand>()
@@ -119,6 +121,19 @@ namespace VizinhoDAgua.Application.Profiles
                 .ForMember(dest => dest.ReportType, opt =>
                     opt.MapFrom(src => Enum.Parse<ReportType>(src.ReportType, true)))
                 .ForAllMembers(opts => opts.Condition((_, _, srcMember) => srcMember != null));
+
+
+            // ALERT
+            // Request ~> Command
+            CreateMap<CreateAlertRequest, CreateAlertCommand>();
+            // Command ~> Entity
+            CreateMap<CreateAlertCommand, AlertEntity>();
+            // Update
+            CreateMap<(Guid Id, UpdateAlertStatusRequest Request), UpdateAlertStatusCommand>()
+                .ConstructUsing(src => new UpdateAlertStatusCommand(
+                    src.Id,
+                    (AlertStatus)src.Request.Status
+                ));
         }
     }
 }

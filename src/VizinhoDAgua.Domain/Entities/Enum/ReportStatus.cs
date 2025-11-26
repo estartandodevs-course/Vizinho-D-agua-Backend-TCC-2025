@@ -1,9 +1,10 @@
-namespace VizinhoDAgua.Domain.Entities.Enum;
-
-public enum ReportStatus
+namespace VizinhoDAgua.Domain.Entities.Enum
 {
-    Archived,
-    InProcessing,
-    Processed,
-    Discarded
+  public enum ReportStatus
+  {
+      Archived,
+      InProcessing,
+      Processed,
+      Discarded
+  }  
 }
