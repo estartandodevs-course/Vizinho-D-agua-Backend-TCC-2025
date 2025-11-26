@@ -13,8 +13,8 @@ using VizinhoDAgua.Infrastructure.Database;
 namespace VizinhoDAgua.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251126132205_SyncSchema")]
-    partial class SyncSchema
+    [Migration("20251126152506_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,8 +57,14 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Neighborhood")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("PostalCode")
                         .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Road")
                         .HasColumnType("longtext");
 
                     b.Property<string>("StateCode")
