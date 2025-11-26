@@ -1,14 +1,10 @@
-﻿using AutoMapper;
-using MediatR;
-using VizinhoDAgua.Application.Interfaces;
+﻿using MediatR;
 using VizinhoDAgua.Application.Mediator;
-using VizinhoDAgua.Application.Mediator.IRequests;
-using VizinhoDAgua.Application.UseCases.Report.Commands.Create;
 using VizinhoDAgua.Domain.Repositories;
 
 namespace VizinhoDAgua.Application.UseCases.Community.Commands.Follow
 {
-    public class FollowCommunityCommandHandler: IRequestHandler<FollowCommunityCommand, CommandResponse<Unit>>
+    public class FollowCommunityCommandHandler : IRequestHandler<FollowCommunityCommand, CommandResponse<Unit>>
     {
         private readonly IUserRepository _userRepository;
         private readonly ICommunityRepository _communityRepository;
@@ -19,7 +15,7 @@ namespace VizinhoDAgua.Application.UseCases.Community.Commands.Follow
             _communityRepository = communityRepository;
         }
 
-        public virtual async Task<CommandResponse<Unit>> Handle(FollowCommunityCommand request, CancellationToken cancellationToken)
+        public async Task<CommandResponse<Unit>> Handle(FollowCommunityCommand request, CancellationToken cancellationToken)
         {
             var userId = request.UserId;
             var communityId = request.CommunityId;
@@ -36,7 +32,7 @@ namespace VizinhoDAgua.Application.UseCases.Community.Commands.Follow
             {
                 await _communityRepository.AddFollowerAsync(communityId, userId);
                 return CommandResponse<Unit>.Success($"Usuário com id {userId} começou a segui a comunidade com id {communityId}");
-            } 
+            }
             catch (Exception ex)
             {
                 return CommandResponse<Unit>.CriticalError(

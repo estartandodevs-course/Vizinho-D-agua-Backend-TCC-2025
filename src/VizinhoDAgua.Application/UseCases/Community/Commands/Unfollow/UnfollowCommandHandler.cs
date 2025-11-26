@@ -1,11 +1,9 @@
 ﻿using MediatR;
 using VizinhoDAgua.Application.Mediator;
-using VizinhoDAgua.Application.UseCases.Community.Commands.Follow;
 using VizinhoDAgua.Domain.Repositories;
 
 namespace VizinhoDAgua.Application.UseCases.Community.Commands.Unfollow
 {
-
     public class UnfollowCommunityCommandHandler : IRequestHandler<UnfollowCommunityCommand, CommandResponse<Unit>>
     {
         private readonly IUserRepository _userRepository;
@@ -17,7 +15,7 @@ namespace VizinhoDAgua.Application.UseCases.Community.Commands.Unfollow
             _communityRepository = communityRepository;
         }
 
-        public virtual async Task<CommandResponse<Unit>> Handle(UnfollowCommunityCommand request, CancellationToken cancellationToken)
+        public async Task<CommandResponse<Unit>> Handle(UnfollowCommunityCommand request, CancellationToken cancellationToken)
         {
             var userId = request.UserId;
             var communityId = request.CommunityId;
