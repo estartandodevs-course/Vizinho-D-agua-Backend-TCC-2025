@@ -134,6 +134,8 @@ namespace VizinhoDAgua.Application.Profiles
                     src.Id,
                     (AlertStatus)src.Request.Status
                 ));
+            CreateMap<UpdateAlertStatusCommand, AlertEntity>();
+            CreateMap<AlertEntity, AlertStatus>();
         }
     }
 }

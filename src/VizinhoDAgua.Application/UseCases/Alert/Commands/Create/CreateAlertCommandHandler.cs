@@ -1,8 +1,10 @@
 using AutoMapper;
-using VizinhoDAgua.Application.Interfaces;
+using System.Net;
+using VizinhoDAgua.Application.Mediator;
 using VizinhoDAgua.Application.Mediator.Handlers;
 using VizinhoDAgua.Domain.Entities;
 using VizinhoDAgua.Domain.Repositories;
+using VizinhoDAgua.Infrastructure.Services.Interfaces;
 
 namespace VizinhoDAgua.Application.UseCases.Alert.Commands.Create
 {
@@ -17,20 +19,30 @@ namespace VizinhoDAgua.Application.UseCases.Alert.Commands.Create
             _cepService = cepService;
         }
 
-        // Sobrescreve o gancho do genérico para preencher campos via ViaCEP
-        protected override async Task BeforeCreateAsync(CreateAlertCommand request, CancellationToken cancellationToken)
+        public override async Task<CommandResponse<CreateAlertCommandResponse>> Handle(
+            CreateAlertCommand request, CancellationToken cancellationToken)
         {
+            if (!request.Validate())
+                return CommandResponse<CreateAlertCommandResponse>.ValidationError(request.ValidationResult);
+
             var cepInfo = await _cepService.GetAddressByCepAsync(request.PostalCode, cancellationToken);
-
             if (cepInfo == null)
-                throw new Exception("CEP inválido.");
+                return CommandResponse<CreateAlertCommandResponse>.AddError("CEP inválido.");
 
-            // Usa o método do comando para atualizar os campos
             request.SetAddress(
                 cepInfo.Road,
                 cepInfo.Neighborhood,
                 cepInfo.City,
                 cepInfo.StateCode
+            );
+
+            var alert = _mapper.Map<AlertEntity>(request);
+
+            await _repository.AddAsync(alert);
+
+            return CommandResponse<CreateAlertCommandResponse>.Success(
+                _mapper.Map<CreateAlertCommandResponse>(alert.Id),
+                HttpStatusCode.Created
             );
         }
     }

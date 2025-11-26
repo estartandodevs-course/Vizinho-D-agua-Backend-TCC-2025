@@ -1,19 +1,17 @@
 using AutoMapper;
 using VizinhoDAgua.Application.Mediator.Handlers;
 using VizinhoDAgua.Domain.Entities;
+using VizinhoDAgua.Domain.Entities.Enum;
 using VizinhoDAgua.Domain.Repositories;
 
 namespace VizinhoDAgua.Application.UseCases.Alert.Commands.UpdateStatus
 {
     public class UpdateAlertStatusCommandHandler
-        : UpdateCommandHandler<AlertEntity, UpdateAlertStatusCommand>
+        : UpdateCommandHandlerBase<AlertEntity, UpdateAlertStatusCommand, AlertStatus>
     {
+        protected override AlertStatus response { get; set; } = AlertStatus.UnderVerification;
+
         public UpdateAlertStatusCommandHandler(IAlertRepository repository, IMapper mapper)
             : base(repository, mapper) { }
-
-        protected override void ApplyUpdate(UpdateAlertStatusCommand request, AlertEntity entity)
-        {
-            entity.UpdateStatus(request.NewStatus);
-        }
     }
 }
