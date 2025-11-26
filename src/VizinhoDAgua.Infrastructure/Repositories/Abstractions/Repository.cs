@@ -49,6 +49,11 @@ namespace VizinhoDAgua.Infrastructure.Repositories.Abstractions
             await SaveChanges();
         }
 
+        public async Task<bool> Exists(Guid id)
+        {
+            return await _dbSet.AnyAsync(c => c.Id == id);
+        }
+
         public async Task<int> SaveChanges()
         {
             return await _context.SaveChangesAsync();

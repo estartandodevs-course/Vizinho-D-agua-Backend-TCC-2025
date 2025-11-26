@@ -9,9 +9,11 @@ namespace VizinhoDAgua.Domain.Entities
         public string Password { get; private set; } = string.Empty;
         public bool IsAdmin { get; private set; }
         public string ProfileImage { get; private set; } = string.Empty;
-        
+
+        // EF Core
         public List<CommunityEntity> Communities { get; private set; } = [];
         public List<CommunityEntity> CommunitiesFollowed { get; private set; } = [];
+        public List<EducationContentEntity> EducationContents { get; private set; } = [];
         public List<CommunityPostEntity> Posts { get; private set; } = [];
         public List<ReportEntity> Reports { get; private set; } = [];
         public List<AlertEntity> Alerts { get; private set; } = [];

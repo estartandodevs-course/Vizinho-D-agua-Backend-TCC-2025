@@ -11,6 +11,7 @@ namespace VizinhoDAgua.Application.UseCases.Report.Commands.Create
         public string Description { get; private set; } = string.Empty;
         public string ReportType { get; private set; } = string.Empty;
         public string ReporterId { get; private set; } = string.Empty;
+        public string? WaterCompanyRelated { get; private set; } 
 
         // Endereço
         public string PostalCode { get; private set; } = string.Empty;
@@ -26,13 +27,14 @@ namespace VizinhoDAgua.Application.UseCases.Report.Commands.Create
         public CreateReportCommand() { }
         
         public CreateReportCommand(
-            string description, string reportType, string reporterId, string postalCode, string? stateCode,
+            string description, string reportType, string waterCompanyRelated, string reporterId, string postalCode, string? stateCode,
             string? city, string? neighborhood, string? road, double? lat, double? lon)
         {
             Description = description;
             ReportType = reportType;
             ReporterId = reporterId;
             PostalCode = postalCode;
+            WaterCompanyRelated = waterCompanyRelated;
             City = city;
             StateCode = stateCode;
             Road = road;
@@ -59,6 +61,15 @@ namespace VizinhoDAgua.Application.UseCases.Report.Commands.Create
                 .Must(value => Enum.TryParse(typeof(ReportType), value, true, out _))
                     .WithErrorCode(((int)HttpStatusCode.BadRequest).ToString())
                     .WithMessage("Tipo de denúncia inválido.");
+
+            // ReportType
+            validations.RuleFor(r => r.WaterCompanyRelated)
+                .NotEmpty()
+                    .WithErrorCode(((int)HttpStatusCode.BadRequest).ToString())
+                    .WithMessage("A Compania de água é obrigatório.")
+                .Must(value => Enum.TryParse(typeof(WaterCompany), value, true, out _))
+                    .WithErrorCode(((int)HttpStatusCode.BadRequest).ToString())
+                    .WithMessage("Compania de água desconhecido.");
 
             // ReporterId
             validations.RuleFor(r => r.ReporterId)

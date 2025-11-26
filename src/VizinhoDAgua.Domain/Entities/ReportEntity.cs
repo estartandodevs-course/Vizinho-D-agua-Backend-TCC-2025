@@ -9,6 +9,8 @@ namespace VizinhoDAgua.Domain.Entities
         public string Description { get; private set; } = string.Empty;
         public ReportStatus Status { get; private set; } = ReportStatus.InProcessing;
         public ReportType ReportType { get; private set; }
+
+        public WaterCompany? WaterCompanyRelated { get; private set; }
         public List<string> Attachments { get; private set; } = [];
 
         public Guid? ReporterId { get; private set; } 
@@ -27,6 +29,7 @@ namespace VizinhoDAgua.Domain.Entities
         public ReportEntity(
             Guid reporterId, 
             string description,
+            string waterCompanyRelated,
             string postalCode,
             string city,
             string stateCode,
@@ -39,6 +42,9 @@ namespace VizinhoDAgua.Domain.Entities
             ReporterId = reporterId;
             Description = description;
             Attachments = attachments ?? [];
+
+            if (!string.IsNullOrWhiteSpace(waterCompanyRelated) && System.Enum.TryParse(waterCompanyRelated, true, out WaterCompany parsedWaterCompany))
+                WaterCompanyRelated = parsedWaterCompany;
 
             if (!string.IsNullOrWhiteSpace(status) && System.Enum.TryParse(status, true, out ReportStatus parsedStatus))
                 Status = parsedStatus;
