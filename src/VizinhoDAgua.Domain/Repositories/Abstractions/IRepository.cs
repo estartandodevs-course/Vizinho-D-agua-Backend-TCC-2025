@@ -9,6 +9,7 @@ namespace VizinhoDAgua.Domain.Repositories.Abstractions
         Task<TEntity?> GetByIdAsync(Guid id);
         Task UpdateAsync(TEntity entity);
         Task DeleteAsync(Guid id);
+        Task<bool> Exists(Guid id);
         Task<int> SaveChanges();
     }
 }

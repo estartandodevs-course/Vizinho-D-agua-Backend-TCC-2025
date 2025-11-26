@@ -31,7 +31,7 @@ namespace VizinhoDAgua.API.Controllers.Abstractions
         where TUpdateCommand : IRequestWithValidationAndId<Unit>
         where TDeleteCommand : IRequestWithValidationAndId<Unit>
     {
-        private readonly IMediator _mediator;
+        protected readonly IMediator _mediator;
         private readonly IMapper _mapper;
 
         public BaseController(IMediator mediator, IMapper mapper)
