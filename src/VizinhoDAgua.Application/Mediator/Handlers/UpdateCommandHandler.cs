@@ -12,13 +12,19 @@ namespace VizinhoDAgua.Application.Mediator.Handlers
         where TEntity : Entity
         where TCommand : IRequestWithValidationAndId<Unit>
     {
-        private readonly IRepository<TEntity> _repository;
-        private readonly IMapper _mapper;
+        protected readonly IRepository<TEntity> Repository;
+        protected readonly IMapper Mapper;
 
         public UpdateCommandHandler(IRepository<TEntity> repository, IMapper mapper)
         {
-            _repository = repository;
-            _mapper = mapper;
+            Repository = repository;
+            Mapper = mapper;
+        }
+
+        // Aplica a atualização na entidade ~> Pode ser sobrescrito para lógica customizada.
+        protected virtual void ApplyUpdate(TCommand request, TEntity entity)
+        {
+            Mapper.Map(request, entity);
         }
 
         public async Task<CommandResponse<Unit>> Handle(TCommand request, CancellationToken cancellationToken)
@@ -26,14 +32,16 @@ namespace VizinhoDAgua.Application.Mediator.Handlers
             if (!request.Validate())
                 return CommandResponse<Unit>.ValidationError(request.ValidationResult);
 
-            var entity = await _repository.GetByIdAsync(request.Id);
+            var entity = await Repository.GetByIdAsync(request.Id);
             if (entity == null)
-                return CommandResponse<Unit>.AddError(message: "Comunidade não encontrada.", statusCode: HttpStatusCode.NotFound);
+                return CommandResponse<Unit>.AddError(
+                    message: "Comunidade não encontrada.", statusCode: HttpStatusCode.NotFound
+                );
 
-            _mapper.Map(request, entity);
+            // Substitui o mapping direto pelo método extensível
+            ApplyUpdate(request, entity);
 
-            await _repository.UpdateAsync(entity);
-
+            await Repository.UpdateAsync(entity);
             return CommandResponse<Unit>.Success(Unit.Value, HttpStatusCode.OK);
         }
     }
