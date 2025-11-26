@@ -26,7 +26,7 @@ namespace VizinhoDAgua.Infrastructure.Mappers
                 .HasForeignKey(c => c.CreatedById)
                 .OnDelete(DeleteBehavior.SetNull);
 
-            // Cria relaçãoque gera tabela CommunityUser (n para n)
+            // Cria relação que gera tabela CommunityUser (n para n)
             builder.HasMany(c => c.Followers)
                 .WithMany(u => u.CommunitiesFollowed)
                 .UsingEntity<Dictionary<string, object>>(
@@ -38,7 +38,11 @@ namespace VizinhoDAgua.Infrastructure.Mappers
                     j => j.HasOne<CommunityEntity>()
                           .WithMany()
                           .HasForeignKey("CommunityId") // nome da coluna da comunidade
-                          .OnDelete(DeleteBehavior.Cascade)
+                          .OnDelete(DeleteBehavior.Cascade),
+                    j =>
+                    {
+                        j.HasKey("UserId", "CommunityId");  // Define a chave primária composta (evita duplicações)
+                    }
                 );
         }
     }

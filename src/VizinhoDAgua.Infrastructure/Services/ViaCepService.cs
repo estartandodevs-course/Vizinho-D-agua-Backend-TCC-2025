@@ -1,8 +1,7 @@
 ﻿using System.Net.Http.Json;
 using System.Text.Json.Serialization;
+using VizinhoDAgua.Application.Interfaces;
 using VizinhoDAgua.Domain.Dtos;
-using VizinhoDAgua.Infrastructure.Services.Interfaces;
-
 
 namespace VizinhoDAgua.Infrastructure.Services
 {

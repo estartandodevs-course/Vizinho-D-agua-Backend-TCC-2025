@@ -13,8 +13,8 @@ using VizinhoDAgua.Infrastructure.Database;
 namespace VizinhoDAgua.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251123084344_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20251126132205_SyncSchema")]
+    partial class SyncSchema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,17 +28,56 @@ namespace VizinhoDAgua.Infrastructure.Migrations
 
             modelBuilder.Entity("CommunityFollowers", b =>
                 {
-                    b.Property<Guid>("CommunityId")
-                        .HasColumnType("char(36)");
-
                     b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
-                    b.HasKey("CommunityId", "UserId");
+                    b.Property<Guid>("CommunityId")
+                        .HasColumnType("char(36)");
 
-                    b.HasIndex("UserId");
+                    b.HasKey("UserId", "CommunityId");
+
+                    b.HasIndex("CommunityId");
 
                     b.ToTable("CommunityFollowers");
+                });
+
+            modelBuilder.Entity("VizinhoDAgua.Domain.Entities.AlertEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("City")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("StateCode")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid?>("UserEntityId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserEntityId");
+
+                    b.ToTable("AlertEntity");
                 });
 
             modelBuilder.Entity("VizinhoDAgua.Domain.Entities.CommunityEntity", b =>
@@ -96,7 +135,6 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.PrimitiveCollection<string>("Images")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -117,38 +155,41 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("Author")
+                    b.Property<Guid?>("AuthorId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("ContentType")
                         .IsRequired()
                         .HasColumnType("longtext");
-
-                    b.Property<int>("ContentType")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("FilePath")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Image")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(1000)
+                        .HasColumnType("text");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("EducationContents");
+                    b.HasIndex("AuthorId");
+
+                    b.ToTable("EducationContent", (string)null);
                 });
 
             modelBuilder.Entity("VizinhoDAgua.Domain.Entities.ReportEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("AlertEntityId")
                         .HasColumnType("char(36)");
 
                     b.PrimitiveCollection<string>("Attachments")
@@ -184,7 +225,8 @@ namespace VizinhoDAgua.Infrastructure.Migrations
 
                     b.Property<string>("ReportType")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<Guid?>("ReporterId")
                         .HasColumnType("char(36)");
@@ -200,12 +242,20 @@ namespace VizinhoDAgua.Infrastructure.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("WaterCompanyRelated")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("AlertEntityId");
 
                     b.HasIndex("City");
 
@@ -272,6 +322,13 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("VizinhoDAgua.Domain.Entities.AlertEntity", b =>
+                {
+                    b.HasOne("VizinhoDAgua.Domain.Entities.UserEntity", null)
+                        .WithMany("Alerts")
+                        .HasForeignKey("UserEntityId");
+                });
+
             modelBuilder.Entity("VizinhoDAgua.Domain.Entities.CommunityEntity", b =>
                 {
                     b.HasOne("VizinhoDAgua.Domain.Entities.UserEntity", "CreatedBy")
@@ -301,14 +358,33 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                     b.Navigation("Community");
                 });
 
+            modelBuilder.Entity("VizinhoDAgua.Domain.Entities.EducationContentEntity", b =>
+                {
+                    b.HasOne("VizinhoDAgua.Domain.Entities.UserEntity", "Author")
+                        .WithMany("EducationContents")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Author");
+                });
+
             modelBuilder.Entity("VizinhoDAgua.Domain.Entities.ReportEntity", b =>
                 {
+                    b.HasOne("VizinhoDAgua.Domain.Entities.AlertEntity", null)
+                        .WithMany("Reports")
+                        .HasForeignKey("AlertEntityId");
+
                     b.HasOne("VizinhoDAgua.Domain.Entities.UserEntity", "Reporter")
                         .WithMany("Reports")
                         .HasForeignKey("ReporterId")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Reporter");
+                });
+
+            modelBuilder.Entity("VizinhoDAgua.Domain.Entities.AlertEntity", b =>
+                {
+                    b.Navigation("Reports");
                 });
 
             modelBuilder.Entity("VizinhoDAgua.Domain.Entities.CommunityEntity", b =>
@@ -318,7 +394,11 @@ namespace VizinhoDAgua.Infrastructure.Migrations
 
             modelBuilder.Entity("VizinhoDAgua.Domain.Entities.UserEntity", b =>
                 {
+                    b.Navigation("Alerts");
+
                     b.Navigation("Communities");
+
+                    b.Navigation("EducationContents");
 
                     b.Navigation("Posts");
 

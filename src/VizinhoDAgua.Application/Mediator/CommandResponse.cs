@@ -1,4 +1,4 @@
-﻿﻿using FluentValidation.Results;
+﻿using FluentValidation.Results;
 using System.Net;
 
 namespace VizinhoDAgua.Application.Mediator
@@ -59,5 +59,7 @@ namespace VizinhoDAgua.Application.Mediator
         public static CommandResponse<T> CriticalError(string message)
             => new(HttpStatusCode.InternalServerError, message);
 
+        public static CommandResponse<T> NotFound(string message)
+            => new(HttpStatusCode.NotFound, message);
     }
 }

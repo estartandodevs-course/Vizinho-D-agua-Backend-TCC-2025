@@ -28,6 +28,26 @@ namespace VizinhoDAgua.API.Controllers
         {
         }
 
+        [HttpPost("add-follower")]
+        public async Task<IActionResult> AddFollower([FromBody]  FollowCommunityRequest request)
+        {
+           var command = new FollowCommunityCommand(request.CommunityId, request.UserId);
+
+           var response = await _mediator.Send(command);
+
+           return StatusCode((int)response.StatusCode, response);
+        }
+
+        [HttpPost("remove-follower")]
+        public async Task<IActionResult> RemoveFollower([FromBody] UnfollowCommunityRequest request)
+        {
+            var command = new UnfollowCommunityCommand(request.CommunityId, request.UserId);
+
+            var response = await _mediator.Send(command);
+
+            return StatusCode((int)response.StatusCode, response);
+        }
+
         [HttpPost]
         [Route("{id}/upload")]
         public async Task<IActionResult> GeneratePresignedUrlForUpload(

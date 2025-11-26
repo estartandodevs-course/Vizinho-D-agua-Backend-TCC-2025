@@ -13,33 +13,45 @@ namespace VizinhoDAgua.Application.Mediator.Handlers
         where TCommand : IRequestWithValidation<TCreateCommandResponse>
         where TCreateCommandResponse : class
     {
-        protected readonly IRepository<TEntity> _repository;
-        protected readonly IMapper _mapper;
+        protected readonly IRepository<TEntity> Repository;
+        protected readonly IMapper Mapper;
 
         public CreateCommandHandler(IRepository<TEntity> repository, IMapper mapper)
         {
-            _repository = repository;
-            _mapper = mapper;
+            Repository = repository;
+            Mapper = mapper;
         }
 
-        public virtual async Task<CommandResponse<TCreateCommandResponse>> Handle(TCommand request, CancellationToken cancellationToken)
+        // Customização nos handles específicos
+        protected virtual Task BeforeCreateAsync(TCommand request, CancellationToken cancellationToken)
+        {
+            return Task.CompletedTask;
+        }
+
+        public async Task<CommandResponse<TCreateCommandResponse>> Handle(
+            TCommand request, CancellationToken cancellationToken)
         {
             if (!request.Validate())
                 return CommandResponse<TCreateCommandResponse>.ValidationError(request.ValidationResult);
 
             try
             {
-                var entity = _mapper.Map<TEntity>(request);
+                // regra customizada
+                await BeforeCreateAsync(request, cancellationToken);
 
-                await _repository.AddAsync(entity);
+                var entity = Mapper.Map<TEntity>(request);
 
-                var response = _mapper.Map<TCreateCommandResponse>(entity.Id);
+                await Repository.AddAsync(entity);
 
-                return CommandResponse<TCreateCommandResponse>.Success(response, statusCode: HttpStatusCode.Created);
+                var response = Mapper.Map<TCreateCommandResponse>(entity.Id);
+
+                return CommandResponse<TCreateCommandResponse>.Success(response, HttpStatusCode.Created);
             }
             catch (Exception ex)
             {
-                return CommandResponse<TCreateCommandResponse>.CriticalError(message: $"Ocorreu um erro ao criar a entidade: {ex.Message}");
+                return CommandResponse<TCreateCommandResponse>.CriticalError(
+                    $"Ocorreu um erro ao criar a entidade: {ex.Message}"
+                );
             }
         }
     }
