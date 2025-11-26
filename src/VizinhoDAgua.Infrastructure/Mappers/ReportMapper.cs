@@ -21,10 +21,19 @@ namespace VizinhoDAgua.Infrastructure.Mappers
                 .HasColumnType("json");
 
             builder.Property(r => r.Status)
-                .HasConversion<string>();
+                .HasConversion<string>()
+                .HasMaxLength(100)
+                .IsRequired();
 
             builder.Property(r => r.ReportType)
-                .HasConversion<string>();
+                .HasConversion<string>()
+                .HasMaxLength(100)
+                .IsRequired();
+
+            builder.Property(r => r.WaterCompanyRelated)
+                .HasConversion<string>()
+                .HasMaxLength(100)
+                .IsRequired();
 
             builder.Property(r => r.CreatedAt)
                 .HasDefaultValue(new DateTime());

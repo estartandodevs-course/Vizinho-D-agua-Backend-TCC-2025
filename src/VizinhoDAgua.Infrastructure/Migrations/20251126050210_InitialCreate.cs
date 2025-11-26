@@ -16,29 +16,6 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "EducationContents",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Title = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Image = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Author = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    ContentType = table.Column<int>(type: "int", nullable: false),
-                    FilePath = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EducationContents", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -89,6 +66,33 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "EducationContent",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Title = table.Column<string>(type: "text", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    AuthorId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    ContentType = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    FilePath = table.Column<string>(type: "text", maxLength: 1000, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EducationContent", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EducationContent_Users_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Reports",
                 columns: table => new
                 {
@@ -98,6 +102,8 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                     Status = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ReportType = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    WaterCompanyRelated = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Attachments = table.Column<string>(type: "json", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -132,12 +138,12 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                 name: "CommunityFollowers",
                 columns: table => new
                 {
-                    CommunityId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    CommunityId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CommunityFollowers", x => new { x.CommunityId, x.UserId });
+                    table.PrimaryKey("PK_CommunityFollowers", x => new { x.UserId, x.CommunityId });
                     table.ForeignKey(
                         name: "FK_CommunityFollowers_Communities_CommunityId",
                         column: x => x.CommunityId,
@@ -160,7 +166,7 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Content = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Images = table.Column<string>(type: "longtext", nullable: false)
+                    Images = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     AuthorId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     CommunityId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -191,9 +197,9 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                 column: "CreatedById");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CommunityFollowers_UserId",
+                name: "IX_CommunityFollowers_CommunityId",
                 table: "CommunityFollowers",
-                column: "UserId");
+                column: "CommunityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CommunityPosts_AuthorId",
@@ -204,6 +210,11 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                 name: "IX_CommunityPosts_CommunityId",
                 table: "CommunityPosts",
                 column: "CommunityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EducationContent_AuthorId",
+                table: "EducationContent",
+                column: "AuthorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reports_City",
@@ -237,7 +248,7 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                 name: "CommunityPosts");
 
             migrationBuilder.DropTable(
-                name: "EducationContents");
+                name: "EducationContent");
 
             migrationBuilder.DropTable(
                 name: "Reports");
