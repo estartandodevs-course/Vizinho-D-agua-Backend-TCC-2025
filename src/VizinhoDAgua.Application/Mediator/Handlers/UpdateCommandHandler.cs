@@ -19,14 +19,8 @@ namespace VizinhoDAgua.Application.Mediator.Handlers
 
         public UpdateCommandHandlerBase(IRepository<TEntity> repository, IMapper mapper)
         {
-            Repository = repository;
-            Mapper = mapper;
-        }
-
-        // Aplica a atualização na entidade ~> Pode ser sobrescrito para lógica customizada.
-        protected virtual void ApplyUpdate(TCommand request, TEntity entity)
-        {
-            Mapper.Map(request, entity);
+            _repository = repository;
+            _mapper = mapper;
         }
 
         public virtual async Task<CommandResponse<TUpdateCommandResponse>> Handle(TCommand request, CancellationToken cancellationToken)
@@ -34,14 +28,11 @@ namespace VizinhoDAgua.Application.Mediator.Handlers
             if (!request.Validate())
                 return CommandResponse<TUpdateCommandResponse>.ValidationError(request.ValidationResult);
 
-            var entity = await Repository.GetByIdAsync(request.Id);
+            var entity = await _repository.GetByIdAsync(request.Id);
             if (entity == null)
                 return CommandResponse<TUpdateCommandResponse>.AddError(message: "Comunidade não encontrada.", statusCode: HttpStatusCode.NotFound);
 
             _mapper.Map(request, entity);
-
-            // Substitui o mapping direto pelo método extensível
-            ApplyUpdate(request, entity);
 
             return CommandResponse<TUpdateCommandResponse>.Success(response, HttpStatusCode.OK);
         }

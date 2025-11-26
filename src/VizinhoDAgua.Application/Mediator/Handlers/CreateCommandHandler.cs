@@ -13,13 +13,13 @@ namespace VizinhoDAgua.Application.Mediator.Handlers
         where TCommand : IRequestWithValidation<TCreateCommandResponse>
         where TCreateCommandResponse : class
     {
-        protected readonly IRepository<TEntity> Repository;
-        protected readonly IMapper Mapper;
+        protected readonly IRepository<TEntity> _repository;
+        protected readonly IMapper _mapper;
 
         public CreateCommandHandler(IRepository<TEntity> repository, IMapper mapper)
         {
-            Repository = repository;
-            Mapper = mapper;
+            _repository = repository;
+            _mapper = mapper;
         }
 
         // Customização nos handles específicos
@@ -39,11 +39,11 @@ namespace VizinhoDAgua.Application.Mediator.Handlers
                 // regra customizada
                 await BeforeCreateAsync(request, cancellationToken);
 
-                var entity = Mapper.Map<TEntity>(request);
+                var entity = _mapper.Map<TEntity>(request);
 
-                await Repository.AddAsync(entity);
+                await _repository.AddAsync(entity);
 
-                var response = Mapper.Map<TCreateCommandResponse>(entity.Id);
+                var response = _mapper.Map<TCreateCommandResponse>(entity.Id);
 
                 return CommandResponse<TCreateCommandResponse>.Success(response, HttpStatusCode.Created);
             }
