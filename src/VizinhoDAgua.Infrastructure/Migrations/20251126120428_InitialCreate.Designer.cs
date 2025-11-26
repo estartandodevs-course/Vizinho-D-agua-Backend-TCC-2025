@@ -13,7 +13,7 @@ using VizinhoDAgua.Infrastructure.Database;
 namespace VizinhoDAgua.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251123084344_InitialCreate")]
+    [Migration("20251126120428_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -39,6 +39,45 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("CommunityFollowers");
+                });
+
+            modelBuilder.Entity("VizinhoDAgua.Domain.Entities.AlertEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("City")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("StateCode")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid?>("UserEntityId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserEntityId");
+
+                    b.ToTable("AlertEntity");
                 });
 
             modelBuilder.Entity("VizinhoDAgua.Domain.Entities.CommunityEntity", b =>
@@ -96,7 +135,6 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.PrimitiveCollection<string>("Images")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -149,6 +187,9 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid?>("AlertEntityId")
                         .HasColumnType("char(36)");
 
                     b.PrimitiveCollection<string>("Attachments")
@@ -206,6 +247,8 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AlertEntityId");
 
                     b.HasIndex("City");
 
@@ -272,6 +315,13 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("VizinhoDAgua.Domain.Entities.AlertEntity", b =>
+                {
+                    b.HasOne("VizinhoDAgua.Domain.Entities.UserEntity", null)
+                        .WithMany("Alerts")
+                        .HasForeignKey("UserEntityId");
+                });
+
             modelBuilder.Entity("VizinhoDAgua.Domain.Entities.CommunityEntity", b =>
                 {
                     b.HasOne("VizinhoDAgua.Domain.Entities.UserEntity", "CreatedBy")
@@ -303,12 +353,21 @@ namespace VizinhoDAgua.Infrastructure.Migrations
 
             modelBuilder.Entity("VizinhoDAgua.Domain.Entities.ReportEntity", b =>
                 {
+                    b.HasOne("VizinhoDAgua.Domain.Entities.AlertEntity", null)
+                        .WithMany("Reports")
+                        .HasForeignKey("AlertEntityId");
+
                     b.HasOne("VizinhoDAgua.Domain.Entities.UserEntity", "Reporter")
                         .WithMany("Reports")
                         .HasForeignKey("ReporterId")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Reporter");
+                });
+
+            modelBuilder.Entity("VizinhoDAgua.Domain.Entities.AlertEntity", b =>
+                {
+                    b.Navigation("Reports");
                 });
 
             modelBuilder.Entity("VizinhoDAgua.Domain.Entities.CommunityEntity", b =>
@@ -318,6 +377,8 @@ namespace VizinhoDAgua.Infrastructure.Migrations
 
             modelBuilder.Entity("VizinhoDAgua.Domain.Entities.UserEntity", b =>
                 {
+                    b.Navigation("Alerts");
+
                     b.Navigation("Communities");
 
                     b.Navigation("Posts");

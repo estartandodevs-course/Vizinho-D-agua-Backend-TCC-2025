@@ -62,6 +62,35 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "AlertEntity",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    PostalCode = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    City = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    StateCode = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    UserEntityId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AlertEntity", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AlertEntity_Users_UserEntityId",
+                        column: x => x.UserEntityId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Communities",
                 columns: table => new
                 {
@@ -113,12 +142,18 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                     Neighborhood = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Geometry = table.Column<Geometry>(type: "geometry", nullable: true),
+                    AlertEntityId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false, defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)),
                     UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reports", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reports_AlertEntity_AlertEntityId",
+                        column: x => x.AlertEntityId,
+                        principalTable: "AlertEntity",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Reports_Users_ReporterId",
                         column: x => x.ReporterId,
@@ -160,7 +195,7 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Content = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Images = table.Column<string>(type: "longtext", nullable: false)
+                    Images = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     AuthorId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     CommunityId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
@@ -186,6 +221,11 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AlertEntity_UserEntityId",
+                table: "AlertEntity",
+                column: "UserEntityId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Communities_CreatedById",
                 table: "Communities",
                 column: "CreatedById");
@@ -204,6 +244,11 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                 name: "IX_CommunityPosts_CommunityId",
                 table: "CommunityPosts",
                 column: "CommunityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reports_AlertEntityId",
+                table: "Reports",
+                column: "AlertEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reports_City",
@@ -244,6 +289,9 @@ namespace VizinhoDAgua.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Communities");
+
+            migrationBuilder.DropTable(
+                name: "AlertEntity");
 
             migrationBuilder.DropTable(
                 name: "Users");
