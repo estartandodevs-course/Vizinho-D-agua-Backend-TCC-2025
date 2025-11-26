@@ -54,8 +54,14 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Neighborhood")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("PostalCode")
                         .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Road")
                         .HasColumnType("longtext");
 
                     b.Property<string>("StateCode")

@@ -3,7 +3,7 @@ using VizinhoDAgua.Application.Mediator.Handlers;
 using VizinhoDAgua.Domain.Entities;
 using VizinhoDAgua.Domain.Repositories;
 
-namespace VizinhoDAgua.Application.UseCases.CommunityPost.Query.GetById
+namespace VizinhoDAgua.Application.UseCases.CommunityPost.Queries.GetById
 {
     public class GetCommunityPostByIdQueryHandler : GetByIdQueryHandler<CommunityPostEntity, GetCommunityPostByIdQuery, GetCommunityPostByIdQueryResponse>
     {

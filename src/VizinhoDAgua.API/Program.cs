@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
-using VizinhoDAgua.Application.Interfaces;
 using VizinhoDAgua.Application.Profiles;
 using VizinhoDAgua.Application.UseCases.User.Commands.Update;
 using VizinhoDAgua.Infrastructure;
 using VizinhoDAgua.Infrastructure.Database;
 using VizinhoDAgua.Infrastructure.Services;
+using VizinhoDAgua.Infrastructure.Services.Interfaces;
 using VizinhoDAgua.ServiceDefaults;
 
 var builder = WebApplication.CreateBuilder(args);

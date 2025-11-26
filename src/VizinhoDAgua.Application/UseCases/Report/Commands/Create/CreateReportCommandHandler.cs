@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
 using System.Net;
-using VizinhoDAgua.Application.Interfaces;
 using VizinhoDAgua.Application.Mediator;
 using VizinhoDAgua.Domain.Entities;
 using VizinhoDAgua.Domain.Repositories;
+using VizinhoDAgua.Infrastructure.Services.Interfaces;
 
 namespace VizinhoDAgua.Application.UseCases.Report.Commands.Create
 {
@@ -38,17 +38,21 @@ namespace VizinhoDAgua.Application.UseCases.Report.Commands.Create
                 if (!string.IsNullOrWhiteSpace(request.PostalCode))
                 {
                     var cepData = await _cepService.GetAddressByCepAsync(request.PostalCode, cancellationToken);
-                    if (cepData != null)
+
+                    if (cepData?.StateCode == null || cepData.City == null)
                     {
-                        // Preenche apenas campos faltantes
-                        entity.UpdateAddressFromCep(
-                            cepData.Road,
-                            cepData.Neighborhood,
-                            cepData.City,
-                            cepData.StateCode,
-                            cepData.PostalCode
-                        );
+                        return CommandResponse<CreateReportCommandResponse>.AddError("CEP inválido.");
                     }
+
+                    // Preenche apenas campos faltantes
+                    entity.UpdateAddressFromCep(
+                        cepData.Road,
+                        cepData.Neighborhood,
+                        cepData.City,
+                        cepData.StateCode,
+                        cepData.PostalCode
+                    );
+                    
                 }
 
                 // Persiste no banco + response

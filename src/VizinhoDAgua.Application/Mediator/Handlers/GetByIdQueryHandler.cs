@@ -13,8 +13,8 @@ namespace VizinhoDAgua.Application.Mediator.Handlers
         where TQuery : IRequestWithValidationAndId<TGetByIdQueryResponse>
         where TGetByIdQueryResponse : class
     {
-        private readonly IRepository<TEntity> _repository;
-        private readonly IMapper _mapper;
+        protected readonly IRepository<TEntity> _repository;
+        protected readonly IMapper _mapper;
 
         public GetByIdQueryHandler(IRepository<TEntity> repository, IMapper mapper)
         {
@@ -22,7 +22,7 @@ namespace VizinhoDAgua.Application.Mediator.Handlers
             _mapper = mapper;
         }
 
-        public async Task<CommandResponse<TGetByIdQueryResponse>> Handle(TQuery request, CancellationToken cancellationToken)
+        public virtual async Task<CommandResponse<TGetByIdQueryResponse>> Handle(TQuery request, CancellationToken cancellationToken)
         {
             if (!request.Validate())
                 return CommandResponse<TGetByIdQueryResponse>.ValidationError(request.ValidationResult);

@@ -1,4 +1,4 @@
-﻿namespace VizinhoDAgua.Application.UseCases.CommunityPost.Command.Create
+﻿namespace VizinhoDAgua.Application.UseCases.CommunityPost.Commands.Create
 {
     public class CreateCommunityPostCommandResponse
     {

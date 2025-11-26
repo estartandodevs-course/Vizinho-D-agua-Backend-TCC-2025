@@ -11,14 +11,14 @@ namespace VizinhoDAgua.Application.Mediator.Handlers
         where TEntity : Entity
         where TCommand : IRequestWithValidationAndId<Unit>
     {
-        private readonly IRepository<TEntity> _repository;
+        protected readonly IRepository<TEntity> _repository;
 
         public DeleteCommandHandler(IRepository<TEntity> repository)
         {
             _repository = repository;
         }
 
-        public async Task<CommandResponse<Unit>> Handle(TCommand request, CancellationToken cancellationToken)
+        public virtual async Task<CommandResponse<Unit>> Handle(TCommand request, CancellationToken cancellationToken)
         {
             if (!request.Validate())
                 return CommandResponse<Unit>.ValidationError(request.ValidationResult);

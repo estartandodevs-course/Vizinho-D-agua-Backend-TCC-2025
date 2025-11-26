@@ -11,29 +11,22 @@ namespace VizinhoDAgua.Domain.Entities
         public string PostalCode { get; private set; } = string.Empty;
         public string? City { get; private set; }
         public string? StateCode { get; private set; }
+        public string? Road { get; private set; }
+        public string? Neighborhood { get; private set; }
 
         public List<ReportEntity> Reports { get; private set; } = [];
 
         public AlertEntity() { }
 
-        public AlertEntity(string description, string postalCode, string? city, string? stateCode)
+        public AlertEntity(string description, string postalCode, string? city, string? stateCode, string? road, string? neighborhood)
         {
             Description = description;
             PostalCode = postalCode;
             City = city;
             StateCode = stateCode;
             Status = AlertStatus.UnderVerification;
-        }
-
-        public void UpdateStatus(AlertStatus newStatus)
-        {
-            Status = newStatus;
-            UpdatedAt = DateTime.UtcNow;
-        }
-
-        public void AttachReport(ReportEntity report)
-        {
-            Reports.Add(report);
+            Road = road;
+            Neighborhood = neighborhood;
         }
     }
 }

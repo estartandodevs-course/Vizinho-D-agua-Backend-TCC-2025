@@ -1,6 +1,6 @@
 ﻿using VizinhoDAgua.Domain.Entities;
 
-namespace VizinhoDAgua.Application.UseCases.CommunityPost.Query.GetAll
+namespace VizinhoDAgua.Application.UseCases.CommunityPost.Queries.GetAll
 {
     public class GetAllCommunitiesPostQueryResponse
     {

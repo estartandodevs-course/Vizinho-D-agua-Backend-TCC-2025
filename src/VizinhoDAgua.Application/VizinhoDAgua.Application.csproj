@@ -7,29 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="UseCases\NewFolder2\**" />
-    <Compile Remove="UseCases\NewFolder3\**" />
-    <Compile Remove="UseCases\NewFolder\**" />
-    <EmbeddedResource Remove="UseCases\NewFolder2\**" />
-    <EmbeddedResource Remove="UseCases\NewFolder3\**" />
-    <EmbeddedResource Remove="UseCases\NewFolder\**" />
-    <None Remove="UseCases\NewFolder2\**" />
-    <None Remove="UseCases\NewFolder3\**" />
-    <None Remove="UseCases\NewFolder\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="UseCases\Report.Report.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\VizinhoDAgua.Domain\VizinhoDAgua.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="FluentValidation" Version="12.1.0" />
     <PackageReference Include="MediatR" Version="13.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VizinhoDAgua.Infrastructure\VizinhoDAgua.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

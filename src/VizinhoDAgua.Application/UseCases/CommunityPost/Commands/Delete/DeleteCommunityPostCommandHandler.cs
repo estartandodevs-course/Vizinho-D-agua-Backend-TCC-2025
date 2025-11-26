@@ -2,7 +2,7 @@
 using VizinhoDAgua.Domain.Entities;
 using VizinhoDAgua.Domain.Repositories;
 
-namespace VizinhoDAgua.Application.UseCases.CommunityPost.Command.Delete
+namespace VizinhoDAgua.Application.UseCases.CommunityPost.Commands.Delete
 {
     public class DeleteCommunityPostCommandHandler : DeleteCommandHandler<CommunityPostEntity, DeleteCommunityPostCommand>
     {

@@ -4,7 +4,7 @@ using MediatR;
 using System.Net;
 using VizinhoDAgua.Application.Mediator.IRequests;
 
-namespace VizinhoDAgua.Application.UseCases.CommunityPost.Command.Update
+namespace VizinhoDAgua.Application.UseCases.CommunityPost.Commands.Update
 {
     public class UpdateCommunityPostCommand : IRequestWithValidationAndId<Unit>
     {

@@ -1,6 +1,6 @@
 ﻿using VizinhoDAgua.Domain.Dtos;
 
-namespace VizinhoDAgua.Application.Interfaces
+namespace VizinhoDAgua.Infrastructure.Services.Interfaces
 {
     public interface ICepService
     {

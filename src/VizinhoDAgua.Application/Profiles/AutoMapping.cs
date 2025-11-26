@@ -2,10 +2,10 @@
 using VizinhoDAgua.Application.Dtos;
 using VizinhoDAgua.Application.UseCases.Alert.Commands.Create;
 using VizinhoDAgua.Application.UseCases.Alert.Commands.UpdateStatus;
-using VizinhoDAgua.Application.UseCases.Community.Command.Create;
-using VizinhoDAgua.Application.UseCases.Community.Command.Update;
-using VizinhoDAgua.Application.UseCases.CommunityPost.Command.Create;
-using VizinhoDAgua.Application.UseCases.CommunityPost.Command.Update;
+using VizinhoDAgua.Application.UseCases.Community.Commands.Create;
+using VizinhoDAgua.Application.UseCases.Community.Commands.Update;
+using VizinhoDAgua.Application.UseCases.CommunityPost.Commands.Create;
+using VizinhoDAgua.Application.UseCases.CommunityPost.Commands.Update;
 using VizinhoDAgua.Application.UseCases.EducationContent.Commands.Create;
 using VizinhoDAgua.Application.UseCases.EducationContent.Commands.Update;
 using VizinhoDAgua.Application.UseCases.Report.Commands.Create;
@@ -134,6 +134,8 @@ namespace VizinhoDAgua.Application.Profiles
                     src.Id,
                     (AlertStatus)src.Request.Status
                 ));
+            CreateMap<UpdateAlertStatusCommand, AlertEntity>();
+            CreateMap<AlertEntity, AlertStatus>();
         }
     }
 }

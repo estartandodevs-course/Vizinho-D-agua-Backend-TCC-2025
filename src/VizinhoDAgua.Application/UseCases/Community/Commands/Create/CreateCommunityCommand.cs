@@ -3,7 +3,7 @@ using FluentValidation.Results;
 using System.Net;
 using VizinhoDAgua.Application.Mediator.IRequests;
 
-namespace VizinhoDAgua.Application.UseCases.Community.Command.Create
+namespace VizinhoDAgua.Application.UseCases.Community.Commands.Create
 {
     public class CreateCommunityCommand : IRequestWithValidation<CreateCommunityCommandResponse>
     {
