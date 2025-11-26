@@ -22,7 +22,7 @@ namespace VizinhoDAgua.Application.Mediator.Handlers
             _mapper = mapper;
         }
 
-        public async Task<CommandResponse<TGetByIdQueryResponse>> Handle(TQuery request, CancellationToken cancellationToken)
+        public virtual async Task<CommandResponse<TGetByIdQueryResponse>> Handle(TQuery request, CancellationToken cancellationToken)
         {
             if (!request.Validate())
                 return CommandResponse<TGetByIdQueryResponse>.ValidationError(request.ValidationResult);

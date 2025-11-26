@@ -21,7 +21,7 @@ namespace VizinhoDAgua.Application.Mediator.Handlers
             _mapper = mapper;
         }
 
-        public async Task<CommandResponse<TGetAllQueryResponse>> Handle(TQuery request, CancellationToken cancellationToken)
+        public virtual async Task<CommandResponse<TGetAllQueryResponse>> Handle(TQuery request, CancellationToken cancellationToken)
         {
             var communities = await _repository.GetAllAsync();
 

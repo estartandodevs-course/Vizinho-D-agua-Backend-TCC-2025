@@ -18,7 +18,7 @@ namespace VizinhoDAgua.Application.Mediator.Handlers
             _repository = repository;
         }
 
-        public async Task<CommandResponse<Unit>> Handle(TCommand request, CancellationToken cancellationToken)
+        public virtual async Task<CommandResponse<Unit>> Handle(TCommand request, CancellationToken cancellationToken)
         {
             if (!request.Validate())
                 return CommandResponse<Unit>.ValidationError(request.ValidationResult);
