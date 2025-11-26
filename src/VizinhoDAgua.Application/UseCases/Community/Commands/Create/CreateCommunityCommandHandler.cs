@@ -3,7 +3,7 @@ using VizinhoDAgua.Application.Mediator.Handlers;
 using VizinhoDAgua.Domain.Entities;
 using VizinhoDAgua.Domain.Repositories;
 
-namespace VizinhoDAgua.Application.UseCases.Community.Command.Create
+namespace VizinhoDAgua.Application.UseCases.Community.Commands.Create
 {
     public class CreateCommunityCommandHandler
         : CreateCommandHandler<CommunityEntity, CreateCommunityCommand, CreateCommunityCommandResponse>

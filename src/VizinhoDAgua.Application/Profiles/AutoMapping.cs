@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using VizinhoDAgua.Application.Dtos;
-using VizinhoDAgua.Application.UseCases.Community.Command.Create;
-using VizinhoDAgua.Application.UseCases.Community.Command.Update;
-using VizinhoDAgua.Application.UseCases.CommunityPost.Command.Create;
-using VizinhoDAgua.Application.UseCases.CommunityPost.Command.Update;
+using VizinhoDAgua.Application.UseCases.Community.Commands.Create;
+using VizinhoDAgua.Application.UseCases.Community.Commands.Update;
+using VizinhoDAgua.Application.UseCases.CommunityPost.Commands.Create;
+using VizinhoDAgua.Application.UseCases.CommunityPost.Commands.Update;
 using VizinhoDAgua.Application.UseCases.EducationContent.Commands.Create;
 using VizinhoDAgua.Application.UseCases.EducationContent.Commands.Update;
 using VizinhoDAgua.Application.UseCases.User.Commands.Create;

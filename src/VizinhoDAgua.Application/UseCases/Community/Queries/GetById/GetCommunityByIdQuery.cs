@@ -3,7 +3,7 @@ using FluentValidation.Results;
 using System.Net;
 using VizinhoDAgua.Application.Mediator.IRequests;
 
-namespace VizinhoDAgua.Application.UseCases.Community.Query.GetById
+namespace VizinhoDAgua.Application.UseCases.Community.Queries.GetById
 {
     public class GetCommunityByIdQuery : IRequestWithValidationAndId<GetCommunityByIdQueryResponse>
     {

@@ -3,7 +3,7 @@ using VizinhoDAgua.Application.Mediator.Handlers;
 using VizinhoDAgua.Domain.Entities;
 using VizinhoDAgua.Domain.Repositories;
 
-namespace VizinhoDAgua.Application.UseCases.CommunityPost.Command.Update
+namespace VizinhoDAgua.Application.UseCases.CommunityPost.Commands.Update
 {
     public class UpdateCommunityPostCommandHandler
         : UpdateCommandHandler<CommunityPostEntity, UpdateCommunityPostCommand>
