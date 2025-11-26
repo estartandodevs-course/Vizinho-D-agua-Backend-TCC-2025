@@ -1,89 +1,68 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using System.Net;
-using System.Net.Mail;
-using VizinhoDAgua.Application.Dtos;
 using VizinhoDAgua.Application.Interfaces;
 using VizinhoDAgua.Application.Mediator;
-using VizinhoDAgua.Application.UseCases.User.Commands.Create;
 using VizinhoDAgua.Domain.Entities;
-using VizinhoDAgua.Domain.Entities.Enum;
 using VizinhoDAgua.Domain.Repositories;
 
 namespace VizinhoDAgua.Application.UseCases.Report.Commands.Create
 {
-    public class CreateReportCommandHandler : IRequestHandler<CreateReportCommand, CommandResponse<CreateReportCommandResponse>>
+    public class CreateReportCommandHandler 
+        : IRequestHandler<CreateReportCommand, CommandResponse<CreateReportCommandResponse>>
     {
-        private readonly IReportRepository _reportRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly IReportRepository _repository;
+        private readonly IMapper _mapper;
         private readonly ICepService _cepService;
 
-        public CreateReportCommandHandler(
-            IReportRepository reportRepository, 
-            IUserRepository userRepository, 
-            ICepService cepService)
+        public CreateReportCommandHandler(IReportRepository repository, IMapper mapper, ICepService cepService)
         {
-            _userRepository = userRepository;
-            _reportRepository = reportRepository;
+            _repository = repository; 
+            _mapper = mapper; 
             _cepService = cepService;
         }
 
         public async Task<CommandResponse<CreateReportCommandResponse>> Handle(
             CreateReportCommand request, CancellationToken cancellationToken)
         {
+            // Validação
             if (!request.Validate())
                 return CommandResponse<CreateReportCommandResponse>.ValidationError(request.ValidationResult);
 
-            if (!Guid.TryParse(request.ReporterId, out Guid reporterId))
-                return CommandResponse<CreateReportCommandResponse>.AddError("ID de denunciante inválido");
-
-            if (await _userRepository.GetByIdAsync(reporterId) == null)
-                return CommandResponse<CreateReportCommandResponse>.AddError("Usuário com este ID não existe");
-                
-            string postalCode = request.PostalCode;
-            string? city = request.City;
-            string? stateCode = request.StateCode;
-            string? neighborhood = request.Neighborhood;
-            string? road = request.Road;
-
-            // Consulta o CEP se a cidade ou uf não forem fornecidos
-            if (city == null || stateCode == null)
-            {
-                CepResponseDto? addressInfo = await _cepService.GetAddressByCepAsync(postalCode, cancellationToken);
-
-                if (addressInfo == null || addressInfo.StateCode == null || addressInfo.City == null)
-                    return CommandResponse<CreateReportCommandResponse>.AddError("Informe um CEP válido");
-                    
-                city = addressInfo.City;
-                stateCode = addressInfo.StateCode;
-                neighborhood = neighborhood ?? addressInfo.Neighborhood;
-                road = road ?? addressInfo.Road;
-            }
-            
             try
             {
-                var report = new ReportEntity(
-                    reporterId, 
-                    request.Description, 
-                    postalCode, 
-                    city, 
-                    stateCode,
-                    road, 
-                    neighborhood, // informações de endereço
-                    ReportStatus.InProcessing.ToString(),
-                    request.ReportType
-                );
+                // Mapeia o request ~> entidade
+                var entity = _mapper.Map<ReportEntity>(request);
 
-                await _reportRepository.AddAsync(report);
+                // Preenche automaticamente dados do CEP
+                if (!string.IsNullOrWhiteSpace(request.PostalCode))
+                {
+                    var cepData = await _cepService.GetAddressByCepAsync(request.PostalCode, cancellationToken);
+                    if (cepData != null)
+                    {
+                        // Preenche apenas campos faltantes
+                        entity.UpdateAddressFromCep(
+                            cepData.Road,
+                            cepData.Neighborhood,
+                            cepData.City,
+                            cepData.StateCode,
+                            cepData.PostalCode
+                        );
+                    }
+                }
 
-                var response = new CreateReportCommandResponse(report.Id);
-
+                // Persiste no banco + response
+                await _repository.AddAsync(entity);
+                var response = new CreateReportCommandResponse(entity.Id);
                 return CommandResponse<CreateReportCommandResponse>.Success(
-                    response, statusCode: HttpStatusCode.Created);
-
-
-            } catch(Exception ex)
+                    response, statusCode: HttpStatusCode.Created
+                );
+            }
+            catch (Exception ex)
             {
-                return CommandResponse<CreateReportCommandResponse>.CriticalError(ex.Message);
+                return CommandResponse<CreateReportCommandResponse>.CriticalError(
+                    $"Ocorreu um erro ao criar a entidade: {ex.Message}"
+                );
             }
         }
     }

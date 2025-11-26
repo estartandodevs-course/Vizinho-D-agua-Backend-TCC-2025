@@ -1,29 +1,29 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
+using MediatR;
 using System.Net;
 using VizinhoDAgua.Application.Mediator.IRequests;
 
-namespace VizinhoDAgua.Application.UseCases.CommunityPost.Query.GetById
+namespace VizinhoDAgua.Application.UseCases.CommunityPost.Command.Delete
 {
-    public class GetCommunityPostByIdQuery : IRequestWithValidationAndId<GetCommunityPostByIdQueryResponse>
+    public class DeleteCommunityPostCommand : IRequestWithValidationAndId<Unit>
     {
         public Guid Id { get; private set; }
+        public ValidationResult ValidationResult { get; private set; } = null!;
 
-        public ValidationResult ValidationResult { get; private set; } = new ValidationResult();
-
-        public GetCommunityPostByIdQuery(Guid id)
+        public DeleteCommunityPostCommand(Guid id)
         {
             Id = id;
         }
 
         public bool Validate()
         {
-            var validations = new InlineValidator<GetCommunityPostByIdQuery>();
+            var validations = new InlineValidator<DeleteCommunityPostCommand>();
 
             validations.RuleFor(c => c.Id)
             .NotEmpty()
             .WithErrorCode(((int)HttpStatusCode.BadRequest).ToString())
-            .WithMessage("O ID da comunidade é obrigatório");
+            .WithMessage("O ID da comunidade é obrigatório para a deleção.");
 
             ValidationResult = validations.Validate(this);
 

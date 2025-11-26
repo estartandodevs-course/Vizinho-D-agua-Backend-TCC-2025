@@ -4,21 +4,21 @@ using MediatR;
 using System.Net;
 using VizinhoDAgua.Application.Mediator.IRequests;
 
-namespace VizinhoDAgua.Application.UseCases.CommunityPost.Command.Delete
+namespace VizinhoDAgua.Application.UseCases.Community.Command.Delete
 {
-    public class DeleteCommunityPostCommand : IRequestWithValidationAndId<Unit>
+    public class DeleteCommunityCommand : IRequestWithValidationAndId<Unit>
     {
         public Guid Id { get; private set; }
-        public ValidationResult ValidationResult { get; private set; } = new ValidationResult();
+        public ValidationResult ValidationResult { get; private set; } = null!;
 
-        public DeleteCommunityPostCommand(Guid id)
+        public DeleteCommunityCommand(Guid id)
         {
             Id = id;
         }
 
         public bool Validate()
         {
-            var validations = new InlineValidator<DeleteCommunityPostCommand>();
+            var validations = new InlineValidator<DeleteCommunityCommand>();
 
             validations.RuleFor(c => c.Id)
             .NotEmpty()
