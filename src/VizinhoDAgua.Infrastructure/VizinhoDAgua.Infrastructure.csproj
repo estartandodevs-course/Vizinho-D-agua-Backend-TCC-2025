@@ -19,6 +19,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\VizinhoDAgua.Domain\VizinhoDAgua.Domain.csproj" />
+		<ProjectReference Include="..\VizinhoDAgua.Application\VizinhoDAgua.Application.csproj" />
 	</ItemGroup>
 
 </Project>

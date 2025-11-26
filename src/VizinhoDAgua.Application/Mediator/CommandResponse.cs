@@ -1,4 +1,4 @@
-﻿﻿using FluentValidation.Results;
+﻿using FluentValidation.Results;
 using System.Net;
 
 namespace VizinhoDAgua.Application.Mediator

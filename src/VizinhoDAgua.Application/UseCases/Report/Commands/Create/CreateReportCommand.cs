@@ -1,20 +1,19 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
-using MediatR;
 using System.Net;
-using VizinhoDAgua.Application.Mediator;
+using VizinhoDAgua.Application.Mediator.IRequests;
 using VizinhoDAgua.Domain.Entities.Enum;
 
 namespace VizinhoDAgua.Application.UseCases.Report.Commands.Create
 {
-    public class CreateReportCommand : IRequest<CommandResponse<CreateReportCommandResponse>>
+    public class CreateReportCommand : IRequestWithValidation<CreateReportCommandResponse>
     {
-        public string Description { get; private set; }
-        public string ReportType { get; private set; }
-        public string ReporterId { get; private set; }
+        public string Description { get; private set; } = string.Empty;
+        public string ReportType { get; private set; } = string.Empty;
+        public string ReporterId { get; private set; } = string.Empty;
 
         // Endereço
-        public string PostalCode { get; private set; }
+        public string PostalCode { get; private set; } = string.Empty;
         public string? City { get; private set; }
         public string? StateCode { get; private set; }
         public string? Road { get; private set; }
@@ -22,20 +21,13 @@ namespace VizinhoDAgua.Application.UseCases.Report.Commands.Create
         public double? Lat { get; private set; }
         public double? Lon { get; private set; }
 
-        public ValidationResult ValidationResult { get; private set; } = new ValidationResult();
+        public ValidationResult ValidationResult { get; private set; } = null!;
 
+        public CreateReportCommand() { }
+        
         public CreateReportCommand(
-            string description,
-            string reportType,
-            string reporterId,
-            string postalCode,
-            string? stateCode,
-            string? city,
-            string? neighborhood,
-            string? road,
-            double? lat,
-            double? lon
-            )
+            string description, string reportType, string reporterId, string postalCode, string? stateCode,
+            string? city, string? neighborhood, string? road, double? lat, double? lon)
         {
             Description = description;
             ReportType = reportType;
@@ -92,8 +84,7 @@ namespace VizinhoDAgua.Application.UseCases.Report.Commands.Create
                     .When(c => !string.IsNullOrWhiteSpace(c.StateCode))
                     .WithErrorCode(((int)HttpStatusCode.BadRequest).ToString())
                     .WithMessage("UF deve conter exatamente 2 caracteres.");
-
-
+            
             // City (opcional)
             validations.RuleFor(r => r.City)
                 .MaximumLength(60)
