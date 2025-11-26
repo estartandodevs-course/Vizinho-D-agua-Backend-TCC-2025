@@ -22,13 +22,7 @@ namespace VizinhoDAgua.Application.Mediator.Handlers
             _mapper = mapper;
         }
 
-        // Customização nos handles específicos
-        protected virtual Task BeforeCreateAsync(TCommand request, CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
-        }
-
-        public async Task<CommandResponse<TCreateCommandResponse>> Handle(
+        public virtual async Task<CommandResponse<TCreateCommandResponse>> Handle(
             TCommand request, CancellationToken cancellationToken)
         {
             if (!request.Validate())
@@ -36,9 +30,6 @@ namespace VizinhoDAgua.Application.Mediator.Handlers
 
             try
             {
-                // regra customizada
-                await BeforeCreateAsync(request, cancellationToken);
-
                 var entity = _mapper.Map<TEntity>(request);
 
                 await _repository.AddAsync(entity);

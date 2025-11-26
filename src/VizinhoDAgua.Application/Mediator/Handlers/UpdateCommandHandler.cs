@@ -33,6 +33,9 @@ namespace VizinhoDAgua.Application.Mediator.Handlers
                 return CommandResponse<TUpdateCommandResponse>.AddError(message: "Comunidade não encontrada.", statusCode: HttpStatusCode.NotFound);
 
             _mapper.Map(request, entity);
+            await _repository.UpdateAsync(entity);
+
+            response = _mapper.Map<TUpdateCommandResponse>(entity);
 
             return CommandResponse<TUpdateCommandResponse>.Success(response, HttpStatusCode.OK);
         }
