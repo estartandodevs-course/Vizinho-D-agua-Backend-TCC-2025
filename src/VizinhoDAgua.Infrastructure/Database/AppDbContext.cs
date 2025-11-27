@@ -8,10 +8,10 @@ namespace VizinhoDAgua.Infrastructure.Database
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-            // Desabilita o rastreamento automático em busca de alterações. Só afetam entidades carregadas via consultas (SELECT/GET)
+            // Desabilita o rastreamento automÃ¡tico em busca de alteraÃ§Ãµes. SÃ³ afetam entidades carregadas via consultas (SELECT/GET)
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 
-            // Desabilita a detecção automática de mudanças para operações explícitas de atualização
+            // Desabilita a detecÃ§Ã£o automÃ¡tica de mudanÃ§as para operaÃ§Ãµes explÃ­citas de atualizaÃ§Ã£o
             ChangeTracker.AutoDetectChangesEnabled = false;
         }
 
@@ -20,6 +20,7 @@ namespace VizinhoDAgua.Infrastructure.Database
         public DbSet<CommunityPostEntity> CommunityPosts { get; set; }
         public DbSet<ReportEntity> Reports { get; set; }
         public DbSet<EducationContentEntity> EducationContents { get; set; }
+        public DbSet<AlertEntity> Alerts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -32,7 +33,7 @@ namespace VizinhoDAgua.Infrastructure.Database
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            // Retorna apenas as entries que implementam IAuditable (só as entidades que tem CreateAt e UpdatedAt)
+            // Retorna apenas as entries que implementam IAuditable (sÃ³ as entidades que tem CreateAt e UpdatedAt)
             var entries = ChangeTracker.Entries<AuditableEntity>();
 
             foreach (var entry in entries)

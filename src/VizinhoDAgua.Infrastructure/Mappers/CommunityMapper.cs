@@ -10,39 +10,44 @@ namespace VizinhoDAgua.Infrastructure.Mappers
         {
             builder.ToTable("Communities");
 
-            builder.HasKey(c => c.Id);
+            builder.HasKey(community => community.Id);
 
-            builder.Property(x => x.Title)
+            // Propriedades básicas
+            builder.Property(community => community.Title)
                 .IsRequired()
                 .HasMaxLength(200);
 
-            builder.Property(x => x.Description)
+            builder.Property(community => community.Description)
                 .HasMaxLength(2000);
 
-            builder.Property(x => x.CoverImage);
+            builder.Property(community => community.CoverImage);
 
-            builder.HasOne(c => c.CreatedBy)
-                .WithMany(u => u.Communities)
-                .HasForeignKey(c => c.CreatedById);
-
-            // Cria relação que gera tabela CommunityUser (n para n)
-            builder.HasMany(c => c.Followers)
-                .WithMany(u => u.CommunitiesFollowed)
+            // Relacionamento: Usuário → Comunidades Criadas (1:N)
+            builder.HasOne(community => community.CreatedBy)
+                .WithMany(user => user.Communities)
+                .HasForeignKey(community => community.CreatedById); 
+                
+            // Relacionamento: Usuários/Seguidores ↔ Comunidades (N:N)
+            builder.HasMany(community => community.Followers)
+                .WithMany(user => user.CommunitiesFollowed)
                 .UsingEntity<Dictionary<string, object>>(
-                    "CommunityFollowers", // nome da tabela
-                    j => j.HasOne<UserEntity>()
-                          .WithMany()
-                          .HasForeignKey("UserId") // nome da coluna do usuário
-                          .OnDelete(DeleteBehavior.Cascade),
-                    j => j.HasOne<CommunityEntity>()
-                          .WithMany()
-                          .HasForeignKey("CommunityId") // nome da coluna da comunidade
-                          .OnDelete(DeleteBehavior.Cascade),
-                    j =>
-                    {
-                        j.HasKey("UserId", "CommunityId");  // Define a chave primária composta (evita duplicações)
-                    }
+                    "CommunityFollowers",
+                    right => right.HasOne<UserEntity>()
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade),
+                    left => left.HasOne<CommunityEntity>()
+                        .WithMany()
+                        .HasForeignKey("CommunityId")
+                        .OnDelete(DeleteBehavior.Cascade),
+                    join => join.HasKey("UserId", "CommunityId")
                 );
+
+            // Relacionamento: Comunidade → Posts (1:N)
+            builder.HasMany(community => community.Posts)
+                .WithOne(post => post.Community)
+                .HasForeignKey(post => post.CommunityId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -10,26 +10,19 @@ namespace VizinhoDAgua.Infrastructure.Mappers
         {
             builder.ToTable("EducationContent");
 
-            builder.HasKey(ec => ec.Id);
+            builder.HasKey(content => content.Id);
 
-            builder.Property(ec => ec.Title)
-                .HasColumnType("text")
+            // Propriedades básicas
+            builder.Property(content => content.Title)
+                .HasMaxLength(500)
                 .IsRequired();
 
-            builder.Property(ec => ec.FilePath)
-                .HasColumnType("text")
+            builder.Property(content => content.FilePath)
                 .HasMaxLength(1000);
 
-
-            builder.Property(ec => ec.ContentType)
+            builder.Property(content => content.ContentType)
                 .HasConversion<string>()
                 .IsRequired();
-
-            // Relacionamentos
-            builder.HasOne(ec => ec.Author)
-                .WithMany(u => u.EducationContents)
-                .HasForeignKey(ec => ec.AuthorId)
-                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

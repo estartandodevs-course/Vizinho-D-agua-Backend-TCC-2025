@@ -10,63 +10,63 @@ namespace VizinhoDAgua.Infrastructure.Mappers
         {
             builder.ToTable("Reports");
 
-            builder.HasKey(r => r.Id);
+            builder.HasKey(report => report.Id);
 
-            builder.Property(r => r.Description)
-                .HasColumnType("text")
+            // Propriedades básicas
+            builder.Property(report => report.Description)
                 .HasMaxLength(500)
                 .IsRequired();
 
-            builder.Property(r => r.Attachments)
+            builder.Property(report => report.Attachments)
                 .HasColumnType("json");
 
-            builder.Property(r => r.Status)
+            builder.Property(report => report.Status)
                 .HasConversion<string>()
                 .HasMaxLength(100)
                 .IsRequired();
 
-            builder.Property(r => r.ReportType)
+            builder.Property(report => report.ReportType)
                 .HasConversion<string>()
                 .HasMaxLength(100)
                 .IsRequired();
 
-            builder.Property(r => r.WaterCompanyRelated)
+            builder.Property(report => report.WaterCompanyRelated)
                 .HasConversion<string>()
                 .HasMaxLength(100)
                 .IsRequired();
 
-            builder.Property(r => r.CreatedAt)
-                .HasDefaultValue(new DateTime());
-
-            // Desnormalização de Endereço
-            builder.Property(r => r.StateCode)
-                .HasColumnType("char")
+            // Campos de endereço (desnormalizados)
+            builder.Property(report => report.StateCode)
                 .HasMaxLength(2)
                 .IsRequired();
 
-            builder.Property(r => r.PostalCode)
-                .HasMaxLength(100)
-                .IsRequired();
-
-            builder.Property(r => r.City)
+            builder.Property(report => report.City)
                 .HasMaxLength(150)
                 .IsRequired();
 
-            builder.Property(r => r.Neighborhood)
+            builder.Property(report => report.PostalCode)
+                .HasMaxLength(20)
+                .IsRequired();
+
+            builder.Property(report => report.Neighborhood)
                 .HasMaxLength(100);
 
-            builder.Property(r => r.Road)
+            builder.Property(report => report.Road)
                 .HasMaxLength(100);
 
-            // Indices (otimiza a busca por esses campos)
-            builder.HasIndex(r => r.StateCode);
-            builder.HasIndex(r => r.City);
+            // Índices para otimizar consultas por filtros regionais
+            builder.HasIndex(report => report.StateCode);
+            builder.HasIndex(report => report.City);
 
-            // Relacionamentos
-            builder.HasOne(r => r.Reporter)
-                .WithMany(u => u.Reports)
-                .HasForeignKey(r => r.ReporterId)
-                .OnDelete(DeleteBehavior.SetNull);
+            // Relacionamento: Usuário → Denuncias (1:N)
+            builder.HasOne(report => report.Reporter)
+                .WithMany(user => user.Reports)
+                .HasForeignKey(report => report.ReporterId);
+
+            // Relacionamento: Alerta → Denuncias (1:N)
+            builder.HasOne(report => report.Alert)
+                .WithMany(alert => alert.Reports)
+                .HasForeignKey(report => report.AlertId);
         }
     }
 }
