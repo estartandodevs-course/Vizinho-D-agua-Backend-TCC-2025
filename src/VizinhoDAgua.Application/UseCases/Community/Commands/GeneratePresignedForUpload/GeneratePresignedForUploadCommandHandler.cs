@@ -9,7 +9,7 @@ using VizinhoDAgua.Infrastructure.Cloud.Interfaces;
 namespace VizinhoDAgua.Application.UseCases.Community.Commands.GeneratePresignedForUpload
 {
     public class GeneratePresignedForUploadCommandHandler
-        : UpdateCommandHandlerBase<CommunityEntity, GeneratePresignedForUploadCommand, GeneratePresignedForUploadCommandResponse>
+        : UpdateCommandHandlerWithReturn<CommunityEntity, GeneratePresignedForUploadCommand, GeneratePresignedForUploadCommandResponse>
     {
         private readonly IAwsS3Service _awsS3Service;
         protected override GeneratePresignedForUploadCommandResponse response { get; set; } = null!;
