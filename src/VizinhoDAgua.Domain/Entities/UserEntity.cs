@@ -28,12 +28,5 @@ namespace VizinhoDAgua.Domain.Entities
             IsAdmin = false;
             ProfileImage = profileImage ?? string.Empty;
         }
-        
-        public void Update(string? name, string? email, string? profileImage)
-        {
-            Name = name ?? Name;
-            Email = email ?? Email;
-            ProfileImage = profileImage ?? ProfileImage;
-        }
     }
 }

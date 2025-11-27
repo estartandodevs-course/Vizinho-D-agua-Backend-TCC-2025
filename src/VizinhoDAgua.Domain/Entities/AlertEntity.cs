@@ -5,9 +5,9 @@ namespace VizinhoDAgua.Domain.Entities
 {
     public class AlertEntity : Entity
     {
+        public string Title { get; private set; } = string.Empty;
         public string Description { get; private set; } = string.Empty;
         public AlertStatus Status { get; private set; }
-
         public string PostalCode { get; private set; } = string.Empty;
         public string? City { get; private set; }
         public string? StateCode { get; private set; }
@@ -18,8 +18,9 @@ namespace VizinhoDAgua.Domain.Entities
 
         public AlertEntity() { }
 
-        public AlertEntity(string description, string postalCode, string? city, string? stateCode, string? road, string? neighborhood)
+        public AlertEntity(string title, string description, string postalCode, string? city, string? stateCode, string? road, string? neighborhood)
         {
+            Title = title;
             Description = description;
             PostalCode = postalCode;
             City = city;

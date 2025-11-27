@@ -5,7 +5,6 @@ namespace VizinhoDAgua.Domain.Entities
     public class CommunityPostEntity : Entity
     {
         public string Content { get; private set; } = string.Empty;
-
         public List<string>? Images { get; private set; } = [];
 
         public Guid AuthorId { get; private set; }
