@@ -11,6 +11,7 @@ namespace VizinhoDAgua.Application.UseCases.Report.Commands.Update
         public Guid Id { get; private set; }
         public string? Description { get; private set; }
         public string? ReportType { get; private set; }
+        public string? WaterCompanyRelated { get; private set; }
 
         // Endereço
         public string? PostalCode { get; private set; }
@@ -23,13 +24,14 @@ namespace VizinhoDAgua.Application.UseCases.Report.Commands.Update
 
         public ValidationResult ValidationResult { get; private set; } = null!;
         
-        public UpdateReportCommand(Guid id, string? description, string? reportType, string? postalCode,
+        public UpdateReportCommand(Guid id, string? description, string? reportType, string? waterCompanyRelated, string? postalCode,
             string? stateCode, string? city, string? neighborhood, string? road, double? lat, double? lon
         )
         {
             Id = id;
             Description = description;
             ReportType = reportType;
+            WaterCompanyRelated = waterCompanyRelated;
             PostalCode = postalCode;
             City = city;
             StateCode = stateCode;
@@ -67,6 +69,7 @@ namespace VizinhoDAgua.Application.UseCases.Report.Commands.Update
                     string.IsNullOrEmpty(c.Description) && 
                     string.IsNullOrEmpty(c.ReportType) && 
                     string.IsNullOrEmpty(c.PostalCode) &&
+                    string.IsNullOrEmpty(c.WaterCompanyRelated) &&
                     string.IsNullOrEmpty(c.City) &&
                     string.IsNullOrEmpty(c.StateCode) &&
                     string.IsNullOrEmpty(c.Road) &&
