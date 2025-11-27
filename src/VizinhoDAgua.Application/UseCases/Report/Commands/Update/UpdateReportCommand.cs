@@ -9,12 +9,11 @@ namespace VizinhoDAgua.Application.UseCases.Report.Commands.Update
     public class UpdateReportCommand : IRequestWithValidationAndId<Unit>
     {
         public Guid Id { get; private set; }
-        public string Description { get; private set; }
-        public string ReportType { get; private set; }
-        public string ReporterId { get; private set; }
+        public string? Description { get; private set; }
+        public string? ReportType { get; private set; }
 
         // Endereço
-        public string PostalCode { get; private set; }
+        public string? PostalCode { get; private set; }
         public string? City { get; private set; }
         public string? StateCode { get; private set; }
         public string? Road { get; private set; }
@@ -24,14 +23,13 @@ namespace VizinhoDAgua.Application.UseCases.Report.Commands.Update
 
         public ValidationResult ValidationResult { get; private set; } = null!;
         
-        public UpdateReportCommand(Guid id, string description, string reportType, string reporterId, string postalCode,
+        public UpdateReportCommand(Guid id, string? description, string? reportType, string? postalCode,
             string? stateCode, string? city, string? neighborhood, string? road, double? lat, double? lon
         )
         {
             Id = id;
             Description = description;
             ReportType = reportType;
-            ReporterId = reporterId;
             PostalCode = postalCode;
             City = city;
             StateCode = stateCode;
@@ -39,6 +37,19 @@ namespace VizinhoDAgua.Application.UseCases.Report.Commands.Update
             Neighborhood = neighborhood;
             Lat = lat;
             Lon = lon;
+        }
+
+        public void AddPostalCodeInRequest(string postalCode)
+        {
+            PostalCode = postalCode;
+        }
+
+        public void AddAddressInRequest(string city, string stateCode, string? road, string? neighborhood)
+        {
+            City = city;
+            StateCode = stateCode;
+            Road = road;
+            Neighborhood = neighborhood;
         }
 
         public bool Validate()
@@ -49,7 +60,22 @@ namespace VizinhoDAgua.Application.UseCases.Report.Commands.Update
                 .NotEmpty()
                 .WithErrorCode(((int)HttpStatusCode.BadRequest).ToString())
                 .WithMessage("O ID do report é obrigatório para a atualização.");
-            
+
+            validations.RuleFor(c => c)
+            .Must(c => !
+                (
+                    string.IsNullOrEmpty(c.Description) && 
+                    string.IsNullOrEmpty(c.ReportType) && 
+                    string.IsNullOrEmpty(c.PostalCode) &&
+                    string.IsNullOrEmpty(c.City) &&
+                    string.IsNullOrEmpty(c.StateCode) &&
+                    string.IsNullOrEmpty(c.Road) &&
+                    string.IsNullOrEmpty(c.Neighborhood)
+                )
+            )
+            .WithErrorCode(((int)HttpStatusCode.BadRequest).ToString())
+            .WithMessage("Pelo menos um campo deve ser fornecido para a atualização.");
+
             ValidationResult = validations.Validate(this);
             return ValidationResult.IsValid;
         }

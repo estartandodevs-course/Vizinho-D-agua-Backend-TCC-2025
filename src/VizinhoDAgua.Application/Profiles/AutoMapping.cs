@@ -108,7 +108,6 @@ namespace VizinhoDAgua.Application.Profiles
                     source.Id,
                     source.Request.Description,
                     source.Request.ReportType,
-                    source.Request.ReporterId,
                     source.Request.PostalCode,
                     source.Request.StateCode,
                     source.Request.City,
