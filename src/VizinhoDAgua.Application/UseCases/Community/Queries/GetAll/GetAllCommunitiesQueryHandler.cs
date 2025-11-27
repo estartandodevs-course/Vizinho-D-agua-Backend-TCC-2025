@@ -21,22 +21,30 @@ namespace VizinhoDAgua.Application.UseCases.Community.Queries.GetAll
         {
             var communities = await _repository.GetAllAsync();
 
-            var response = communities.Select(async community =>
+            var communitiesWithImages = communities.Select(async community =>
             {
                 if (community.CoverImage == null)
                     return community;
 
                 var coverImage = await _awsS3Service.GeneratePresignedUrlDownloadAsync
                 (
-                    $"communities/{community.Id}/{community.CoverImage}/{community.CoverImage}", community.CoverImage ?? string.Empty
+                    $"communities/{community.Id}/{community.CoverImage}", community.CoverImage ?? string.Empty
                 );
 
-                _mapper.Map(coverImage, community);
-
-                return community;
+                return new CommunityEntity
+                (
+                    community.Title,
+                    community.Description,
+                    coverImage,
+                    community.CreatedById
+                );
             });
 
-            return CommandResponse<GetAllCommunitiesQueryResponse>.Success(_mapper.Map<GetAllCommunitiesQueryResponse>(response), HttpStatusCode.OK);
+            var communitiesWithImagesResolved = await Task.WhenAll(communitiesWithImages);
+
+            var response = _mapper.Map<GetAllCommunitiesQueryResponse>(communitiesWithImagesResolved);
+
+            return CommandResponse<GetAllCommunitiesQueryResponse>.Success(response, HttpStatusCode.OK);
         }
     }
 }

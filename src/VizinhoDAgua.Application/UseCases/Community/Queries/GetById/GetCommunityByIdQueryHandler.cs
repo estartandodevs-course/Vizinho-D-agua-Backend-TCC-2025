@@ -1,14 +1,42 @@
 ﻿using AutoMapper;
+using System.Net;
+using VizinhoDAgua.Application.Mediator;
 using VizinhoDAgua.Application.Mediator.Handlers;
 using VizinhoDAgua.Domain.Entities;
 using VizinhoDAgua.Domain.Repositories;
+using VizinhoDAgua.Infrastructure.Cloud.Interfaces;
 
 namespace VizinhoDAgua.Application.UseCases.Community.Queries.GetById
 {
     public class GetCommunityByIdQueryHandler : GetByIdQueryHandler<CommunityEntity, GetCommunityByIdQuery, GetCommunityByIdQueryResponse>
     {
-        public GetCommunityByIdQueryHandler(ICommunityRepository communityRepository, IMapper mapper) : base(communityRepository, mapper)
+        private readonly IAwsS3Service _awsS3Service;
+
+        public GetCommunityByIdQueryHandler(ICommunityRepository communityRepository, IMapper mapper, IAwsS3Service awsS3Service) : base(communityRepository, mapper)
         {
+            _awsS3Service = awsS3Service;
+        }
+
+        public override async Task<CommandResponse<GetCommunityByIdQueryResponse>> Handle(GetCommunityByIdQuery request, CancellationToken cancellationToken)
+        {
+            var community = await _repository.GetByIdAsync(request.Id);
+            if (community == null)
+                return CommandResponse<GetCommunityByIdQueryResponse>.AddError(message: "Comunidade não encontrada.", statusCode: HttpStatusCode.NotFound);
+
+            var coverImage = community.CoverImage != null
+                ? await _awsS3Service.GeneratePresignedUrlDownloadAsync(
+                    $"communities/{community.Id}/{community.CoverImage}",
+                    community.CoverImage ?? string.Empty)
+                : null;
+
+            var response = _mapper.Map<GetCommunityByIdQueryResponse>(new CommunityEntity(
+                    community.Title,
+                    community.Description,
+                    coverImage,
+                    community.CreatedById
+                ));
+
+            return CommandResponse<GetCommunityByIdQueryResponse>.Success(response, HttpStatusCode.OK);
         }
     }
 }
