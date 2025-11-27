@@ -7,7 +7,7 @@ using VizinhoDAgua.Domain.Repositories.Abstractions;
 
 namespace VizinhoDAgua.Application.Mediator.Handlers
 {
-    public abstract class UpdateCommandHandlerBase<TEntity, TCommand, TUpdateCommandResponse>
+    public abstract class UpdateCommandHandlerWithReturn<TEntity, TCommand, TUpdateCommandResponse>
         : IRequestHandler<TCommand, CommandResponse<TUpdateCommandResponse>>
         where TEntity : Entity
         where TCommand : IRequestWithValidationAndId<TUpdateCommandResponse>
@@ -17,7 +17,7 @@ namespace VizinhoDAgua.Application.Mediator.Handlers
 
         protected abstract TUpdateCommandResponse response { get; set; }
 
-        public UpdateCommandHandlerBase(IRepository<TEntity> repository, IMapper mapper)
+        public UpdateCommandHandlerWithReturn(IRepository<TEntity> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -30,7 +30,7 @@ namespace VizinhoDAgua.Application.Mediator.Handlers
 
             var entity = await _repository.GetByIdAsync(request.Id);
             if (entity == null)
-                return CommandResponse<TUpdateCommandResponse>.AddError(message: "Comunidade não encontrada.", statusCode: HttpStatusCode.NotFound);
+                return CommandResponse<TUpdateCommandResponse>.AddError(message: "entidade não encontrada.", statusCode: HttpStatusCode.NotFound);
 
             _mapper.Map(request, entity);
             await _repository.UpdateAsync(entity);
@@ -42,7 +42,7 @@ namespace VizinhoDAgua.Application.Mediator.Handlers
     }
 
     public abstract class UpdateCommandHandler<TEntity, TCommand>
-        : UpdateCommandHandlerBase<TEntity, TCommand, Unit>
+        : UpdateCommandHandlerWithReturn<TEntity, TCommand, Unit>
         where TEntity : Entity
         where TCommand : IRequestWithValidationAndId<Unit>
     {
@@ -51,6 +51,21 @@ namespace VizinhoDAgua.Application.Mediator.Handlers
         public UpdateCommandHandler(IRepository<TEntity> repository, IMapper mapper) : base(repository, mapper)
         {
             response = Unit.Value;
+        }
+
+        public override async Task<CommandResponse<Unit>> Handle(TCommand request, CancellationToken cancellationToken)
+        {
+            if (!request.Validate())
+                return CommandResponse<Unit>.ValidationError(request.ValidationResult);
+
+            var entity = await _repository.GetByIdAsync(request.Id);
+            if (entity == null)
+                return CommandResponse<Unit>.AddError(message: "entidade não encontrada.", statusCode: HttpStatusCode.NotFound);
+
+            _mapper.Map(request, entity);
+            await _repository.UpdateAsync(entity);
+
+            return CommandResponse<Unit>.Success(response, HttpStatusCode.OK);
         }
     }
 }
