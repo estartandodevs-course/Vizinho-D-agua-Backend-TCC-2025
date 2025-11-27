@@ -7,7 +7,7 @@ using VizinhoDAgua.Domain.Repositories;
 namespace VizinhoDAgua.Application.UseCases.Alert.Commands.UpdateStatus
 {
     public class UpdateAlertStatusCommandHandler
-        : UpdateCommandHandlerBase<AlertEntity, UpdateAlertStatusCommand, AlertStatus>
+        : UpdateCommandHandlerWithReturn<AlertEntity, UpdateAlertStatusCommand, AlertStatus>
     {
         protected override AlertStatus response { get; set; } = AlertStatus.UnderVerification;
 

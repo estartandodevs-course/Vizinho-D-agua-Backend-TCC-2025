@@ -7,6 +7,7 @@ namespace VizinhoDAgua.Application.UseCases.Alert.Commands.Create
 {
     public class CreateAlertCommand : IRequestWithValidation<CreateAlertCommandResponse>
     {
+        public string Title { get; private set; }
         public string Description { get; private set; }
         public string PostalCode { get; private set; }
 
@@ -18,8 +19,9 @@ namespace VizinhoDAgua.Application.UseCases.Alert.Commands.Create
 
         public ValidationResult ValidationResult { get; private set; } = null!;
 
-        public CreateAlertCommand(string description, string postalCode)
+        public CreateAlertCommand(string title, string description, string postalCode)
         {
+            Title = title;
             Description = description;
             PostalCode = postalCode;
         }
@@ -36,6 +38,11 @@ namespace VizinhoDAgua.Application.UseCases.Alert.Commands.Create
         public bool Validate()
         {
             var validator = new InlineValidator<CreateAlertCommand>();
+
+            validator.RuleFor(command => command.Title)
+                .NotEmpty()
+                .WithErrorCode(((int)HttpStatusCode.BadRequest).ToString())
+                .WithMessage("O título é obrigatório.");
 
             validator.RuleFor(command => command.Description)
                 .NotEmpty()
