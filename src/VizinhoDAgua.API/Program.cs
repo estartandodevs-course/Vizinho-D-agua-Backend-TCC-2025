@@ -1,30 +1,43 @@
-using Amazon.Lambda.AspNetCoreServer.Hosting;
-using VizinhoDAgua.API.Infrastructure;
-using VizinhoDAgua.ServiceDefaults;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql;
+using VizinhoDAgua.Application.Profiles;
+using VizinhoDAgua.Application.UseCases.User.Commands.Update;
+using VizinhoDAgua.Infrastructure;
+using VizinhoDAgua.Infrastructure.Database;
+using VizinhoDAgua.Infrastructure.Services;
+using VizinhoDAgua.Infrastructure.Services.Interfaces;
+using VizinhoDAgua.ServiceDefaults;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
+// Registrar o MediatR
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssemblies(typeof(UpdateUserCommandHandler).Assembly)
+);
+
+// Register AutoMapper
+builder.Services.AddAutoMapper(typeof(AutoMapping));
+
 // Add Lambda hosting
 builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
 if (string.IsNullOrEmpty(connectionString))
 {
     throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 }
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContext<AppDbContext>(options =>
 {
     // Use a specific MySQL version or get it from configuration
     // AutoDetect can fail during startup in serverless environments
     var serverVersion = new MySqlServerVersion(new Version(8, 0, 21)); // Adjust to your MySQL version
     options.UseMySql(connectionString, serverVersion, options =>
     {
+        options.UseNetTopologySuite(); // habilita suporte a GEOMETRY, POINT, POLYGON 
         options.EnableRetryOnFailure(
             maxRetryCount: 3,
             maxRetryDelay: TimeSpan.FromSeconds(30),
@@ -34,6 +47,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // Add Controllers
 builder.Services.AddControllers();
+
+// Add Infrastructure Module
+builder.Services.AddInfrastructureModule();
+
+// Registra o serviço de consulta de CEP  usando HttpClient.
+builder.Services.AddHttpClient<ICepService, ViaCepService>(client =>
+{
+    client.BaseAddress = new Uri("https://viacep.com.br/ws/");
+});
 
 // Add Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
@@ -45,7 +67,7 @@ builder.Services.AddSwaggerGen(c =>
         Title = "Vizinho d'Água API",
         Description = "AWS Lambda ASP.NET Core API Vizinho d'Água",
     });
-    
+
     // Include XML comments
     var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -74,9 +96,9 @@ var app = builder.Build();
 // Apply pending migrations at startup
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-    
+
     try
     {
         if (db.Database.GetPendingMigrations().Any())

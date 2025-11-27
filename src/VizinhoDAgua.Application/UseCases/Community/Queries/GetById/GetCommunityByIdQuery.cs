@@ -1,0 +1,33 @@
+﻿using FluentValidation;
+using FluentValidation.Results;
+using System.Net;
+using VizinhoDAgua.Application.Mediator.IRequests;
+
+namespace VizinhoDAgua.Application.UseCases.Community.Queries.GetById
+{
+    public class GetCommunityByIdQuery : IRequestWithValidationAndId<GetCommunityByIdQueryResponse>
+    {
+        public Guid Id { get; private set; }
+
+        public ValidationResult ValidationResult { get; private set; } = null!;
+
+        public GetCommunityByIdQuery(Guid id)
+        {
+            Id = id;
+        }
+
+        public bool Validate()
+        {
+            var validations = new InlineValidator<GetCommunityByIdQuery>();
+
+            validations.RuleFor(c => c.Id)
+            .NotEmpty()
+            .WithErrorCode(((int)HttpStatusCode.BadRequest).ToString())
+            .WithMessage("O ID da comunidade é obrigatório");
+
+            ValidationResult = validations.Validate(this);
+
+            return ValidationResult.IsValid;
+        }
+    }
+}
