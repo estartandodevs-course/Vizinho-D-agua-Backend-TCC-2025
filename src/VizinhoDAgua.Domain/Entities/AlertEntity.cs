@@ -14,6 +14,7 @@ namespace VizinhoDAgua.Domain.Entities
         public string? Road { get; private set; }
         public string? Neighborhood { get; private set; }
 
+        // Um alerta pode ter vários reports associados
         public List<ReportEntity> Reports { get; private set; } = [];
 
         public AlertEntity() { }

@@ -12,8 +12,11 @@ namespace VizinhoDAgua.Domain.Entities
         public WaterCompany WaterCompanyRelated { get; private set; }
         public List<string> Attachments { get; private set; } = [];
 
-        public Guid? ReporterId { get; private set; } 
-        public UserEntity? Reporter { get; private set; }
+        public Guid ReporterId { get; private set; } 
+        public UserEntity Reporter { get; private set; }
+        
+        public Guid? AlertId { get; private set; }
+        public AlertEntity? Alert { get; private set; }
 
         // Endereço
         public string? City { get; private set; } = string.Empty;

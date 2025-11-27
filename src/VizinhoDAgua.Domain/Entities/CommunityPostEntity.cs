@@ -8,10 +8,10 @@ namespace VizinhoDAgua.Domain.Entities
         public List<string>? Images { get; private set; } = [];
 
         public Guid AuthorId { get; private set; }
-        public UserEntity? Author { get; private set; }
+        public UserEntity Author { get; private set; } = null!;
 
         public Guid CommunityId { get; private set; }
-        public CommunityEntity? Community { get; private set; }
+        public CommunityEntity Community { get; private set; } = null!;
 
         public CommunityPostEntity() { } // EF Core
 
