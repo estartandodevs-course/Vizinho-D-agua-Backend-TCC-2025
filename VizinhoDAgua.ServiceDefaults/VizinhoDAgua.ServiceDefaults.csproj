@@ -5,14 +5,21 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsAspireSharedProject>true</IsAspireSharedProject>
+    <EnableOpenTelemetry Condition="'$(EnableOpenTelemetry)'==''">false</EnableOpenTelemetry>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(EnableOpenTelemetry)'=='true'">
+    <DefineConstants>$(DefineConstants);ENABLE_OPEN_TELEMETRY</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="AWS.Messaging.Telemetry.OpenTelemetry" Version="1.0.0" />
-
     <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="9.9.0" />
     <PackageReference Include="Microsoft.Extensions.ServiceDiscovery" Version="9.5.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(EnableOpenTelemetry)'=='true'">
+    <PackageReference Include="AWS.Messaging.Telemetry.OpenTelemetry" Version="1.0.0" />
     <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.13.0" />
     <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.13.0" />
     <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.12.0" />

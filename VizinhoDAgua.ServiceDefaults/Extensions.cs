@@ -1,14 +1,17 @@
-using AWS.Messaging.Telemetry.OpenTelemetry;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+
+#if ENABLE_OPEN_TELEMETRY
+using AWS.Messaging.Telemetry.OpenTelemetry;
 using OpenTelemetry;
 using OpenTelemetry.Instrumentation.AWSLambda;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
+#endif
 
 namespace VizinhoDAgua.ServiceDefaults;
 
@@ -22,7 +25,9 @@ public static class Extensions
 
     public static TBuilder AddServiceDefaults<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder
     {
+#if ENABLE_OPEN_TELEMETRY
         builder.ConfigureOpenTelemetry();
+#endif
 
         builder.AddDefaultHealthChecks();
 
@@ -48,6 +53,7 @@ public static class Extensions
 
     public static TBuilder ConfigureOpenTelemetry<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder
     {
+#if ENABLE_OPEN_TELEMETRY
         builder.Logging.AddOpenTelemetry(logging =>
         {
             logging.IncludeFormattedMessage = true;
@@ -80,12 +86,13 @@ public static class Extensions
             });
 
         builder.AddOpenTelemetryExporters();
-
+#endif
         return builder;
     }
 
     private static TBuilder AddOpenTelemetryExporters<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder
     {
+#if ENABLE_OPEN_TELEMETRY
         var useOtlpExporter = !string.IsNullOrWhiteSpace(builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]);
 
         if (useOtlpExporter)
@@ -99,7 +106,7 @@ public static class Extensions
         //    builder.Services.AddOpenTelemetry()
         //       .UseAzureMonitor();
         //}
-
+#endif
         return builder;
     }
 
