@@ -1,7 +1,7 @@
-using System.Net;
 using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
+using System.Net;
 using VizinhoDAgua.Application.Mediator.IRequests;
 
 namespace VizinhoDAgua.Application.UseCases.User.Commands.Update
@@ -15,7 +15,7 @@ namespace VizinhoDAgua.Application.UseCases.User.Commands.Update
         public string? ProfileImage { get; private set; }
 
         public ValidationResult ValidationResult { get; private set; } = null!;
-        
+
         public UpdateUserCommand(Guid id, string name, string email, string password, string? profileImage)
         {
             Id = id;
@@ -28,16 +28,19 @@ namespace VizinhoDAgua.Application.UseCases.User.Commands.Update
         public bool Validate()
         {
             var validations = new InlineValidator<UpdateUserCommand>();
-            
+
             validations.RuleFor(command => command.Id)
                 .NotEmpty()
                 .WithErrorCode(((int)HttpStatusCode.BadRequest).ToString())
                 .WithMessage("O ID do usuário é obrigatório para a atualização.");
-            
+
             validations.RuleFor(command => command)
-                .Must(command => !(string.IsNullOrEmpty(command.Name) && string.IsNullOrEmpty(command.Email) 
-                                                                       && string.IsNullOrEmpty(command.Password)
-                                                                       && string.IsNullOrEmpty(command.ProfileImage)
+                .Must(command => !
+                    (
+                        string.IsNullOrEmpty(command.Name) &&
+                        string.IsNullOrEmpty(command.Email) && 
+                        string.IsNullOrEmpty(command.Password) &&
+                        string.IsNullOrEmpty(command.ProfileImage)
                     )
                 )
                 .WithErrorCode(((int)HttpStatusCode.BadRequest).ToString())
