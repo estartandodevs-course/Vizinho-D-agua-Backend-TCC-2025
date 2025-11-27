@@ -10,14 +10,16 @@ namespace VizinhoDAgua.Application.UseCases.Community.Commands.Create
         public string Title { get; private set; }
         public string Description { get; private set; }
         public string? CoverImage { get; private set; }
+        public Guid CreatedById { get; set; }
 
         public ValidationResult ValidationResult { get; private set; } = null!;
 
-        public CreateCommunityCommand(string title, string description, string? coverImage)
+        public CreateCommunityCommand(string title, string description, string? coverImage, Guid createdById)
         {
             Title = title;
             Description = description;
             CoverImage = coverImage;
+            CreatedById = createdById;
         }
 
         public bool Validate()
@@ -33,6 +35,11 @@ namespace VizinhoDAgua.Application.UseCases.Community.Commands.Create
                 .NotEmpty()
                 .WithErrorCode(((int)HttpStatusCode.BadRequest).ToString())
                 .WithMessage("A descrição é obrigatória.");
+
+            validations.RuleFor(c => c.CreatedById)
+                .NotEmpty()
+                .WithErrorCode(((int)HttpStatusCode.BadRequest).ToString())
+                .WithMessage("O ID do usuário criador é obrigatório.");
 
             ValidationResult = validations.Validate(this);
 
