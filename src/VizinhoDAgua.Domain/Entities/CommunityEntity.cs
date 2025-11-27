@@ -8,8 +8,8 @@ namespace VizinhoDAgua.Domain.Entities
         public string Description { get; private set; } = string.Empty;
         public string? CoverImage { get; private set; }
 
-        public Guid? CreatedById { get; private set; }
-        public UserEntity? CreatedBy { get; private set; }
+        public Guid CreatedById { get; private set; }
+        public UserEntity CreatedBy { get; private set; } = null!;
 
         // Many-to-Many
         public List<UserEntity> Followers { get; private set; } = [];
@@ -19,10 +19,11 @@ namespace VizinhoDAgua.Domain.Entities
 
         public CommunityEntity() { }  // EF Core
 
-        public CommunityEntity(string title, string description, Guid createdById)
+        public CommunityEntity(string title, string description, string? coverImage, Guid createdById)
         {
             Title = title;
             Description = description;
+            CoverImage = coverImage;
             CreatedById = createdById;
         }
 

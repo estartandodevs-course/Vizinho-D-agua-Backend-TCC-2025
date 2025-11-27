@@ -23,8 +23,7 @@ namespace VizinhoDAgua.Infrastructure.Mappers
 
             builder.HasOne(c => c.CreatedBy)
                 .WithMany(u => u.Communities)
-                .HasForeignKey(c => c.CreatedById)
-                .OnDelete(DeleteBehavior.SetNull);
+                .HasForeignKey(c => c.CreatedById);
 
             // Cria relação que gera tabela CommunityUser (n para n)
             builder.HasMany(c => c.Followers)
