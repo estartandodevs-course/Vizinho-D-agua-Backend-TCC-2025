@@ -9,7 +9,6 @@ namespace VizinhoDAgua.Application.UseCases.EducationContent.Commands.Create
     public class CreateEducationContentCommand : IRequestWithValidation<CreateEducationContentResponse>
     {
         public string Title { get; private set; } = string.Empty;
-        public string? Image { get; private set; }
         public string Author { get; private set; }  = string.Empty;
         public EducationContentType ContentType { get; private set; }
         public string? FilePath { get; private set; }
@@ -18,11 +17,10 @@ namespace VizinhoDAgua.Application.UseCases.EducationContent.Commands.Create
 
         public CreateEducationContentCommand() { } // permitir instâncias
 
-        public CreateEducationContentCommand(string title, string? image, string author, 
+        public CreateEducationContentCommand(string title, string author, 
             EducationContentType contentType, string? filePath)
         {
             Title = title;
-            Image = image;
             Author = author;
             ContentType = contentType;
             FilePath = filePath;

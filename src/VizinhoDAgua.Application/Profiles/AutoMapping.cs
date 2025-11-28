@@ -37,15 +37,14 @@ namespace VizinhoDAgua.Application.Profiles
 
             // EDUCATIONAL CONTENT
             // Request ~> Command
-            CreateMap<CreateEducationalContentRequest, CreateEducationContentCommand>();
+            CreateMap<CreateEducationContentRequest, CreateEducationContentCommand>();
             // Command ~> Entity
             CreateMap<CreateEducationContentCommand, EducationContentEntity>();
             // Update
-            CreateMap<(Guid Id, UpdateEducationalContentRequest Request), UpdateEducationContentCommand>()
+            CreateMap<(Guid Id, UpdateEducationContentRequest Request), UpdateEducationContentCommand>()
                 .ConstructUsing(source => new UpdateEducationContentCommand(
                     source.Id,
                     source.Request.Title,
-                    source.Request.Image,
                     source.Request.Author,
                     source.Request.FilePath
                 ));

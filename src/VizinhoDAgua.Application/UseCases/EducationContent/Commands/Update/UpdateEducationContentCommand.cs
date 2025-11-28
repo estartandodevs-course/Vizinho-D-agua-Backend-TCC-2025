@@ -10,17 +10,15 @@ namespace VizinhoDAgua.Application.UseCases.EducationContent.Commands.Update
     {
         public Guid Id { get; private set; }
         public string Title { get; private set; }
-        public string? Image  { get; private set; }
         public string Author { get; private set; }
         public string? FilePath { get; private set; }
     
         public ValidationResult ValidationResult { get; private set; } = null!;
     
-        public UpdateEducationContentCommand(Guid id, string title, string? image, string author, string? filePath)
+        public UpdateEducationContentCommand(Guid id, string title, string author, string? filePath)
         {
             Id = id;
             Title = title;
-            Image = image;
             Author = author;
             FilePath = filePath;
         }
@@ -35,8 +33,7 @@ namespace VizinhoDAgua.Application.UseCases.EducationContent.Commands.Update
                 .WithMessage("O ID do conteúdo educacional é obrigatório para a atualização.");
             
             validations.RuleFor(command => command)
-                .Must(command => !(string.IsNullOrEmpty(command.Title) && string.IsNullOrEmpty(command.Image) 
-                                                                       && string.IsNullOrEmpty(command.Author)
+                .Must(command => !(string.IsNullOrEmpty(command.Title) && string.IsNullOrEmpty(command.Author)
                                                                        && string.IsNullOrEmpty(command.FilePath)
                     )
                 )

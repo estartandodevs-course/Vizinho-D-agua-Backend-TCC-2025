@@ -20,5 +20,10 @@ namespace VizinhoDAgua.Domain.Entities
             ContentType = contentType;
             FilePath = filePath;
         }
+
+        public void AddFilePath(string filePath)
+        {
+            FilePath = filePath;
+        }
     }
 }
