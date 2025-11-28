@@ -44,7 +44,9 @@ namespace VizinhoDAgua.Infrastructure.Mappers
 
             // Relacionamento: Alerta → Denuncia (1:N)
             builder.HasMany(alert => alert.Reports)
-                .WithOne(report => report.Alert);
+                .WithOne(report => report.Alert)
+                .HasForeignKey(report => report.AlertId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }
