@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using VizinhoDAgua.Application.Dtos;
 using VizinhoDAgua.Application.UseCases.Alert.Commands.Create;
-using VizinhoDAgua.Application.UseCases.Alert.Commands.UpdateStatus;
+using VizinhoDAgua.Application.UseCases.Alert.Commands.Update;
+using VizinhoDAgua.Application.UseCases.Alert.Queries.GetById;
 using VizinhoDAgua.Application.UseCases.Community.Commands.Create;
 using VizinhoDAgua.Application.UseCases.Community.Commands.Update;
 using VizinhoDAgua.Application.UseCases.CommunityPost.Commands.Create;
@@ -128,13 +129,25 @@ namespace VizinhoDAgua.Application.Profiles
             // Command ~> Entity
             CreateMap<CreateAlertCommand, AlertEntity>();
             // Update
-            CreateMap<(Guid Id, UpdateAlertStatusRequest Request), UpdateAlertStatusCommand>()
-                .ConstructUsing(src => new UpdateAlertStatusCommand(
-                    src.Id,
-                    (AlertStatus)src.Request.Status
-                ));
-            CreateMap<UpdateAlertStatusCommand, AlertEntity>();
-            CreateMap<AlertEntity, AlertStatus>();
+            CreateMap<(Guid Id, UpdateAlertRequest Request), UpdateAlertCommand>()
+                .ConstructUsing(source => new UpdateAlertCommand(
+                    source.Id, 
+                    source.Request.Status,
+                    source.Request.Title,
+                    source.Request.Description,
+                    source.Request.PostalCode,
+                    source.Request.City,
+                    source.Request.StateCode,
+                    source.Request.Road,
+                    source.Request.Neighborhood
+                )); 
+            CreateMap<UpdateAlertCommand, AlertEntity>()
+                // ignorar o mapeamento do Status no Update
+                // (AlertEntity > AlertStatus != UpdateAlertCommand > AlertStatus?)
+                .ForMember(dest => dest.Status, opt =>
+                    opt.Condition(src => src.Status.HasValue))
+                // evita sobrescrever propriedades quando o campo vem null
+                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         }
     }
 }

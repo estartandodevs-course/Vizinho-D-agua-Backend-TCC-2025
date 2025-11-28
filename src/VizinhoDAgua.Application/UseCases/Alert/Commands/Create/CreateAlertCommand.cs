@@ -26,7 +26,7 @@ namespace VizinhoDAgua.Application.UseCases.Alert.Commands.Create
             PostalCode = postalCode;
         }
 
-        // ✅ Método para atualizar os campos de endereço
+        // Método para atualizar os campos de endereço
         public void SetAddress(string? road, string? neighborhood, string? city, string? stateCode)
         {
             Road = road;
