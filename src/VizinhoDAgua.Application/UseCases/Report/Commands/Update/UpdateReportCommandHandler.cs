@@ -31,7 +31,7 @@ namespace VizinhoDAgua.Application.UseCases.Report.Commands.Update
             if(string.IsNullOrEmpty(request.PostalCode))
                 request.AddPostalCodeInRequest(entity.PostalCode);
 
-            var cepData = await _cepService.GetAddressByCepAsync(request.PostalCode, cancellationToken);
+            var cepData = await _cepService.GetAddressByCepAsync(request.PostalCode ?? string.Empty, cancellationToken);
 
             if (cepData?.StateCode == null || cepData.City == null)
             {

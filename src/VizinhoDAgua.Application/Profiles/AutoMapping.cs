@@ -118,7 +118,7 @@ namespace VizinhoDAgua.Application.Profiles
                 ));
             CreateMap<UpdateReportCommand, ReportEntity>()
                 .ForMember(dest => dest.ReportType, opt =>
-                    opt.MapFrom(src => Enum.Parse<ReportType>(src.ReportType, true)))
+                    opt.MapFrom(src => Enum.Parse<ReportType>(src.ReportType ?? string.Empty, true)))
                 .ForAllMembers(opts => opts.Condition((_, _, srcMember) => srcMember != null));
 
 
