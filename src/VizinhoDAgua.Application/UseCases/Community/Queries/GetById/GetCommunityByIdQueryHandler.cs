@@ -23,18 +23,16 @@ namespace VizinhoDAgua.Application.UseCases.Community.Queries.GetById
             if (community == null)
                 return CommandResponse<GetCommunityByIdQueryResponse>.AddError(message: "Comunidade não encontrada.", statusCode: HttpStatusCode.NotFound);
 
-            var coverImage = community.CoverImage != null
-                ? await _awsS3Service.GeneratePresignedUrlDownloadAsync(
+            if (!string.IsNullOrEmpty(community.CoverImage))
+            {
+                var coverImage = await _awsS3Service.GeneratePresignedUrlDownloadAsync(
                     $"communities/{community.Id}/{community.CoverImage}",
-                    community.CoverImage ?? string.Empty)
-                : null;
+                    community.CoverImage);
 
-            var response = _mapper.Map<GetCommunityByIdQueryResponse>(new CommunityEntity(
-                    community.Title,
-                    community.Description,
-                    coverImage,
-                    community.CreatedById
-                ));
+                community.AddCoverImage(coverImage);
+            }
+
+            var response = _mapper.Map<GetCommunityByIdQueryResponse>(community);
 
             return CommandResponse<GetCommunityByIdQueryResponse>.Success(response, HttpStatusCode.OK);
         }

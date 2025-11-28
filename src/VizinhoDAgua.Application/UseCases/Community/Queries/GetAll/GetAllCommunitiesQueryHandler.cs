@@ -23,7 +23,7 @@ namespace VizinhoDAgua.Application.UseCases.Community.Queries.GetAll
 
             var communitiesWithImages = communities.Select(async community =>
             {
-                if (community.CoverImage == null)
+                if (string.IsNullOrEmpty(community.CoverImage))
                     return community;
 
                 var coverImage = await _awsS3Service.GeneratePresignedUrlDownloadAsync
@@ -31,13 +31,9 @@ namespace VizinhoDAgua.Application.UseCases.Community.Queries.GetAll
                     $"communities/{community.Id}/{community.CoverImage}", community.CoverImage ?? string.Empty
                 );
 
-                return new CommunityEntity
-                (
-                    community.Title,
-                    community.Description,
-                    coverImage,
-                    community.CreatedById
-                );
+                community.AddCoverImage(coverImage);
+
+                return community;
             });
 
             var communitiesWithImagesResolved = await Task.WhenAll(communitiesWithImages);

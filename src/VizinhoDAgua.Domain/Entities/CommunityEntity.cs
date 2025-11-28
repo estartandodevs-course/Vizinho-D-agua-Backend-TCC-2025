@@ -27,9 +27,9 @@ namespace VizinhoDAgua.Domain.Entities
             CreatedById = createdById;
         }
 
-        public void AddCoverImage(string fileName)
+        public void AddCoverImage(string coverImage)
         {
-            CoverImage = fileName;
+            CoverImage = coverImage;
         }
     }
 }

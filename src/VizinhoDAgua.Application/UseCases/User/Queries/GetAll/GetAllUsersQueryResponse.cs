@@ -4,7 +4,7 @@ namespace VizinhoDAgua.Application.UseCases.User.Queries.GetAll
 {
     public class GetAllUsersQueryResponse
     {
-        public IList<UserEntity> Users { get; set; }
+        public IList<UserEntity> Users { get; }
         
         public GetAllUsersQueryResponse(IList<UserEntity> users)
         {
