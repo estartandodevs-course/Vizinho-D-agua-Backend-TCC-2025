@@ -1,19 +1,18 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
-using MediatR;
 using System.Net;
 using VizinhoDAgua.Application.Mediator.IRequests;
 
 namespace VizinhoDAgua.Application.UseCases.Community.Commands.GeneratePresignedForUpload
 {
-    public class GeneratePresignedForUploadCommand : IRequestWithValidationAndId<GeneratePresignedForUploadCommandResponse>
+    public class GeneratePresignedForUploadCoverImageCommand : IRequestWithValidationAndId<GeneratePresignedForUploadCoverImageCommandResponse>
     {
         public Guid Id { get; private set; }
         public string FileName { get; private set; }
 
         public ValidationResult ValidationResult { get; private set; } = null!;
 
-        public GeneratePresignedForUploadCommand(Guid id, string fileName)
+        public GeneratePresignedForUploadCoverImageCommand(Guid id, string fileName)
         {
             Id = id;
             FileName = fileName.Trim();
@@ -21,7 +20,7 @@ namespace VizinhoDAgua.Application.UseCases.Community.Commands.GeneratePresigned
 
         public bool Validate()
         {
-            var validations = new InlineValidator<GeneratePresignedForUploadCommand>();
+            var validations = new InlineValidator<GeneratePresignedForUploadCoverImageCommand>();
 
             validations.RuleFor(g => g.Id)
             .NotEmpty()

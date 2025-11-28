@@ -57,7 +57,7 @@ namespace VizinhoDAgua.API.Controllers
             [FromBody] GeneratePresignedUrlDto request
         )
         {
-            var command = new GeneratePresignedForUploadCommand(id, request.FileName);
+            var command = new GeneratePresignedForUploadCoverImageCommand(id, request.FileName);
 
             var response = await _mediator.Send(command);
 
