@@ -13,8 +13,8 @@ namespace VizinhoDAgua.Domain.Entities
         public List<string> Attachments { get; private set; } = [];
 
         public Guid ReporterId { get; private set; } 
-        public UserEntity Reporter { get; private set; }
-        
+        public UserEntity Reporter { get; private set; } = null!;
+
         public Guid? AlertId { get; private set; }
         public AlertEntity? Alert { get; private set; }
 
@@ -29,17 +29,17 @@ namespace VizinhoDAgua.Domain.Entities
         public ReportEntity() { } // EF Core
 
         public ReportEntity(
-            Guid reporterId, 
             string description,
+            ReportStatus status,
+            ReportType reportType,
             WaterCompany waterCompanyRelated,
+            List<string>? attachments,
+            Guid reporterId,
             string postalCode,
             string city,
             string stateCode,
             string? road,
-            string? neighborhood,
-            ReportStatus status,
-            ReportType reportType,
-            List<string>? attachments = null)
+            string? neighborhood)
         {
             ReporterId = reporterId;
             Description = description;
@@ -55,7 +55,17 @@ namespace VizinhoDAgua.Domain.Entities
             Road = road;
             Neighborhood = neighborhood;
         }
-        
+
+        public void AddAttachment(string attachment)
+        {
+            Attachments.Add(attachment);
+        }
+
+        public void UpdateAttachmentList(List<string> attachments)
+        {
+            Attachments = attachments;
+        }
+
         public void UpdateAddressFromCep(
             string? road,
             string? neighborhood,

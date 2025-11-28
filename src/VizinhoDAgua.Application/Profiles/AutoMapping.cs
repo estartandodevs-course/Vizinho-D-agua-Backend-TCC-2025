@@ -38,15 +38,14 @@ namespace VizinhoDAgua.Application.Profiles
 
             // EDUCATIONAL CONTENT
             // Request ~> Command
-            CreateMap<CreateEducationalContentRequest, CreateEducationContentCommand>();
+            CreateMap<CreateEducationContentRequest, CreateEducationContentCommand>();
             // Command ~> Entity
             CreateMap<CreateEducationContentCommand, EducationContentEntity>();
             // Update
-            CreateMap<(Guid Id, UpdateEducationalContentRequest Request), UpdateEducationContentCommand>()
+            CreateMap<(Guid Id, UpdateEducationContentRequest Request), UpdateEducationContentCommand>()
                 .ConstructUsing(source => new UpdateEducationContentCommand(
                     source.Id,
                     source.Request.Title,
-                    source.Request.Image,
                     source.Request.Author,
                     source.Request.FilePath
                 ));
@@ -120,7 +119,7 @@ namespace VizinhoDAgua.Application.Profiles
                 ));
             CreateMap<UpdateReportCommand, ReportEntity>()
                 .ForMember(dest => dest.ReportType, opt =>
-                    opt.MapFrom(src => Enum.Parse<ReportType>(src.ReportType, true)))
+                    opt.MapFrom(src => Enum.Parse<ReportType>(src.ReportType ?? string.Empty, true)))
                 .ForAllMembers(opts => opts.Condition((_, _, srcMember) => srcMember != null));
 
 
