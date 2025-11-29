@@ -61,12 +61,14 @@ namespace VizinhoDAgua.Infrastructure.Mappers
             // Relacionamento: Usuário → Denuncias (1:N)
             builder.HasOne(report => report.Reporter)
                 .WithMany(user => user.Reports)
-                .HasForeignKey(report => report.ReporterId);
+                .HasForeignKey(report => report.ReporterId)
+                .OnDelete(DeleteBehavior.Restrict); // Não apaga denúncia ao excluir usuário
 
             // Relacionamento: Alerta → Denuncias (1:N)
             builder.HasOne(report => report.Alert)
                 .WithMany(alert => alert.Reports)
-                .HasForeignKey(report => report.AlertId);
+                .HasForeignKey(report => report.AlertId)
+                .OnDelete(DeleteBehavior.SetNull); // O report pode existir sem alerta
         }
     }
 }

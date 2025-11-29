@@ -50,14 +50,13 @@ namespace VizinhoDAgua.API.Controllers
             return StatusCode((int)response.StatusCode, response);
         }
 
-        [HttpPost]
-        [Route("{id}/upload")]
+        [HttpPost("{id}/upload")]
         public async Task<IActionResult> GeneratePresignedUrlForUpload(
             [FromRoute] Guid id, 
             [FromBody] GeneratePresignedUrlDto request
         )
         {
-            var command = new GeneratePresignedForUploadCommand(id, request.FileName);
+            var command = new GeneratePresignedForUploadCoverImageCommand(id, request.FileName);
 
             var response = await _mediator.Send(command);
 

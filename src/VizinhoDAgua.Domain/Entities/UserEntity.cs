@@ -8,7 +8,7 @@ namespace VizinhoDAgua.Domain.Entities
         public string Email { get; private set; } = string.Empty;
         public string Password { get; private set; } = string.Empty;
         public bool IsAdmin { get; private set; }
-        public string ProfileImage { get; private set; } = string.Empty;
+        public string? ProfileImage { get; private set; }
 
         // EF Core
         public List<CommunityEntity> Communities { get; private set; } = [];
@@ -25,7 +25,12 @@ namespace VizinhoDAgua.Domain.Entities
             Email = email;
             Password = password;
             IsAdmin = false;
-            ProfileImage = profileImage ?? string.Empty;
+            ProfileImage = profileImage;
+        }
+
+        public void AddProfileImage(string profileImage)
+        {
+            ProfileImage = profileImage;
         }
     }
 }

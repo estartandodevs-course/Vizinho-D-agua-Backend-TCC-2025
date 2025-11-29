@@ -378,12 +378,13 @@ namespace VizinhoDAgua.Infrastructure.Migrations
                 {
                     b.HasOne("VizinhoDAgua.Domain.Entities.AlertEntity", "Alert")
                         .WithMany("Reports")
-                        .HasForeignKey("AlertId");
+                        .HasForeignKey("AlertId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("VizinhoDAgua.Domain.Entities.UserEntity", "Reporter")
                         .WithMany("Reports")
                         .HasForeignKey("ReporterId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Alert");

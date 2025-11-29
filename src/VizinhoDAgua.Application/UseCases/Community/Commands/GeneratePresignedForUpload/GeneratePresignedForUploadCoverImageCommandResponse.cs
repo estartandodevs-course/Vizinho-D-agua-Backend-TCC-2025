@@ -1,10 +1,10 @@
 ﻿namespace VizinhoDAgua.Application.UseCases.Community.Commands.GeneratePresignedForUpload
 {
-    public class GeneratePresignedForUploadCommandResponse
+    public class GeneratePresignedForUploadCoverImageCommandResponse
     {
         public string PresignedUrl { get; private set; }
 
-        public GeneratePresignedForUploadCommandResponse(string presignedUrl)
+        public GeneratePresignedForUploadCoverImageCommandResponse(string presignedUrl)
         {
             PresignedUrl = presignedUrl;
         }
